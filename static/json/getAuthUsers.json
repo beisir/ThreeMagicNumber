@@ -1,0 +1,16 @@
+{
+	"errno": 0,
+	"data": [{
+		"id": 1,
+		"misname": "张三",
+		"state": 1
+	}, {
+		"id": 2,
+		"misname": "李四",
+		"state": 1
+	}, {
+		"id": 3,
+		"misname": "王二麻子",
+		"state": 0
+	}]
+}

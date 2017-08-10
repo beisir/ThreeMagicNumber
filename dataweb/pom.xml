@@ -1,0 +1,614 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>dataweb</groupId>
+    <artifactId>dataweb</artifactId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>dataweb</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <project.name>dataweb</project.name>
+        <project.build.sourceEncoding>UTF8</project.build.sourceEncoding>
+        <jdk.version>1.7</jdk.version>
+        <mybatis.version>3.2.0</mybatis.version>
+        <org.springframework.version>3.2.8.RELEASE</org.springframework.version>
+    </properties>
+
+
+
+    <dependencies>
+        <!-- velocity -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-tools</artifactId>
+            <version>2.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>dom4j</artifactId>
+                    <groupId>dom4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy.modules.http-builder</groupId>
+            <artifactId>http-builder</artifactId>
+            <version>0.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-json</artifactId>
+            <version>2.4.5</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.12</version>
+        </dependency>
+        <!-- spring 没有直接定义cglib依赖 ，需要自行引入 -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- aspectj (Spring没有直接使用apectj， 只是用到这个jar包中的一些类) -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.6.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>ojdbc14</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>1.0</version>
+            <!-- <scope>provided</scope> -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+        <!-- 由于eclipse中没有servlet，固此处显示引用该jar -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- json解析工具包 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.3.3</version>
+        </dependency>
+<!-- spring的xml文件解析异常报错，添加一下两个jar包即可解决。
+Caused by: org.xml.sax.SAXParseException; systemId: http://www.springframework.org/schema/mvc/spring
+-->
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xmlParserAPIs</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xerces</artifactId>
+            <version>2.4.0</version>
+	    </dependency>
+
+		<dependency>
+			<groupId>sso</groupId>
+			<artifactId>sso-client</artifactId>
+			<version>4.5.3</version>
+		</dependency>
+
+		<!-- sso client依赖 -->
+<dependency>
+	<groupId>mmt</groupId>
+	<artifactId>mmt</artifactId>
+	<version>4.4.20151015.1</version>
+	<exclusions>
+		<exclusion>
+			<artifactId>velocity</artifactId>
+			<groupId>velocity</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>commons-configuration</artifactId>
+			<groupId>commons-configuration</groupId>
+		</exclusion>
+		<exclusion>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+		</exclusion>
+		<exclusion>
+			<groupId>servletapi</groupId>
+			<artifactId>servletapi</artifactId>
+		</exclusion>
+
+		<exclusion>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+		</exclusion>
+		<exclusion>
+			<artifactId>slf4j-api</artifactId>
+			<groupId>slf4j</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>slf4j-log4j12</artifactId>
+			<groupId>slf4j</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>ojdbc14</artifactId>
+			<groupId>ojdbc14</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>turbine</artifactId>
+			<groupId>turbine</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>hibernate</artifactId>
+			<groupId>hibernate</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>hsqldb</artifactId>
+			<groupId>hsqldb</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>tptbmas-hibernate3</artifactId>
+			<groupId>timesten</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>torque</artifactId>
+			<groupId>torque</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>log4j</artifactId>
+			<groupId>log4j</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>commons-codec</artifactId>
+			<groupId>commons</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>asm</artifactId>
+			<groupId>asm</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>rsf-client</artifactId>
+			<groupId>mmt</groupId>
+		</exclusion>
+		<exclusion>
+			<artifactId>xmlParserAPIs</artifactId>
+			<groupId>xml-apis</groupId>
+		</exclusion>
+	</exclusions>
+</dependency>
+
+	<dependency>
+		<groupId>mmt</groupId>
+		<artifactId>b2b-decoupling</artifactId>
+		<version>2.0.8</version>
+	</dependency>
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-annogen</artifactId>
+		<version>0.1.0</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-axiom-api</artifactId>
+		<version>1.2.4</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-axiom-dom</artifactId>
+		<version>1.2.4</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-axiom-impl</artifactId>
+		<version>1.2.4</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-adb</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-adb-codegen</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-codegen</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-fastinfoset</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-java2wsdl</artifactId>
+		<version>1.2</version>
+	</dependency>
+	<dependency>
+		<groupId>wsdl4j</groupId>
+		<artifactId>wsdl4j</artifactId>
+		<version>1.6.3</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-jaxbri</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-jaxws</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-jaxws-api</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-jibx</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-json</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-kernel</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-metadata</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-saaj</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-saaj-api</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-soapmonitor</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-spring</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-tools</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<dependency>
+		<groupId>axis2</groupId>
+		<artifactId>axis2-xmlbeans</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+    </dependencies>
+    <build>
+        <defaultGoal>compile</defaultGoal>
+        <outputDirectory>${project.basedir}/src/main/webapp/WEB-INF/classes
+        </outputDirectory>
+        <pluginManagement>
+            <plugins>
+                <!-- 打war包相关插件 -->
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <archiveClasses>true</archiveClasses>
+                        <!-- 指定war包的名字，如果直接将此war包发布到tomcat中，那么war包的名字即为path， -->
+                        <!-- 如：将warName设置为tx，那么访问地址为http://localhost:port/tx -->
+                        <warName>${project.name}</warName>
+                        <!-- 已经将class文件打成jar了，不需要在发布包中包含class文件 -->
+                        <packagingExcludes>
+                            WEB-INF/classes/**/*.class,
+                            WEB-INF/lib
+                        </packagingExcludes>
+                    </configuration>
+                </plugin>
+
+                <!-- jar相关插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true
+                                </addDefaultImplementationEntries>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.1.2</version>
+                </plugin>
+                <!-- clean插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.4.1</version>
+                    <configuration>
+                        <filesets>
+                            <fileset>
+                                <!-- 执行 clean命令时 删除WEB-INF/lib下面的所有jar包 -->
+                                <directory>${project.basedir}/src/main/webapp/WEB-INF/lib
+                                </directory>
+                                <includes>
+                                    <include>**/*.jar</include>
+                                </includes>
+                            </fileset>
+                        </filesets>
+                    </configuration>
+                </plugin>
+                <!-- install插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.3.1</version>
+                </plugin>
+
+                <!-- dependency相关插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>1.3.1</version>
+                </plugin>
+
+                <!-- 让maven能够识别elipse中的依赖关系 -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[2.0,)</versionRange>
+                                        <goals>
+                                            <goal>copy-dependencies</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+                <!-- compiler插件, 设定JDK版本 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- 每打包时自动同步依赖的jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/src/main/webapp/WEB-INF/lib
+                            </outputDirectory>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <excludeTransitive>false</excludeTransitive>
+                            <stripVersion>false</stripVersion>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
+            <!-- 自定义打包设置 <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.4</version>
+                <executions> <execution> <phase>package</phase> <goals> <goal>single</goal>
+                </goals> <configuration> <finalName>vsm-client</finalName> <appendAssemblyId>false</appendAssemblyId>
+                <descriptors> <descriptor>src/main/assembly/jar.xml</descriptor> </descriptors>
+                </configuration> </execution> </executions> </plugin> -->
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>nexus_public</name>
+            <url>http://192.168.34.253/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>groovy</id>
+            <url>http://repository.codehaus.org/org/codehaus/groovy/</url>
+        </repository>
+    </distributionManagement>
+</project>

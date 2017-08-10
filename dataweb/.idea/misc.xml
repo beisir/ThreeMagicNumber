@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="IdProvider" IDEtalkID="2051036CCCD70A4266942CB22E835DD0" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://192.168.44.59:18080/svn/f2e/2015project" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/admanage" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/branches" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/detail" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/frontendsource" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/m.hc360" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/minportalx" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/mmt4%E7%BB%84%E4%BB%B6" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/mobile" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/my" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/newProject" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/search2014" />
+                  <option value="http://192.168.44.59:18080/svn/f2e/ux.org" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://192.168.44.59:18080/svn/f2e/branches/20170207-ThreeMagicNumber/ThreeMagicNumber/dataweb" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+</project>

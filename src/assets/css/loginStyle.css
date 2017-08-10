@@ -1,0 +1,19 @@
+body{background:url(../img/bg.jpg) bottom;}
+body,html,h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, img, fieldset, span, legend, button, input, textarea,th, td, div, td,s{margin: 0; padding:0;border:none;font-family:"Microsoft YaHei";}
+buttonn,input,span{font-family:"Microsoft YaHei";}
+ul, ol{list-style-type: none;}
+.loginBox{width:340px;height: 346px;position:fixed;left:50%;top:50%;margin-top: -223px;margin-left:-170px;z-index: 50;}
+.loginBox .loginBoxCon ul li{height:50px; width:340px; border-radius:4px; overflow:hidden; background:#fff; margin-bottom:15px; font-size:14px;}
+.loginBox .loginBoxCon ul li span{display:block; float:left; width:78px; text-align:right; line-height:50px; color:#484848;}
+.loginBox .loginBoxCon ul li input{height:50px; line-height:50px; float:left; width:235px; padding-left:12px; border:none; outline:none;}
+.loginBoxCon button{ width:340px; height:50px; background:#3680ef; color:#fff; font-size:18px; border:none; border-radius:4px; margin-top:15px; cursor:pointer;-webkit-transition: all .4s ease 0s;-moz-transition: all .4s ease 0s;-o-transition: all .4s ease 0s;transition: all .4s ease 0s;}
+.loginBoxCon button:hover{ background:#5997ff;}
+.loginAlert{position:relative;z-index:51;}
+.loginAlertBg{filter:alpha(opacity:0); opacity:0;  -moz-opacity:0;-khtml-opacity: 0; background:#000; position:fixed; top:0;left:0;width:100%;height:100%; z-index:5;}
+.loginAlertBox{width:340px;height:196px;position:fixed;left:50%;top:50%;margin-top: -44px;margin-left:-170px;background:#fff;z-index:6;border-radius:4px;overflow:hidden;}
+.loginAlertBox a{ position:absolute; display:block; width:40px; height:40px; background:url(../img/loginIco.png) -75px 15px no-repeat; right:0; top:0; cursor:pointer;}
+.alertCon{ padding-top:37px;}
+.alertCon em{ display:block; width:54px; height:54px; margin:0 auto; background:url(../img/loginIco.png) 0 0;}
+.alertCon h3{ text-align:center; line-height:30px; font-size:18px; color:#333; font-weight:normal; padding-top:10px;}
+.loginBg{position:fixed;top:0;left:0;background:#000;height:100%;width:100%;filter:alpha(opacity=25);-moz-opacity:0.25;-khtml-opacity: 0.25;opacity: 0.25;z-index: 40;}
+.loginLogo{width:180px;height:150px;margin: 0 auto 30px;background:url(../img/loginLogo.png) no-repeat;}
