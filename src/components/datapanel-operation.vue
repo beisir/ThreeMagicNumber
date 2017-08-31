@@ -453,6 +453,7 @@ export default {
       /****
        *  百度联盟收入，则修改图表类型
        */
+
       if (this.CurrentNavigation.code === '309') {
         Object.assign(chartOptions, {
           chart: {
@@ -479,7 +480,25 @@ export default {
       /***
        *  百度联盟收入的本月数据，增加总收入副标题
        */
+       if(data.dataList.length >= 2 && data.dataList[0].unit == '元'){
+         let numArr = [];
+         for(var i = 0; i< data.dataList[0].data.length; i++){
+            var num1 = data.dataList[0].data[i],
+                num2 = data.dataList[1].data[i],
+                num3 = num2/num1 * 100;
+            numArr.push(Number(num3.toFixed(2)))
+         }
+
+         data.dataList.splice(1, 0,{
+           "name":"月完成率",
+           "data": numArr,
+           "unit":"%",
+           "isShow":true
+         });
+       }
+
       if (this.CurrentNavigation.code === '309' && this.CurrentTimelimitFilter.code == '8') {
+
         var _data = (data.dataList || [])[0],
           total = 0;
         (_data.data || []).forEach(function(item) {
@@ -498,12 +517,14 @@ export default {
       /**
        * pv和询盘数量公用一个Y坐标轴
        */
+
       if (this.CurrentNavigation.code === '2' || this.CurrentNavigation.code === '22') {
         chartEntity.series.forEach((series, index) => {
           series.update({
             yAxis: 0
           }, false);
         });
+
       } else if (this.CurrentNavigation.code === '44' || this.CurrentNavigation.code === '46') {
         /****
          * 会员注册，P4P消耗：
@@ -511,11 +532,13 @@ export default {
          * 最近七天、最近一个月：IP、UV 一个y轴 P4P消耗一个y轴
          * 累计：一个y轴
          */
+
         if (this.CurrentTimelimitFilter.code === '3') {
+
           chartEntity.series[0].update({
             yAxis: 0
           }, false);
-        } else {
+        }else {
           chartEntity.series.forEach((series, index) => {
             var yIndex = (series.name == 'IP' || series.name == 'UV') ? 1 : 2;
             series.update({
@@ -523,8 +546,21 @@ export default {
             }, false);
           });
         }
+      }else{
+        chartEntity.series.forEach((series, index) => {
+          if(index == 1){
+            series.update({
+              type: 'spline',
+              yAxis: 1,
+              zIndex: 100
+            }, false);
+          }else{
+            series.update({
+              yAxis: 0
+            }, false);
+          }
+        });
       }
-
     });
 
   }

@@ -308,8 +308,7 @@ export default {
 
     },
     mounted: function() {
-        const _this = this;
-
+          const _this = this;
         /**
          * [此处做延迟处理，以免首次渲染的相关事件触发时，父组件监听不到]
          */
@@ -385,7 +384,6 @@ export default {
              * @param  {Object} [数据对象]
              */
             dataPromise.then((data) => {
-
                 /**
                  * [删除坐标轴]
                  */
@@ -404,12 +402,12 @@ export default {
                  * 触发渲染开始事件
                  */
                 _this.$emit('dataReady', data);
-
                 /**
                  * [根据数据创建图标数据]
                  */
-                (data.dataList || []).forEach((item, index) => {
 
+
+                (data.dataList || []).forEach((item, index) => {
                     /**
                      * [创建坐标轴]
                      */
@@ -425,25 +423,21 @@ export default {
                         },
                         opposite: ((index % 2) == 1) //多个Y轴时，奇数项的Y轴在左边，偶数项的Y轴在右
                     }, false, false);
-
-
-
                     /**
                      * [创建数据列]
                      */
-                    _this.chartEntity.addSeries({
-                        name: item.name,
-                        marker: {
-                            enabled: false
-                        },
-                        visible: item.isShow,
-                        data: item.data,
-                        tooltip: {
-                            valueSuffix: item.unit
-                        },
-                        yAxis: index
-                    }, false);
-
+                      _this.chartEntity.addSeries({
+                          name: item.name,
+                          marker: {
+                              enabled: false
+                          },
+                          visible: item.isShow,
+                          data: item.data,
+                          tooltip: {
+                              valueSuffix: item.unit
+                          },
+                          yAxis: index
+                      }, false);
                     /**
                      * [更新坐标轴]
                      */
@@ -474,6 +468,7 @@ export default {
          * @return {Promise} [数据延迟对象]
          */
         getData: function() {
+
             const _this = this,
 
                 /**
@@ -492,7 +487,6 @@ export default {
              * 触发开始获取数据事件
              */
             _this.$emit('beforeGetData', _serviceConfig);
-
             /**
              * [若数据服务配置中包含数据延迟对象，则直接返回该延迟对象，主要用于不用从远程数据服务中获取数据的应用场景]
              */
