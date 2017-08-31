@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc360.dataweb.dao.HadoopMonitorEmailMapper" >
+  <resultMap id="BaseResultMap" type="com.hc360.dataweb.model.HadoopMonitorEmail" >
+    <result column="id" property="id" jdbcType="DECIMAL" />
+    <result column="FROMUSER" property="fromUser" jdbcType="VARCHAR" />
+    <result column="TOUSER" property="toUser" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="FLAG" property="flag" jdbcType="VARCHAR" />
+    <result column="SYSTIME" property="sysTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hc360.dataweb.model.HadoopMonitorEmail">
+    insert into hadoop_monitor_email(id,FROMUSER,TOUSER,TITLE,CONTENT,FLAG,SYSTIME)
+    values(hadoop_monitor_email_seq.nextval,#{fromUser},#{toUser},#{title},#{content},'0',sysdate)
+  </insert>
+</mapper>

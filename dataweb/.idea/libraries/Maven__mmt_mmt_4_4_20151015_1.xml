@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: mmt:mmt:4.4.20151015.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/mmt/4.4.20151015.1/mmt-4.4.20151015.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/mmt/4.4.20151015.1/mmt-4.4.20151015.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/mmt/4.4.20151015.1/mmt-4.4.20151015.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

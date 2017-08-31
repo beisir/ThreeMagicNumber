@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: antlr:antlr:2.7.6rc1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/antlr/antlr/2.7.6rc1/antlr-2.7.6rc1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/antlr/antlr/2.7.6rc1/antlr-2.7.6rc1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/antlr/antlr/2.7.6rc1/antlr-2.7.6rc1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

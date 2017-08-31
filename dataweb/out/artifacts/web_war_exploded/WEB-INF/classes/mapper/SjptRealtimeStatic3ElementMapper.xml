@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hc360.dataweb.dao.SjptRealtimeStatic3ElementMapper">
+    <resultMap id="BaseResultMap" type="com.hc360.dataweb.model.SjptRealtimeStatic3Element">
+        <id column="ID" jdbcType="DECIMAL" property="id" />
+        <result column="ONE_ELEMENT" jdbcType="VARCHAR" property="oneElement" />
+        <result column="TWO_ELEMENT" jdbcType="VARCHAR" property="twoElement" />
+        <result column="THREE_ELEMENT" jdbcType="VARCHAR" property="threeElement" />
+        <result column="DATA_TYPE" jdbcType="DECIMAL" property="dataType" />
+        <result column="DATA_COUNT" jdbcType="DECIMAL" property="dataCount" />
+        <result column="DATA_DATE" jdbcType="VARCHAR" property="dataDate" />
+    </resultMap>
+    <select id="findElement3NewestDataDate" resultType="java.lang.String" parameterType="java.util.Map">
+        select
+        max(data_date)as data_date
+        from sjpt_realtime_static_3element
+        where data_type = #{type}
+    </select>
+    <select id="findElement3ToDayData" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select r.one_element,
+            r.two_element,
+            r.THREE_ELEMENT,
+            r.data_type,
+            r.data_count
+        from (select t.one_element,
+                    t.data_type,
+                    t.data_count,
+                    t.two_element,
+                    t.THREE_ELEMENT,
+                    row_number() over(partition by t.one_element,t.two_element,t.THREE_ELEMENT order by t.data_date desc) as rn
+               from sjpt_realtime_static_3element t
+              where t.data_type = #{type}
+                and t.data_date = #{time}
+                 ) r
+        where <![CDATA[ r.rn = 1 ]]>
+    </select>
+    <select id="findElement3YesterDayData" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select r.one_element,r.TWO_element,r.data_type, r.data_count, r.data_date,r.THREE_ELEMENT
+      from (select b.one_element,
+                   b.data_type,
+                   b.data_count,
+                   b.data_date,
+                   b.TWO_element,
+                   b.THREE_ELEMENT,
+                   row_number() over(partition by b.one_element,b.TWO_element,b.THREE_ELEMENT order by b.data_date desc) as rn
+              from (select data_type,
+                           max(data_date) data_date,
+                           substr(max(data_date), 9) as datahour
+                      from sjpt_realtime_static_3element
+                     where data_type = #{type}
+                       and data_date = #{time}
+                     group by DATA_TYPE) a
+              left join (select one_element,
+                               TWO_element,
+                               data_type,
+                               data_count,
+                               data_date,
+                               THREE_ELEMENT,
+                               substr(data_date, 9) as datahour
+                          from sjpt_realtime_static_3element
+                         where data_type = #{type}
+                           and data_date like #{yesterday}||'%'
+
+                        ) b
+            <![CDATA[ on a.datahour >= b.datahour ]]>
+            ) r
+     where <![CDATA[ r.rn = 1 ]]>
+    </select>
+</mapper>

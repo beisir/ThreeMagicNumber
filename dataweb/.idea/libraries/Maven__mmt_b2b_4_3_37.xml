@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: mmt:b2b:4.3.37">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/b2b/4.3.37/b2b-4.3.37.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/b2b/4.3.37/b2b-4.3.37-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/b2b/4.3.37/b2b-4.3.37-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

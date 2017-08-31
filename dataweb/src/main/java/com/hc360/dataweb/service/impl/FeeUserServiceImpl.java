@@ -902,7 +902,7 @@ public class FeeUserServiceImpl implements FeeUserService {
             if (ChartsConstant.TODAY.equals(time)) {//本月天维度---20170630
                 getMonthDayData(dataType, dataMap);
             }else if(ChartsConstant.MONTH_DATA.equals(time)){ //当年每月维度 ---20170630
-                initMonthData(dataType, dataMap);
+                initBdMonthData(dataType, dataMap);
             }
 
         }
@@ -911,7 +911,8 @@ public class FeeUserServiceImpl implements FeeUserService {
 
 
 
-    private void getTodayDataByDataTypes(String day, Integer dataType,Map<String, Object> dataMap) {
+
+  private void getTodayDataByDataTypes(String day, Integer dataType,Map<String, Object> dataMap) {
         List<String> timeList = CommonUtil.getTimeShaft();//X轴
 //        List<HourChartBean> dataList = new ArrayList<HourChartBean>();
         List<Integer> dataTypes = new ArrayList<Integer>();//数据类型
@@ -1610,6 +1611,55 @@ public class FeeUserServiceImpl implements FeeUserService {
         }
         return dataList;
     }
+
+
+
+  @Override
+  public void initBdMonthData(Integer dataType, Map<String, Object> dataMap) throws Exception {
+    List<HourChartBean> dataList = new ArrayList<HourChartBean>();
+    String year = DateUtil.getYear("yyyy");//获取当前年度
+    String month = DateUtil.getMonth("yyyyMM");//获取当前月
+    List<Integer> dataTypes = new ArrayList<Integer>();
+    List<String> monthTimese = new ArrayList<>();//月度数据时间轴
+    List<String> monthTimes = new ArrayList<>();//月度数据时间轴
+    HourChartBean bean = null;
+    //百度联盟月收入
+    dataTypes.add(315);
+    dataTypes.add(dataType);
+    for(Integer type:dataTypes){
+      Map<String, Object> param = new HashMap<String, Object>();
+      bean = new HourChartBean();
+      List<RealtimeStaticMonth> monthData = null;
+      List<Object> dataCount = null;
+      if (type == 315)
+      {
+        param.put("type", type);
+        param.put("year",year);
+        param.put("month",month);
+        bean.setName("月收入预算");
+        monthData = realtimeStaticMonthMapper.findYearMonthData(param);
+        dataCount = monthConvert(monthData, monthTimese);
+
+      }
+      else
+      {
+        param.put("type", type);
+        param.put("year",year);
+        bean.setName("月实际收入");
+        monthData = realtimeStaticMonthMapper.fingYearMonthData(param);
+        dataCount = monthConvert(monthData, monthTimes);
+
+      }
+      bean.setUnit("元");
+      bean.setData(dataCount);
+      dataList.add(bean);
+    }
+    List<String> time = CommonUtil.initYearMonthTime(monthTimes);
+    dataMap.put("dataList", dataList);
+    dataMap.put("time", time);
+  }
+
+
 
 
 }

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: imgup:imgup:4.4.0.54-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/imgup/imgup/4.4.0.54-SNAPSHOT/imgup-4.4.0.54-20160125.095711-9.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/imgup/imgup/4.4.0.54-SNAPSHOT/imgup-4.4.0.54-20160125.095711-9-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/imgup/imgup/4.4.0.54-SNAPSHOT/imgup-4.4.0.54-20160125.095711-9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

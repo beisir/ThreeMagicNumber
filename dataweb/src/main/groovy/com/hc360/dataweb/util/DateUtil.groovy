@@ -23,6 +23,7 @@ class DateUtil {
         return DateGroovyMethods.format(new Date().plus(days), fmt)
     }
     public static final void main(String[] args){
-        //print DateUtil.plusDays('yyyymmdd',-15);
+        print DateUtil.getMonth('yyyyMM');
+      //System.out.println(DateUtil.getMonth('yyyymm'))
     }
 }

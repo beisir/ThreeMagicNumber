@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: mmt:b2b-decoupling:2.0.8">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/b2b-decoupling/2.0.8/b2b-decoupling-2.0.8.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/b2b-decoupling/2.0.8/b2b-decoupling-2.0.8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/b2b-decoupling/2.0.8/b2b-decoupling-2.0.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

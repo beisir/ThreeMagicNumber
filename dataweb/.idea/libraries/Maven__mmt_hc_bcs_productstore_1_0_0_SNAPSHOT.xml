@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: mmt:hc-bcs:productstore-1.0.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/hc-bcs/productstore-1.0.0-SNAPSHOT/hc-bcs-productstore-1.0.0-20140809.130430-186.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/hc-bcs/productstore-1.0.0-SNAPSHOT/hc-bcs-productstore-1.0.0-20140809.130430-186-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/hc-bcs/productstore-1.0.0-SNAPSHOT/hc-bcs-productstore-1.0.0-20140809.130430-186-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
