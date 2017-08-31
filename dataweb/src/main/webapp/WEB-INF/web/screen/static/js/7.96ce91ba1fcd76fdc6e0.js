@@ -1,1 +1,0 @@
-webpackJsonp([7],{169:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.default={name:"datapanel-index"}},185:function(e,n){e.exports={render:function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[t("router-view")],1)},staticRenderFns:[]}},86:function(e,n,t){var r=t(10)(t(169),t(185),null,null);e.exports=r.exports}});
