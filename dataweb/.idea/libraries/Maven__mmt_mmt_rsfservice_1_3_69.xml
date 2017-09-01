@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: mmt:mmt-rsfservice:1.3.69">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/mmt-rsfservice/1.3.69/mmt-rsfservice-1.3.69.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/mmt-rsfservice/1.3.69/mmt-rsfservice-1.3.69-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/mmt-rsfservice/1.3.69/mmt-rsfservice-1.3.69-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="dataweb">
+    <output-path>$PROJECT_DIR$</output-path>
+    <root id="archive" name="dataweb.war" />
+  </artifact>
+</component>

@@ -29,5 +29,9 @@ public interface FeeUserService {
      */
     void initChartData(Integer dataType, String time, Map<String, Object> dataMap) throws Exception;
 
+  /**
+   * 百度联盟月度数据获取
+   * */
+    void initBdMonthData(Integer dataType,Map<String, Object> dataMap) throws Exception;
 
 }

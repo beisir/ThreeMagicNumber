@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <context:component-scan base-package="com.hc360.dataweb"/>
+
+    <!-- 拦截器 -->
+
+    <!-- 登陆权限验证-->
+   <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"></mvc:mapping>
+            <mvc:exclude-mapping path="/connTest/ok"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="connTest/ok"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/unlogin"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/index.html"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/logout/"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="index.html"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/unlogin/"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/static/img/**"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/static/js/**"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/static/css/**"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/static/css/**"></mvc:exclude-mapping>
+
+            <bean class="com.hc360.dataweb.inteceptor.LoginInteceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+    <mvc:annotation-driven/>
+    <mvc:resources mapping="/static/fonts/**" location="/WEB-INF/web/screen/static/fonts/"/>
+    <mvc:resources mapping="/static/css/**" location="/WEB-INF/web/screen/static/css/"/>
+    <mvc:resources mapping="/static/js/**" location="/WEB-INF/web/screen/static/js/"/>
+    <mvc:resources mapping="/static/img/**" location="/WEB-INF/web/screen/static/img/"/>
+
+
+    <bean id="velocityConfig"
+          class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/web/"/>
+        <property name="configLocation" value="classpath:velocity.properties"/>
+    </bean>
+    <bean id="velocityViewResolver"
+          class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="order" value="1"/>
+        <property name="requestContextAttribute" value="ctx"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".html"/>
+        <property name="cache" value="false"/>
+        <property name="contentType" value="text/html;charset=gbk"/>
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.velocity.VelocityLayoutView"/>
+        <property name="layoutUrl" value="/layout/none.html"/>
+        <property name="layoutKey" value="layout"/>
+        <property name="screenContentKey" value="screen_placeholder"/>
+    </bean>
+    <bean
+            class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="order" value="1"></property>
+        <property name="defaultErrorView" value="/error/404"></property>
+        <property name="exceptionAttribute" value="ex"></property>
+        <property name="warnLogCategory" value="WARN"></property>
+    </bean>
+    <import resource="classpath:spring.xml"></import>
+</beans>

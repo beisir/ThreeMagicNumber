@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: mmt:MMTConstants:0.0.4-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/MMTConstants/0.0.4-SNAPSHOT/MMTConstants-0.0.4-20140521.054154-2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/MMTConstants/0.0.4-SNAPSHOT/MMTConstants-0.0.4-20140521.054154-2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/mmt/MMTConstants/0.0.4-SNAPSHOT/MMTConstants-0.0.4-20140521.054154-2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

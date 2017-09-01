@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: commons-util:commons-util:final">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/commons-util/commons-util/final/commons-util-final.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/commons-util/commons-util/final/commons-util-final-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/commons-util/commons-util/final/commons-util-final-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -29,7 +29,7 @@ public class CommonUtil {
                 || otherType == DataType.DXTURNOVELJ.getType().intValue()  || otherType == DataType.QDTURNOVERYS.getType().intValue()
                 || otherType == DataType.QDTURNOVERYG.getType().intValue() || otherType == DataType.QDTURNOVERLJ.getType().intValue()
                 || otherType == DataType.EVERYDAY_INCOME.getType().intValue() || otherType == DataType.P4P_KEY_TOP50_PRICE.getType().intValue()
-                || otherType == DataType.BAIDU_LM_DAY.getType().intValue() || otherType == DataType.BAIDU_LM_MONTH.getType().intValue()
+                || otherType == DataType.BAIDU_LM_DAY.getType().intValue() || otherType == DataType.BAIDU_LM_MONTH.getType().intValue()|| otherType == DataType.BAIDU_LM_MONTH_E.getType().intValue()
                 ){
             unit = "元";
         } else if(otherType == DataType.VARIOUS_FAMILIES_ARTICLE.getType().intValue() || otherType == DataType.EVERYDAY_NEW.getType().intValue() || otherType == DataType.EXTERNALSENDDRAFT.getType().intValue()){

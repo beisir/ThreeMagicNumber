@@ -1,19 +1,17 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="tomcat7" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7.0.54" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="D:/tomcatjdk/jdk1.7.0_75/">
     <option name="OPEN_IN_BROWSER" value="false" />
-    <option name="OPEN_IN_BROWSER_URL" value="http://localhost:80/" />
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
       <artifact name="web:war exploded">
         <settings>
-          <option name="CONTEXT_PATH" value="/dataweb" />
+          <option name="CONTEXT_PATH" value="/" />
         </settings>
       </artifact>
     </deployment>
     <server-settings>
       <option name="BASE_DIRECTORY_NAME" value="Unnamed_dataweb" />
       <option name="DEPLOY_TOMCAT_APPS" value="true" />
-      <option name="HTTP_PORT" value="80" />
     </server-settings>
     <predefined_log_file id="Tomcat" enabled="true" />
     <predefined_log_file id="Tomcat Catalina" enabled="true" />

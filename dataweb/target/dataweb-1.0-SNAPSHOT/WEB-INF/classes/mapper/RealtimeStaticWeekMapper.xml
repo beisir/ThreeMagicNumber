@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc360.dataweb.dao.RealtimeStaticWeekMapper" >
+  <resultMap id="BaseResultMap" type="com.hc360.dataweb.model.RealtimeStaticWeek" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="DATA_TYPE" property="dataType" jdbcType="DECIMAL" />
+    <result column="DATA_COUNT" property="dataCount" jdbcType="DECIMAL" />
+    <result column="IRSL_DATE" property="irslDate" jdbcType="CHAR" />
+    <result column="DATA_DATE" property="dataDate" jdbcType="CHAR" />
+    <result column="OP_DATE" property="opDate" jdbcType="DATE" />
+  </resultMap>
+
+  <resultMap id="BaseDoubleResultMap" type="com.hc360.dataweb.model.RealtimeStaticDoubleWeek" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="DATA_TYPE" property="dataType" jdbcType="DECIMAL" />
+    <result column="DATA_COUNT" property="dataCount" jdbcType="DOUBLE" />
+    <result column="IRSL_DATE" property="irslDate" jdbcType="CHAR" />
+    <result column="DATA_DATE" property="dataDate" jdbcType="CHAR" />
+    <result column="OP_DATE" property="opDate" jdbcType="DATE" />
+  </resultMap>
+
+  <select id="findWeekData" resultMap="BaseResultMap" parameterType="java.util.Map">
+      select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE
+          from
+            (select r.DATA_TYPE,r.DATA_COUNT,r.IRSL_DATE,r.DATA_DATE,
+            row_number() over(partition by data_type order by DATA_DATE desc) as rn
+            from SJPT_REALTIME_STATIC_WEEK r) t
+      <where>
+
+          <if test="list != null and list.size > 0">
+              t.data_type in
+              <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+               #{item}
+              </foreach>
+          </if>
+
+          and t.rn = #{flag}
+      </where>
+  </select>
+
+   <select id="findWeekData30Day" resultMap="BaseResultMap" parameterType="java.util.Map" >
+       select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE from
+       (
+       select r.DATA_TYPE,r.DATA_COUNT,r.IRSL_DATE,r.DATA_DATE,
+       row_number() over(partition by data_type order by IRSL_DATE desc ) as rn
+
+       from SJPT_REALTIME_STATIC_WEEK r) t
+
+       where t.data_type = #{type}  <![CDATA[ and t.rn <= #{flag} ]]>
+
+       order by IRSL_DATE
+   </select>
+
+   <select id="findWeekDataDoubleDay" resultMap="BaseDoubleResultMap" parameterType="java.util.Map" >
+       select * from(
+       select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE,
+       row_number() over( order by IRSL_DATE desc ) as rn
+       from
+       (
+       select DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE,
+       row_number() over(partition by data_type,irsl_date order by data_date desc ) as rn
+       from SJPT_REALTIME_STATIC_WEEK
+       where data_type =#{type}
+       ) t
+       where t.rn =1
+       order by IRSL_DATE
+       )f
+       <![CDATA[ where f.rn<=#{flag} ]]>
+   </select>
+
+
+   <select id="findYearWeekData" resultMap="BaseResultMap" parameterType="java.util.Map" >
+       select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE
+       from
+          (select DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE,
+           row_number() over(partition by irsl_date order by DATA_DATE desc ) as rn
+          from  SJPT_REALTIME_STATIC_WEEK
+          where data_type= #{type} and irsl_date like #{year}||'%')  t
+       where t.rn=1
+       order by irsl_date
+
+   </select>
+
+   <select id="findMonthWeekData" resultMap="BaseDoubleResultMap" parameterType="java.util.Map" >
+      select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE
+      from SJPT_REALTIME_STATIC_WEEK t
+      where t.data_type=#{type} and t.irsl_date=#{time}
+      order by t.DATA_DATE
+
+   </select>
+
+   <select id="findDayData" resultMap="BaseDoubleResultMap" parameterType="java.util.Map" >
+      SELECT DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE
+        FROM (SELECT ID,
+        DATA_TYPE,
+        DATA_COUNT,
+        IRSL_DATE,
+        DATA_DATE,
+        ROW_NUMBER() OVER(PARTITION BY DATA_TYPE, DATA_DATE ORDER BY DATA_DATE DESC) AS DT_ORDER
+        FROM SJPT_REALTIME_STATIC_WEEK T
+        WHERE T.DATA_DATE BETWEEN #{preDay}AND #{day}
+        and t.DATA_TYPE=#{type}) X
+        WHERE X.DT_ORDER = 1
+
+   </select>
+   <select id="findWeekDataByDataDate" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select w.DATA_TYPE,w.DATA_COUNT,w.IRSL_DATE,w.DATA_DATE
+    from sjpt_realtime_static_week w
+    join (
+        select t.DATA_DATE from
+            (
+              select r.*,
+              row_number() over( order by DATA_DATE desc) as rn
+              from sjpt_realtime_static_week r
+              where data_type=#{type}
+            ) t
+            where t.rn=1
+        ) q
+    on  w.DATA_DATE=q.DATA_DATE
+    where w.data_type=#{type}
+    order by w.data_type
+
+
+   </select>
+   <select id="findWeekRecentlyIrsl_date" resultType="java.lang.String" parameterType="java.util.Map" >
+
+    select t.irsl_date from
+    (
+      select r.irsl_date,
+      row_number() over( order by irsl_date desc) as rn
+      from sjpt_realtime_static_week r
+       <where>
+           <if test="list != null and list.size > 0">
+               r.data_type in
+               <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                   #{item}
+               </foreach>
+           </if>
+       </where>
+    ) t
+    where t.rn=1
+   </select>
+
+    <select id="findEstimatesByPractical" resultMap="BaseDoubleResultMap" parameterType="java.util.Map" >
+        select
+        DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE
+        from
+        sjpt_realtime_static_week
+        where
+        data_type = #{type}
+        <if test="list != null and list.size > 0">
+            and irsl_date  in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by irsl_date
+    </select>
+</mapper>

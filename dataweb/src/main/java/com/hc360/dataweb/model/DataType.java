@@ -332,7 +332,9 @@ public enum DataType {
     /*309	百度联盟日收入*/
     BAIDU_LM_DAY("百度联盟日收入",309),
     /*310	百度联盟月收入*/
-    BAIDU_LM_MONTH("百度联盟月收入",310),
+    BAIDU_LM_MONTH("月实际收入",310),
+    /*315	百度联盟月收入预算*/
+    BAIDU_LM_MONTH_E("月收入预算",315),
 
     /*已分配LEADS数来源为-网上注册  */
     YREGISTERONLINE("网上注册",194),
