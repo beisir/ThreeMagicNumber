@@ -142,7 +142,7 @@ export default {
 			id: 58,
 			desc: "趋势图2"
 		},
-		"p4pCPC": {
+		"P4PCPC": {
 			id: 71,
 			desc: "趋势图1"
 		}
