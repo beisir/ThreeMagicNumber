@@ -21,7 +21,7 @@
                                     </router-link>
                                 </li>
                                 <li>
-                                    <a href="http://data.360jz.com/dataweb/unlogin" @click="handleLogout">
+                                    <a href="//data.360jz.com/dataweb/unlogin" @click="handleLogout">
                                         <span class="text">退出</span>
                                     </a>
                                 </li>

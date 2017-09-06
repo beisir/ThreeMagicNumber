@@ -110,6 +110,13 @@ export default {
           filters: {
             timelimit: ['today', 'lastsevensays', 'lastmonth', 'all']
           }
+        },
+        {
+          name: 'p4pCPC',
+          code: '316',
+          filters: {
+            timelimit: ['lastmonth']
+          }
         }
       ],
 

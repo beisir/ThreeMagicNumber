@@ -27,7 +27,7 @@
             </div>
             <!--错误提示结束-->
             <!--隐藏的form开始  -->
-            <form action="http://data.360jz.com/" method="post" ref="loginForm">
+            <form action="//data.360jz.com/" method="post" ref="loginForm">
                 <input type="hidden" name="username" id="usernameEle" />
                 <input type="hidden" name="password" id="passwordEle" />
             </form>
