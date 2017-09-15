@@ -6,6 +6,15 @@ package com.hc360.dataweb.model;
 public class ChartBean {
     String type;//图表的类型
     String time;//当前图表的时间阶段
+
+    @Override
+    public String toString() {
+        return "ChartBean{" +
+                "type='" + type + '\'' +
+                ", time='" + time + '\'' +
+                '}';
+    }
+
     public String getType() {
         return type;
     }
