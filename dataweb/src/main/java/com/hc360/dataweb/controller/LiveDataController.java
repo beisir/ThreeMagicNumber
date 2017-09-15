@@ -168,7 +168,7 @@ public class LiveDataController {
         Map<String, Object> _dataMap = new HashMap<String, Object>();
         Integer otherType = 0;
         try {
-            if (StringUtils.isNotBlank(chartBean.getType())) {
+            if (StringUtils.isNotBlank(chartBean.getType()) && StringUtils.isNumeric(chartBean.getType())) {
                 if ((DataType.P4P_KEY_SUM.getType() + "").equals(chartBean.getType())) {
                     dataMap = this.realTimeStaticHourService.initSecondTodayDataNew(chartBean);
                 } else if ((DataType.P4P_KEY_TOP50_PEOPLE.getType() + "").equals(chartBean.getType())) {
