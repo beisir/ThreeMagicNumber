@@ -19,6 +19,15 @@ public class RealtimePrivilege {
     //权限状态，0--可用，1--禁用
     private short state;
 
+    @Override
+    public String toString() {
+        return "RealtimePrivilege{" +
+                "id=" + id +
+                ", privilege='" + privilege + '\'' +
+                ", p_type=" + p_type +
+                ", state=" + state +
+                '}';
+    }
 
     public Integer getId() {
         return id;

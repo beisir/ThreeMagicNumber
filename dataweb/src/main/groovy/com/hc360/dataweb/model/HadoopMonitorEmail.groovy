@@ -25,4 +25,17 @@ class HadoopMonitorEmail {
   this.toUser = toUser
   this.title = title
  }
+
+ @Override
+ public String toString() {
+  return "HadoopMonitorEmail{" +
+          "Id=" + Id +
+          ", fromUser='" + fromUser + '\'' +
+          ", toUser='" + toUser + '\'' +
+          ", title='" + title + '\'' +
+          ", content='" + content + '\'' +
+          ", flag='" + flag + '\'' +
+          ", sysTime='" + sysTime + '\'' +
+          '}';
+ }
 }

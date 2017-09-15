@@ -15,6 +15,18 @@ public class RealtimeStaticMonth {
 
     private Date opDate;
 
+    @Override
+    public String toString() {
+        return "RealtimeStaticMonth{" +
+                "id=" + id +
+                ", dataType=" + dataType +
+                ", dataCount=" + dataCount +
+                ", irslDate='" + irslDate + '\'' +
+                ", dataDate='" + dataDate + '\'' +
+                ", opDate=" + opDate +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }

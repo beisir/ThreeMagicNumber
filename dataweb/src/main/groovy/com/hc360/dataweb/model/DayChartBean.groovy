@@ -14,4 +14,14 @@ class DayChartBean {
         this.name = name
         this.unit = unit
     }
+
+    @Override
+    public String toString() {
+        return "DayChartBean{" +
+                "name='" + name + '\'' +
+                ", data=" + data +
+                ", unit='" + unit + '\'' +
+                ", isShow=" + isShow +
+                '}';
+    }
 }

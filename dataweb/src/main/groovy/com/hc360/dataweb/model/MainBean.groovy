@@ -15,4 +15,12 @@ class MainBean {
         this.name = name
         this.num = num
     }
+
+    @Override
+    public String toString() {
+        return "MainBean{" +
+                "name='" + name + '\'' +
+                ", num='" + num + '\'' +
+                '}';
+    }
 }

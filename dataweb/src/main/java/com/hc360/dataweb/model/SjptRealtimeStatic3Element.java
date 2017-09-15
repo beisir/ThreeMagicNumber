@@ -15,6 +15,19 @@ public class SjptRealtimeStatic3Element {
 
     private String dataDate;
 
+    @Override
+    public String toString() {
+        return "SjptRealtimeStatic3Element{" +
+                "id=" + id +
+                ", oneElement='" + oneElement + '\'' +
+                ", twoElement='" + twoElement + '\'' +
+                ", threeElement='" + threeElement + '\'' +
+                ", dataType=" + dataType +
+                ", dataCount=" + dataCount +
+                ", dataDate='" + dataDate + '\'' +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }

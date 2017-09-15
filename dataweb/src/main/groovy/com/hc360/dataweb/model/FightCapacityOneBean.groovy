@@ -14,4 +14,13 @@ class FightCapacityOneBean {
         this.num = num
         this.flag=flag
     }
+
+    @Override
+    public String toString() {
+        return "FightCapacityOneBean{" +
+                "name='" + name + '\'' +
+                ", num='" + num + '\'' +
+                ", flag=" + flag +
+                '}';
+    }
 }

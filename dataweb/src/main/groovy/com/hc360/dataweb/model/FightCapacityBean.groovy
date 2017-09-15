@@ -12,4 +12,12 @@ class FightCapacityBean {
     FightCapacityBean(String name) {
         this.name = name
     }
+
+    @Override
+    public String toString() {
+        return "FightCapacityBean{" +
+                "name='" + name + '\'' +
+                ", fightInfo=" + fightInfo +
+                '}';
+    }
 }

@@ -9,6 +9,15 @@ public class RealtimeUserInfo {
 
     private Short state;
 
+    @Override
+    public String toString() {
+        return "RealtimeUserInfo{" +
+                "id=" + id +
+                ", misname='" + misname + '\'' +
+                ", state=" + state +
+                '}';
+    }
+
     public BigDecimal getId() {
         return id;
     }

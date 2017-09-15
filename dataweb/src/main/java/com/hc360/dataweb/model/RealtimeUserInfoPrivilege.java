@@ -22,6 +22,17 @@ public class RealtimeUserInfoPrivilege {
     //权限状态，0--可用，1--禁用
     private short state;
 
+    @Override
+    public String toString() {
+        return "RealtimeUserInfoPrivilege{" +
+                "userid=" + userid +
+                ", privilegeid=" + privilegeid +
+                ", privilege='" + privilege + '\'' +
+                ", p_type=" + p_type +
+                ", state=" + state +
+                '}';
+    }
+
     public BigDecimal getUserid() {
         return userid;
     }

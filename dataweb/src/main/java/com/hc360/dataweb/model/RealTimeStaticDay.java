@@ -13,6 +13,17 @@ public class RealTimeStaticDay {
 
     private Date opDate;
 
+    @Override
+    public String toString() {
+        return "RealTimeStaticDay{" +
+                "id=" + id +
+                ", dataType=" + dataType +
+                ", dataCount=" + dataCount +
+                ", irslDate='" + irslDate + '\'' +
+                ", opDate=" + opDate +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }

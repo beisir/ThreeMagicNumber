@@ -15,6 +15,18 @@ public class RealTimeStaticHour {
 
     private Integer sumCount;
 
+    @Override
+    public String toString() {
+        return "RealTimeStaticHour{" +
+                "id=" + id +
+                ", dataType=" + dataType +
+                ", dataCount=" + dataCount +
+                ", irslDateH='" + irslDateH + '\'' +
+                ", opDate=" + opDate +
+                ", sumCount=" + sumCount +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }

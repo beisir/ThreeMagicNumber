@@ -17,4 +17,14 @@ class HourChartBean {
         this.unit = unit
         isShow = true;
     }
+
+    @Override
+    public String toString() {
+        return "HourChartBean{" +
+                "name='" + name + '\'' +
+                ", data=" + data +
+                ", unit='" + unit + '\'' +
+                ", isShow=" + isShow +
+                '}';
+    }
 }

@@ -17,4 +17,13 @@ class RegionDataBean {
         this.value = value
         this.yestodayvalue = yestodayvalue
     }
+
+    @Override
+    public String toString() {
+        return "RegionDataBean{" +
+                "fullname='" + fullname + '\'' +
+                ", value=" + value +
+                ", yestodayvalue=" + yestodayvalue +
+                '}';
+    }
 }

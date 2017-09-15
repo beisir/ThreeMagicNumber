@@ -13,6 +13,17 @@ public class RealTimeStaticDoubleDay {
 
     private Date opDate;
 
+    @Override
+    public String toString() {
+        return "RealTimeStaticDoubleDay{" +
+                "id=" + id +
+                ", dataType=" + dataType +
+                ", dataCount=" + dataCount +
+                ", irslDate='" + irslDate + '\'' +
+                ", opDate=" + opDate +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }

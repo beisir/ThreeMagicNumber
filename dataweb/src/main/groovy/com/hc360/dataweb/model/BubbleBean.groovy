@@ -15,4 +15,14 @@ class BubbleBean {
         this.x = x
         this.z = z
     }
+
+    @Override
+    public String toString() {
+        return "BubbleBean{" +
+                "name='" + name + '\'' +
+                ", y=" + y +
+                ", x=" + x +
+                ", z=" + z +
+                '}';
+    }
 }

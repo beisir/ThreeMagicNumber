@@ -11,4 +11,12 @@ class AboveDataBean {
         this.errno = errno
         this.data = data
     }
+
+    @Override
+    public String toString() {
+        return "AboveDataBean{" +
+                "errno='" + errno + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

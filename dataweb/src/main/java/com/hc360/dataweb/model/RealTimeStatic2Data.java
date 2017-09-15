@@ -13,6 +13,18 @@ public class RealTimeStatic2Data {
 
     private String dataDate;
 
+    @Override
+    public String toString() {
+        return "RealTimeStatic2Data{" +
+                "id=" + id +
+                ", dataType=" + dataType +
+                ", element='" + element + '\'' +
+                ", dataCount1=" + dataCount1 +
+                ", dataCount2=" + dataCount2 +
+                ", dataDate='" + dataDate + '\'' +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }

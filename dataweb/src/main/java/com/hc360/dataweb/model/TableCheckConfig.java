@@ -13,6 +13,17 @@ public class TableCheckConfig {
 
     private Date insertDate;
 
+    @Override
+    public String toString() {
+        return "TableCheckConfig{" +
+                "tbName='" + tbName + '\'' +
+                ", source='" + source + '\'' +
+                ", checkCycle=" + checkCycle +
+                ", dbType=" + dbType +
+                ", insertDate=" + insertDate +
+                '}';
+    }
+
     public String getTbName() {
         return tbName;
     }

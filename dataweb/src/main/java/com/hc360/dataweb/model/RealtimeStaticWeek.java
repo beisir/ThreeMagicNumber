@@ -15,6 +15,18 @@ public class RealtimeStaticWeek {
 
     private Date opDate;
 
+    @Override
+    public String toString() {
+        return "RealtimeStaticWeek{" +
+                "id=" + id +
+                ", dataType=" + dataType +
+                ", dataCount=" + dataCount +
+                ", irslDate='" + irslDate + '\'' +
+                ", dataDate='" + dataDate + '\'' +
+                ", opDate=" + opDate +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }

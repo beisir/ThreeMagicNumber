@@ -11,6 +11,17 @@ public class SjptRealtimeStatic1Element {
 
     private String dataDate;
 
+    @Override
+    public String toString() {
+        return "SjptRealtimeStatic1Element{" +
+                "id=" + id +
+                ", oneElement='" + oneElement + '\'' +
+                ", dataType=" + dataType +
+                ", dataCount=" + dataCount +
+                ", dataDate='" + dataDate + '\'' +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }

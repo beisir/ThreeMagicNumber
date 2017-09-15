@@ -14,4 +14,13 @@ class FeeuserBean {
         this.num = feeuserNum
         this.flag = flag
     }
+
+    @Override
+    public String toString() {
+        return "FeeuserBean{" +
+                "name='" + name + '\'' +
+                ", num='" + num + '\'' +
+                ", flag=" + flag +
+                '}';
+    }
 }

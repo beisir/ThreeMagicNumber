@@ -21,6 +21,18 @@ public class SjptRealtimeStatic2Element {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "SjptRealtimeStatic2Element{" +
+                "id=" + id +
+                ", oneElement='" + oneElement + '\'' +
+                ", twoElement='" + twoElement + '\'' +
+                ", dataType=" + dataType +
+                ", dataCount=" + dataCount +
+                ", dataDate='" + dataDate + '\'' +
+                '}';
+    }
+
     public String getOneElement() {
         return oneElement;
     }

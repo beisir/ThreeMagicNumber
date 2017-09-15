@@ -11,6 +11,14 @@ public class ConfigBean {
 
     @Value("${emails}")
     private String emails;
+
+    @Override
+    public String toString() {
+        return "ConfigBean{" +
+                "emails='" + emails + '\'' +
+                '}';
+    }
+
     public String getEmails() {
         return emails;
     }
