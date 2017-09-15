@@ -9,6 +9,7 @@ import com.hc360.dataweb.service.RealTimeStaticDayService;
 import com.hc360.dataweb.service.RealTimeStaticHourService;
 import com.hc360.dataweb.util.EmailUtil;
 import com.hc360.dataweb.util.ParseUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,9 +61,9 @@ public class LiveDataController {
 
             _dataMap.put("errno", 0);
             _dataMap.put("data", dataMap);
-        }catch (Exception e){
-            EmailUtil.warnEveryOne("LiveDataController.findTopDataByDay has error，"+","+e.getMessage());
-            logger.error("findTopDataByDay has error，",e);
+        } catch (Exception e) {
+            EmailUtil.warnEveryOne("LiveDataController.findTopDataByDay has error，" + "," + e.getMessage());
+            logger.error("findTopDataByDay has error，", e);
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -104,9 +105,9 @@ public class LiveDataController {
             } else {
                 logger.error("ChartBean.type值不是数值");
             }
-        }catch (Exception e){
-            EmailUtil.warnEveryOne("LiveDataController.findChartData has error，param="+chartBean.toString()+","+e.getMessage());
-            logger.error("LiveDataController.findChartData has error，param="+chartBean.toString(),e);
+        } catch (Exception e) {
+            EmailUtil.warnEveryOne("LiveDataController.findChartData has error，param=" + chartBean.toString() + "," + e.getMessage());
+            logger.error("LiveDataController.findChartData has error，param=" + chartBean.toString(), e);
         }
         Map<String, Object> _dataMap = new HashMap<String, Object>();
         _dataMap.put("data", dataMap);
@@ -150,15 +151,15 @@ public class LiveDataController {
             response.getWriter().flush();
             response.getWriter().close();
         } catch (Exception e) {
-            EmailUtil.warnEveryOne("LiveDataController.findSecondChartData has error，param="+chartBean.toString()+","+e.getMessage());
-            logger.error("LiveDataController.secondchartdata:time="+time+",param="+chartBean.toString(), e);
+            EmailUtil.warnEveryOne("LiveDataController.findSecondChartData has error，param=" + chartBean.toString() + "," + e.getMessage());
+            logger.error("LiveDataController.secondchartdata:time=" + time + ",param=" + chartBean.toString(), e);
         }
     }
 
-    /***
+    /**
      * @param chartBean
      * @param request
-     * @param response 第二图：P4P 关键词 或竞价词
+     * @param response  第二图：P4P 关键词 或竞价词
      */
     @RequestMapping(value = "/secondchartdata", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
     public void findSecondChartDataNew(ChartBean chartBean, HttpServletRequest request, HttpServletResponse response) {
@@ -167,27 +168,31 @@ public class LiveDataController {
         Map<String, Object> _dataMap = new HashMap<String, Object>();
         Integer otherType = 0;
         try {
-            if((DataType.P4P_KEY_SUM.getType()+"").equals(chartBean.getType())){
-                dataMap = this.realTimeStaticHourService.initSecondTodayDataNew(chartBean);
-            }else if((DataType.P4P_KEY_TOP50_PEOPLE.getType()+"").equals(chartBean.getType())){
-                //散点图
-                dataMap = this.realTimeStaticHourService.loadP4pScatter(chartBean);
-            }else{
-                String time = chartBean.getTime();
-                otherType = Integer.valueOf(chartBean.getType());
-                //以时间为分割
-                if (ChartsConstant.TODAY.equals(time)) {//今天
-                    //查询小时表
-                    dataMap = realTimeStaticHourService.initSecondTodayData(otherType);
-                } else {//查询之前的数据
-                    dataMap = realTimeStaticHourService.initSecondBeforeData(otherType, time);
+            if (StringUtils.isNotBlank(chartBean.getType())) {
+                if ((DataType.P4P_KEY_SUM.getType() + "").equals(chartBean.getType())) {
+                    dataMap = this.realTimeStaticHourService.initSecondTodayDataNew(chartBean);
+                } else if ((DataType.P4P_KEY_TOP50_PEOPLE.getType() + "").equals(chartBean.getType())) {
+                    //散点图
+                    dataMap = this.realTimeStaticHourService.loadP4pScatter(chartBean);
+                } else {
+                    String time = chartBean.getTime();
+                    otherType = Integer.valueOf(chartBean.getType());
+                    //以时间为分割
+                    if (ChartsConstant.TODAY.equals(time)) {//今天
+                        //查询小时表
+                        dataMap = realTimeStaticHourService.initSecondTodayData(otherType);
+                    } else {//查询之前的数据
+                        dataMap = realTimeStaticHourService.initSecondBeforeData(otherType, time);
+                    }
                 }
+            }else{
+                logger.warn("传入的参数为空:"+chartBean);
             }
             _dataMap.put("data", dataMap);
             _dataMap.put("errno", 0);
         } catch (Exception e) {
-            logger.error("param="+chartBean.toString(),e);
-            EmailUtil.warnEveryOne("LiveDataController.findSecondChartDataNew has error，param="+chartBean.toString()+","+e.getMessage());
+            logger.error("param=" + chartBean.toString(), e);
+            EmailUtil.warnEveryOne("LiveDataController.findSecondChartDataNew has error，param=" + chartBean.toString() + "," + e.getMessage());
             _dataMap.put("errno", -1);
         }
         ObjectMapper objectMapper = new ObjectMapper();
