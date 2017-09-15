@@ -92,6 +92,8 @@ public class FightCapacityController {
                 } else {//其他趋势图
                     dataService.initFightChartData(data, chartBean);
                 }
+            }else{
+                EmailUtil.warnEveryOne("FightCapacityController.findChartData param is error" + chartBean);
             }
         }catch (Exception  e ){
             EmailUtil.warnEveryOne("FightCapacityController.findChartData has error，param="  +chartBean.toString() +"," + e.getMessage());

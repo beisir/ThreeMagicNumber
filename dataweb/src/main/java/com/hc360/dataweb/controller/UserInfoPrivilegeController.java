@@ -51,7 +51,7 @@ public class UserInfoPrivilegeController {
        }catch (Exception e){
            json.setErrno(1);
            json.setMsg("获取权限异常");
-           EmailUtil.warnEveryOne("UserInfoPrivilegeController.findRegionData has error，"  + "," + e.getMessage());
+           EmailUtil.warnEveryOne("UserInfoPrivilegeController.findRegionData has error，"  + e.getMessage());
            logger.error("UserInfoPrivilegeController.findRegionData has error，",e);
        }
         return json;
@@ -155,7 +155,6 @@ public class UserInfoPrivilegeController {
         ResponseJson json = new ResponseJson();
         try{
             //查看用户是否已存在
-            System.out.println("添加用户--"+misname);
             RealtimeUserInfoMapper realtimeUserInfoMapper = SpringContextHolder.getBean("realtimeUserInfoMapper");
             List<RealtimeUserInfo> list = realtimeUserInfoMapper.selectByMisNameForAdd(misname);
             if(null != list && list.size()>0){

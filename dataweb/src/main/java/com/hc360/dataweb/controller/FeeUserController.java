@@ -81,7 +81,8 @@ public class FeeUserController {
                     dataService.initChartData(dataType, chartBean.getTime(), dataMap);
                 }
             } else {
-                logger.error("前端传递的ChartBean.type不是一个数值类型");
+                logger.error("前端传递的ChartBean.type不是一个数值类型" + chartBean);
+                EmailUtil.warnEveryOne("FeeUserController.findChartData param is error" + chartBean);
             }
         }catch (Exception e ){
             EmailUtil.warnEveryOne("FeeUserController.findChartData has error，" +chartBean.toString() + "," + e.getMessage());

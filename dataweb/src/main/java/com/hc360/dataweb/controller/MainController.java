@@ -366,10 +366,12 @@ public class MainController {
             if (chartBean != null && ParseUtil.isStr2Num(chartBean.getType())) {
                 Integer otherType = Integer.valueOf(chartBean.getType());
                 resultMap = realTimeStaticHourService.initZLTodayData(otherType);//不含ip&uv的公共查询趋势图{今天&昨天&趋势图}
+            }else{
+                EmailUtil.warnEveryOne("MainController.findAllByHour param is error" + chartBean);
             }
         }catch (Exception e){
-            EmailUtil.warnEveryOne("MainController.findAllByHour has error，chartBean="+chartBean.toString()+"--"  + e.getMessage());
-            logger.error("MainController.findAllByHour has error，chartBean="+chartBean.toString() ,e);
+            EmailUtil.warnEveryOne("MainController.findAllByHour has error，chartBean="+chartBean+"--"  + e.getMessage());
+            logger.error("MainController.findAllByHour has error，chartBean="+chartBean ,e);
         }
         Map _dataMap = new HashMap();
         _dataMap.put("errno", 0);
@@ -553,12 +555,11 @@ public class MainController {
                     }
                 }else{
                     mv.setViewName("/error/nolimit");
-                    System.out.println("nolimit");
                 }
 
             } catch (Exception e) {
-
-                e.printStackTrace();
+                EmailUtil.warnEveryOne("login is error" +  e.getMessage());
+               logger.error("login is error",e);
             }
         }
 
@@ -597,8 +598,8 @@ public class MainController {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送 POST 请求出现异常！"+e);
-            e.printStackTrace();
+            EmailUtil.warnEveryOne("sendPost is error" +  e.getMessage());
+            logger.error("sendPost is error",e);
         }
         //使用finally块来关闭输出流、输入流
         finally{

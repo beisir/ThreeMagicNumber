@@ -38,10 +38,12 @@ public class NumericonController {
             if (chartBean != null && ParseUtil.isStr2Num(chartBean.getType())) {
                 Integer dataType = Integer.valueOf(chartBean.getType());
                 dataService.findNumericonData(dataType, data);
+            }else{
+                EmailUtil.warnEveryOne("NumericonController.findSourceData param is error" + chartBean);
             }
         }catch (Exception e ){
-            EmailUtil.warnEveryOne("NumericonController.findSourceData has error，param=" + chartBean.toString() + "," + e.getMessage());
-            logger.error("NumericonController.findSourceData has error，param=" + chartBean.toString(),e);
+            EmailUtil.warnEveryOne("NumericonController.findSourceData has error，param=" + chartBean + "," + e.getMessage());
+            logger.error("NumericonController.findSourceData has error，param=" + chartBean,e);
         }
         Map<String,Object> _dataMap = new HashMap<String,Object>();
         _dataMap.put("data", data);
@@ -63,10 +65,12 @@ public class NumericonController {
             if (chartBean != null && ParseUtil.isStr2Num(chartBean.getType())) {
                 Integer dataType = Integer.valueOf(chartBean.getType());
                 dataService.findRegionData(dataType, beans);
+            }else{
+                EmailUtil.warnEveryOne("NumericonController.findRegionData param is error" + chartBean);
             }
         }catch(Exception e){
-            EmailUtil.warnEveryOne("NumericonController.findRegionData has error，param=" + chartBean.toString() + "," + e.getMessage());
-            logger.error("NumericonController.findRegionData has error，param=" + chartBean.toString(),e);
+            EmailUtil.warnEveryOne("NumericonController.findRegionData has error，param=" + chartBean + "," + e.getMessage());
+            logger.error("NumericonController.findRegionData has error，param=" + chartBean,e);
         }
         Map<String,Object> _dataMap = new HashMap<String,Object>();
         _dataMap.put("data", beans);

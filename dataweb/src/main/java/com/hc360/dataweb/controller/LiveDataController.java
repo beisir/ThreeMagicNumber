@@ -103,11 +103,12 @@ public class LiveDataController {
                     dataMap = realTimeStaticHourService.initBeforeData(otherType, time);
                 }
             } else {
-                logger.error("ChartBean.type值不是数值");
+                logger.error("ChartBean.type值不是数值" + chartBean);
+                EmailUtil.warnEveryOne("LiveDataController.findChartData param is error" + chartBean);
             }
         } catch (Exception e) {
-            EmailUtil.warnEveryOne("LiveDataController.findChartData has error，param=" + chartBean.toString() + "," + e.getMessage());
-            logger.error("LiveDataController.findChartData has error，param=" + chartBean.toString(), e);
+            EmailUtil.warnEveryOne("LiveDataController.findChartData has error，param=" + chartBean + "," + e.getMessage());
+            logger.error("LiveDataController.findChartData has error，param=" + chartBean, e);
         }
         Map<String, Object> _dataMap = new HashMap<String, Object>();
         _dataMap.put("data", dataMap);
@@ -168,7 +169,7 @@ public class LiveDataController {
         Map<String, Object> _dataMap = new HashMap<String, Object>();
         Integer otherType = 0;
         try {
-            if (StringUtils.isNotBlank(chartBean.getType()) && StringUtils.isNumeric(chartBean.getType())) {
+            if (chartBean != null &&StringUtils.isNotBlank(chartBean.getType()) && StringUtils.isNumeric(chartBean.getType())) {
                 if ((DataType.P4P_KEY_SUM.getType() + "").equals(chartBean.getType())) {
                     dataMap = this.realTimeStaticHourService.initSecondTodayDataNew(chartBean);
                 } else if ((DataType.P4P_KEY_TOP50_PEOPLE.getType() + "").equals(chartBean.getType())) {
@@ -187,12 +188,13 @@ public class LiveDataController {
                 }
             }else{
                 logger.warn("传入的参数为空:"+chartBean);
+                EmailUtil.warnEveryOne("LiveDataController.findSecondChartDataNew param is error" + chartBean);
             }
             _dataMap.put("data", dataMap);
             _dataMap.put("errno", 0);
         } catch (Exception e) {
             logger.error("param=" + chartBean.toString(), e);
-            EmailUtil.warnEveryOne("LiveDataController.findSecondChartDataNew has error，param=" + chartBean.toString() + "," + e.getMessage());
+            EmailUtil.warnEveryOne("LiveDataController.findSecondChartDataNew has error，param=" + chartBean + "," + e.getMessage());
             _dataMap.put("errno", -1);
         }
         ObjectMapper objectMapper = new ObjectMapper();

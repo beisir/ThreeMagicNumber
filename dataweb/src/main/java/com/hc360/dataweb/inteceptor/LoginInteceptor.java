@@ -42,7 +42,6 @@ public class LoginInteceptor implements HandlerInterceptor{
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
-		System.out.println("进入拦截器");
 		boolean isOk = false;
 
 		//判断用户是否处于登录状态

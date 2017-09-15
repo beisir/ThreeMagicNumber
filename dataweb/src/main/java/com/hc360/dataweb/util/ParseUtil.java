@@ -1,7 +1,5 @@
 package com.hc360.dataweb.util;
 
-import org.apache.log4j.Logger;
-
 /**
  * Created by HC360 on 2017/3/3.
  */
