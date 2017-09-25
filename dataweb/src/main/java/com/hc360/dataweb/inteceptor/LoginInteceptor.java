@@ -4,6 +4,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hc360.dataweb.dao.RealtimeUserInfoMapper;
 import com.hc360.dataweb.model.RealtimeUserInfo;
 import com.hc360.dataweb.util.SpringContextHolder;
@@ -15,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hc360.sso.SSOHelper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -55,6 +58,23 @@ public class LoginInteceptor implements HandlerInterceptor{
 					return true;
 				}
 			}
+		}
+
+		String path = request.getRequestURI();
+
+		if(!"/index.html".equals(path)){
+			Map<String,Object> _dataMap = new HashMap<String,Object>();
+			ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				_dataMap.put("errno","-2");
+				_dataMap.put("msg","session time out !");
+				response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+				response.getWriter().flush();
+				response.getWriter().close();
+			} catch (Exception e) {
+				LOG.error("LoginInteceptor.preHandle:", e);
+			}
+			return isOk;
 		}
 
 		//response.sendRedirect("http://data.360jz.com/dataweb/index.html");
