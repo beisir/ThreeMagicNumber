@@ -95,6 +95,7 @@ public class MainController {
         dataMap.put("yesterdaydata", resultYesterdayMap);
         _dataMap.put("data",dataMap);
         ObjectMapper objectMapper = new ObjectMapper();
+
         try {
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
@@ -552,6 +553,11 @@ public class MainController {
                         cookie.setMaxAge(30 * 60);// 设置为30min
                         cookie.setPath("/");
                         response.addCookie(cookie);
+
+                        Cookie cookie1 = new Cookie("dataUserName", username);
+                        cookie1.setMaxAge(30 * 60);// 设置为30min
+                        cookie1.setPath("/");
+                        response.addCookie(cookie1);
                     }
                 }else{
                     mv.setViewName("/error/nolimit");

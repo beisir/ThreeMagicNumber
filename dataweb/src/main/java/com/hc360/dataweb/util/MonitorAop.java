@@ -3,6 +3,12 @@ package com.hc360.dataweb.util;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by home on 2017/2/13.
@@ -42,8 +48,11 @@ public class MonitorAop {
 //            this.afterThrowing(call);  //相当于异常抛出后通知
 //            System.out.println(e +"---------" + call.toString());
             String msg =  getStackMsg(e);
+            RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+            HttpServletRequest request = sra.getRequest();
 
-            EmailUtil.warnEveryOne(call.toString() + " 出现异常: " +msg);
+            EmailUtil.warnEveryOne(call.toString() + " 出现异常: " +msg +"--user="+getUserInfo(request,"dataUser")+"---"+getUserInfo(request,"dataUserName"));
             logger.error(getStackMsg(e));
             throw e;
 
@@ -62,5 +71,18 @@ public class MonitorAop {
             sb.append(element.toString()).append("\r\n");
         }
         return sb.toString();
+    }
+
+    private String getUserInfo(HttpServletRequest request,String cookieName){
+        Cookie[] cookies = request.getCookies();//获取cookie数组
+        String username = null;
+        if (null!=cookies) {
+            for(Cookie cookie : cookies){
+                if(cookieName.equalsIgnoreCase(cookie.getName())){
+                    username = cookie.getValue();
+                }
+            }
+        }
+        return username;
     }
 }
