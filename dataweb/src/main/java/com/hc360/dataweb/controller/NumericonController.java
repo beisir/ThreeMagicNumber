@@ -39,7 +39,7 @@ public class NumericonController {
                 Integer dataType = Integer.valueOf(chartBean.getType());
                 dataService.findNumericonData(dataType, data);
             }else{
-                EmailUtil.warnEveryOne("NumericonController.findSourceData param is error" + chartBean);
+                EmailUtil.warnEveryOne("NumericonController.findSourceData param is error" + chartBean,request);
             }
         }catch (Exception e ){
             EmailUtil.warnEveryOne("NumericonController.findSourceData has error，param=" + chartBean + "," + e.getMessage());
@@ -66,7 +66,7 @@ public class NumericonController {
                 Integer dataType = Integer.valueOf(chartBean.getType());
                 dataService.findRegionData(dataType, beans);
             }else{
-                EmailUtil.warnEveryOne("NumericonController.findRegionData param is error" + chartBean);
+                EmailUtil.warnEveryOne("NumericonController.findRegionData param is error" + chartBean,request);
             }
         }catch(Exception e){
             EmailUtil.warnEveryOne("NumericonController.findRegionData has error，param=" + chartBean + "," + e.getMessage());

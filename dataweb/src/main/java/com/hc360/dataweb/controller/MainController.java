@@ -360,7 +360,7 @@ public class MainController {
      */
     @RequestMapping(value = "/hourchart",
             method = RequestMethod.GET, produces = {"application/xml", "application/json"})
-    public void findAllByHour(ChartBean chartBean,HttpServletResponse response) throws Exception {
+    public void findAllByHour(HttpServletRequest request,ChartBean chartBean,HttpServletResponse response) throws Exception {
         response.setContentType("application/json; charset=UTF-8");
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
@@ -368,7 +368,7 @@ public class MainController {
                 Integer otherType = Integer.valueOf(chartBean.getType());
                 resultMap = realTimeStaticHourService.initZLTodayData(otherType);//不含ip&uv的公共查询趋势图{今天&昨天&趋势图}
             }else{
-                EmailUtil.warnEveryOne("MainController.findAllByHour param is error" + chartBean);
+                EmailUtil.warnEveryOne("MainController.findAllByHour param is error" + chartBean,request);
             }
         }catch (Exception e){
             EmailUtil.warnEveryOne("MainController.findAllByHour has error，chartBean="+chartBean+"--"  + e.getMessage());

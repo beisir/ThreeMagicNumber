@@ -1108,9 +1108,6 @@ public class FeeUserServiceImpl implements FeeUserService {
         }
         for(Integer type:sourceTypes){
             count.add(item.get(type));
-            if(item.get(type)==0){
-                logger.error("查询天表数据:irsl_date:"+day+"数据类型:"+type + "-- 数据为空。");
-            }
         }
         bean.setData(count);
 
@@ -1445,9 +1442,6 @@ public class FeeUserServiceImpl implements FeeUserService {
         if(weekTimes != null && weekTimes.size()>0){
             for (String time : weekTimes) {
                 dataList.add(weekMap.get(time));
-                if(weekMap.get(time)==0){
-                    logger.error("查询月表数据:irsl_date:"+time+"数据类型:"+type + "-- 数据为空。");
-                }
             }
         }
         return dataList;
@@ -1493,9 +1487,6 @@ public class FeeUserServiceImpl implements FeeUserService {
         if(monthTimes != null && monthTimes.size()>0){
             for (String time : monthTimes) {
                 dataList.add(monthMap.get(time));
-                if(monthMap.get(time)==0){
-                    logger.error("查询月表数据:irsl_date:"+time+"数据类型:"+type + "-- 数据为空。");
-                }
             }
 
         }

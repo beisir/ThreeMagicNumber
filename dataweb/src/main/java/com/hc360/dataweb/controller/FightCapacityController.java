@@ -93,7 +93,7 @@ public class FightCapacityController {
                     dataService.initFightChartData(data, chartBean);
                 }
             }else{
-                EmailUtil.warnEveryOne("FightCapacityController.findChartData param is error" + chartBean);
+                EmailUtil.warnEveryOne("FightCapacityController.findChartData param is error" + chartBean,request);
             }
         }catch (Exception  e ){
             EmailUtil.warnEveryOne("FightCapacityController.findChartData has error，param="  +chartBean.toString() +"," + e.getMessage());

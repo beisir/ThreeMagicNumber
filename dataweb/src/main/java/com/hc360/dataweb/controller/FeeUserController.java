@@ -82,10 +82,10 @@ public class FeeUserController {
                 }
             } else {
                 logger.error("前端传递的ChartBean.type不是一个数值类型" + chartBean);
-                EmailUtil.warnEveryOne("FeeUserController.findChartData param is error" + chartBean);
+                EmailUtil.warnEveryOne("FeeUserController.findChartData param is error" + chartBean,request);
             }
         }catch (Exception e ){
-            EmailUtil.warnEveryOne("FeeUserController.findChartData has error，" +chartBean.toString() + "," + e.getMessage());
+            EmailUtil.warnEveryOne("FeeUserController.findChartData has error，" +chartBean.toString() + "," + e.getMessage() ,request);
             logger.error("FeeUserController.findChartData has error，" +chartBean.toString() ,e);
         }
         _dataMap.put("errno", 0);

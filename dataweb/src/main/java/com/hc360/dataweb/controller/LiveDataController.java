@@ -104,7 +104,7 @@ public class LiveDataController {
                 }
             } else {
                 logger.error("ChartBean.type值不是数值" + chartBean);
-                EmailUtil.warnEveryOne("LiveDataController.findChartData param is error" + chartBean);
+                EmailUtil.warnEveryOne("LiveDataController.findChartData param is error" + chartBean,request);
             }
         } catch (Exception e) {
             EmailUtil.warnEveryOne("LiveDataController.findChartData has error，param=" + chartBean + "," + e.getMessage());
@@ -188,7 +188,7 @@ public class LiveDataController {
                 }
             }else{
                 logger.warn("传入的参数为空:"+chartBean);
-                EmailUtil.warnEveryOne("LiveDataController.findSecondChartDataNew param is error" + chartBean);
+                EmailUtil.warnEveryOne("LiveDataController.findSecondChartDataNew param is error" + chartBean,request);
             }
             _dataMap.put("data", dataMap);
             _dataMap.put("errno", 0);

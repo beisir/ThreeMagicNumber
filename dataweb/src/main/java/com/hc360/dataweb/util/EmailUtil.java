@@ -7,6 +7,8 @@ import com.hc360.dataweb.model.HadoopMonitorEmail;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by home on 2016/9/1.
  */
@@ -19,6 +21,11 @@ public class EmailUtil {
     public static void warnEveryOne(String msg) {
         ConfigBean configBean = SpringContextHolder.getBean("configBean");
         warnEveryOne(msg,configBean.getEmails());
+    }
+
+    public static void warnEveryOne(String msg,HttpServletRequest request) {
+        ConfigBean configBean = SpringContextHolder.getBean("configBean");
+        warnEveryOne(msg + "-- "+ CommonUtil.getUserInfo(request,"dataUserName"),configBean.getEmails());
     }
 
     /**

@@ -3,6 +3,8 @@ package com.hc360.dataweb.util;
 import com.hc360.dataweb.common.constants.ChartsConstant;
 import com.hc360.dataweb.model.DataType;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -203,5 +205,17 @@ public class CommonUtil {
         return otherType;
     }
 
+    public static  String getUserInfo(HttpServletRequest request,String cookieName){
+        Cookie[] cookies = request.getCookies();//获取cookie数组
+        String username = null;
+        if (null!=cookies) {
+            for(Cookie cookie : cookies){
+                if(cookieName.equalsIgnoreCase(cookie.getName())){
+                    username = cookie.getValue();
+                }
+            }
+        }
+        return username;
+    }
 
 }
