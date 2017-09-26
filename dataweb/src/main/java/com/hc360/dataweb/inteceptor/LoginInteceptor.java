@@ -62,7 +62,7 @@ public class LoginInteceptor implements HandlerInterceptor{
 
 		String path = request.getRequestURI();
 
-		if(!"/index.html".equals(path)){
+		if(!path.contains("/index.html")){
 			Map<String,Object> _dataMap = new HashMap<String,Object>();
 			ObjectMapper objectMapper = new ObjectMapper();
 			try {
