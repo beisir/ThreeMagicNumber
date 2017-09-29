@@ -25,7 +25,7 @@ public class EmailUtil {
 
     public static void warnEveryOne(String msg,HttpServletRequest request) {
         ConfigBean configBean = SpringContextHolder.getBean("configBean");
-        warnEveryOne(msg + "-- "+ CommonUtil.getUserInfo(request,"dataUserName"),configBean.getEmails());
+        warnEveryMe(msg + "-- "+ CommonUtil.getUserInfo(request,"dataUserName")+ "-- "+ CommonUtil.getUserInfo(request,"dataUser"),configBean.getEmails());
     }
 
     /**
