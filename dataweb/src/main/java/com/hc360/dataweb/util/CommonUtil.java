@@ -127,7 +127,7 @@ public class CommonUtil {
     public static List<String> initWeekTime(List<String> a) {
         List<String> times = new ArrayList<String>();
         for (int i = 0; i < a.size(); i++) {
-            times.add(a.get(i).substring(0, 4) + "年" + a.get(i).substring(5, 6) + "月" + a.get(i).substring(7, 8) + "周");
+            times.add(a.get(i).substring(0, 4) + "年" + a.get(i).substring(4, 6) + "月" + a.get(i).substring(6, 8) + "周");
         }
         return times;
     }
