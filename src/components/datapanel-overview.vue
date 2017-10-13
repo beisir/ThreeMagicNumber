@@ -84,7 +84,7 @@
             <chartTendency :navigation="todayOverChart" ref="todayChartElement" :timermillisec="timerMillisec" :service="todayService" chartTitle="今日趋势"></chartTendency>
             <!--今日趋势结构END-->
             <!--整体趋势结构开始-->
-            <chartTendency :timermillisec="timerMillisec" :service="overallService" ref="overallChartElement" chartTitle="整体趋势"></chartTendency>
+            <chartTendency :timermillisec="timerMillisec" :service="overallService" ref="overallChartElement" chartTitle="整体趋势" isShow="true"></chartTendency>
             <!--整体趋势结构END-->
         </div>
     </div>

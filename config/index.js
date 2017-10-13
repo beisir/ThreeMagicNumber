@@ -9,7 +9,7 @@ module.exports = {
         loginIndex: path.resolve(__dirname, '../dataweb/src/main/webapp/WEB-INF/web/screen/login.html'),
         assetsRoot: path.resolve(__dirname, '../dataweb/src/main/webapp/WEB-INF/web/screen'),
         assetsSubDirectory: 'static',
-        assetsPublicPath: 'http://data.360jz.com/dataweb/',
+        assetsPublicPath: '//data.360jz.com/dataweb/',
         productionSourceMap: false,
         // Gzip off by default as many popular static hosts such as
         // Surge or Netlify already gzip all static assets for you.

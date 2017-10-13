@@ -352,9 +352,13 @@ public enum DataType {
     YEXTENDGRAB("扩展抓取",200),
     /*/*已分配LEADS数来源为-专业网站抓取*/
     YSPECIALWEBSITEGRAB("专业网站抓取",201),
+
+    P4PCPC("P4PCPC",316),
+
     /*已分配LEADS总数*/
     YLEADSCOUNT("已分配Leads数",202);
     /*leads相关*/
+
 
     private String name;
 

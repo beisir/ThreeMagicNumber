@@ -141,6 +141,10 @@ export default {
 		"P4P竞价词": {
 			id: 58,
 			desc: "趋势图2"
+		},
+		"P4PCPC": {
+			id: 71,
+			desc: "趋势图1"
 		}
 	},
 	'/datapanel/effectives': {
