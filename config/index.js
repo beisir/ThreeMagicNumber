@@ -33,31 +33,31 @@ module.exports = {
             // /**
             //  * 映射到指定主机
             //  */
-            '/dataweb': {
-                 // target: 'http://123.103.77.81', //生产环境
-                 target: 'http://data.360jz.com', //测试环境
-                 // target: 'http://192.168.34.179', //张婉如机器
-                 changeOrigin: true
-            }
+            // '/dataweb': {
+            //      // target: 'http://123.103.77.81', //生产环境
+            //      target: 'http://data.360jz.com', //测试环境
+            //      // target: 'http://192.168.34.179', //张婉如机器
+            //      changeOrigin: true
+            // }
             /**
              * 映射到本地文件
              */
-            // '/dataweb': {
-            //     target: 'http://localhost:8080',
-            //     changeOrigin: true,
-            //     pathRewrite: function(path, req) {
-            //         var urlParsed = url.parse(req.url, true),
-            //             query = urlParsed.query,
-            //             pathname = urlParsed.pathname.replace(/\/*$/g,'');
-            //         pathname = pathname.substring(pathname.lastIndexOf('/'));
-            //         Object.keys(query).forEach((key) => {
-            //             pathname += ('-' + key + query[key]);
-            //         });
-            //         pathname = '/static/json' + pathname + '.json';
-            //         console.log('proxy request ' + path + ' to ' + pathname);
-            //         return pathname;
-            //     }
-            // }
+            '/dataweb': {
+                target: 'http://localhost:8080',
+                changeOrigin: true,
+                pathRewrite: function(path, req) {
+                    var urlParsed = url.parse(req.url, true),
+                        query = urlParsed.query,
+                        pathname = urlParsed.pathname.replace(/\/*$/g,'');
+                    pathname = pathname.substring(pathname.lastIndexOf('/'));
+                    Object.keys(query).forEach((key) => {
+                        pathname += ('-' + key + query[key]);
+                    });
+                    pathname = '/static/json' + pathname + '.json';
+                    console.log('proxy request ' + path + ' to ' + pathname);
+                    return pathname;
+                }
+            }
         },
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README
