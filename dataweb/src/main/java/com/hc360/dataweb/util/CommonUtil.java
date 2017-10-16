@@ -123,7 +123,6 @@ public class CommonUtil {
         }
         return timeList;
     }
-
     public static List<String> initWeekTime(List<String> a) {
         List<String> times = new ArrayList<String>();
         for (int i = 0; i < a.size(); i++) {
