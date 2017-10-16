@@ -306,11 +306,10 @@ export default {
                 Vue.prototype.$privileges = _privileges;
 
                 /**
-                 * [设置路由权限]
+                 * [设置路由权限]  routerConfig(mapping.js)路由列表    routerAuthMapping(mapping-auth.js)路由对应的权限列表
                  */
                 routerConfig.forEach((router) => {
                     (router.children || []).forEach((subRouter) => {
-
                         /**
                          * [若当前路由需要授权才能访问，且用户权限中无该路由名称对应的权限设置，则隐藏它]
                          */
@@ -347,6 +346,7 @@ export default {
 
             /**
              * [mapping 将当前路由权限映射表挂载到VUE原型对象上，以便各VUE组件都能访问]
+             * routerConfig(mapping.js)路由列表    routerAuthMapping(mapping-auth.js)路由对应的权限列表
              */
             Vue.prototype.$privileges.mapping = routerAuthMapping[route.path] || {};
         },

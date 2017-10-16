@@ -57,15 +57,15 @@
                                             <dd>
                                                 定义：购买公司服务的用户数
                                                 <br /> 计算方法：
-                                                <br /> &nbsp;&nbsp;&nbsp;&nbsp;数据：截止当前的付费会员数
-                                                <br /> &nbsp;&nbsp;&nbsp;&nbsp;昨日同比：(&nbsp;当前付费会员数&nbsp;-&nbsp;昨天最后小时付费会员数&nbsp;)&nbsp;/&nbsp;昨天最后小时付费会员数
+                                                <br /> &nbsp;&nbsp;&nbsp;&nbsp;数据：截止当前的付费会员数(不包括保护期内的用户)
+                                              <br /> &nbsp;&nbsp;&nbsp;&nbsp;昨日同比：(&nbsp;当前付费会员数&nbsp;-&nbsp;昨天最后小时付费会员数&nbsp;)&nbsp;/&nbsp;昨天最后小时付费会员数
                                                 <br /> 计算频率：每小时
                                                 <br /> 数据来源：订单数据
                                                 <br />
                                             </dd>
                                             <dt>各体系付费会员数</dt>
                                             <dd>
-                                                定义：购买公司服务的用户在各体系分布情况
+                                                定义：购买公司服务的用户(不包括保护期内的用户)在各体系分布情况
                                                 <br /> 统计规则：
                                                 <br /> &nbsp;&nbsp;&nbsp;&nbsp;体系：电销、渠道、行业、自助销售、加盟商
                                                 <br /> &nbsp;&nbsp;&nbsp;&nbsp;体系划分规则：

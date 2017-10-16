@@ -1,5 +1,5 @@
 <template>
-    <div class="panel panel-default hour-trend">
+    <div class="panel panel-default hour-trend" v-show="Navigation.length>0||isShow">
         <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5; margin-top:30px; margin-bottom:10px;">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -39,6 +39,12 @@ export default {
             default: function() {
                 return '趋势图';
             }
+        },
+
+        isShow:{
+           default:function () {
+               return false
+           }
         },
 
         /**
@@ -259,6 +265,7 @@ export default {
             _tempNavigation=_tempNavigation.filter((item) => {
                 return _this.$privileges.user[(_this.$privileges.mapping[item.name] || {}).id];
             })||[];
+
         };
 
         return {
@@ -308,29 +315,34 @@ export default {
 
     },
     mounted: function() {
-          const _this = this;
-        /**
-         * [此处做延迟处理，以免首次渲染的相关事件触发时，父组件监听不到]
-         */
-        setTimeout(function() {
+        const _this = this;
+
+        if(_this.Navigation.length>0||_this.isShow){
+
+          /**
+           * [此处做延迟处理，以免首次渲染的相关事件触发时，父组件监听不到]
+           */
+          setTimeout(function() {
 
             /**
              * 渲染图表
              */
             _this.render();
-        });
+          });
 
-        /**
-         * [初始化渲染计时器]
-         */
-        _this.timermillisec && (_this.renderTimer = window.setInterval(function() {
+          /**
+           * [初始化渲染计时器]
+           */
+          _this.timermillisec && (_this.renderTimer = window.setInterval(function() {
 
             /**
              * 渲染图表
              */
             _this.render();
 
-        }, _this.timermillisec));
+          }, _this.timermillisec));
+        }
+
     },
     /****
      * 组件销毁前
