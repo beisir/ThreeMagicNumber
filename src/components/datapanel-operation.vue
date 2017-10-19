@@ -47,7 +47,8 @@
                 </div>
               </div>
               <chartTendency :navigation="operationChart" ref="operationChart" :timermillisec="timerMillisec" :service="service"></chartTendency>
-              <chartTendency :navigation="chartOperationKeword" ref="chartOperationKeword" :timermillisec="timerMillisec" :service="serviceKeword"></chartTendency>
+              <!-- <chartTendency :navigation="chartOperationKeword" ref="chartOperationKeword" :timermillisec="timerMillisec" :service="serviceKeword"></chartTendency> -->
+              <chartTendency :navigation="[]" ref="chartOperationKeword" :timermillisec="timerMillisec" :service="serviceKeword"></chartTendency>
             </div>
           </div>
           <!--近30天的变化趋势-->
@@ -116,6 +117,13 @@ export default {
           code: '316',
           filters: {
             timelimit: ['lastmonth']
+          }
+        },
+        {
+          name: '全网定投',
+          code: '317',
+          filters: {
+            timelimit: ['all','weekly']
           }
         }
       ],
@@ -487,7 +495,7 @@ export default {
       /***
        *  百度联盟收入的本月数据，增加总收入副标题
        */
-      if (data.dataList.length >= 2 && data.dataList[0].unit == '元') {
+      if (this.CurrentNavigation.code === '309' && this.CurrentTimelimitFilter.code == '5') {
         let numArr = [];
         for (var i = 0; i < data.dataList[0].data.length; i++) {
           var num1 = data.dataList[0].data[i],
@@ -495,7 +503,6 @@ export default {
             num3 = num2 / num1 * 100;
           numArr.push(Number(num3.toFixed(2)))
         }
-
         data.dataList.splice(1, 0, {
           "name": "月完成率",
           "data": numArr,
@@ -503,7 +510,6 @@ export default {
           "isShow": true
         });
       }
-
       if (this.CurrentNavigation.code === '309' && this.CurrentTimelimitFilter.code == '8') {
 
         var _data = (data.dataList || [])[0],
@@ -549,8 +555,7 @@ export default {
             }, false);
           });
         }
-      } else if (this.CurrentNavigation.name === '百度联盟收入') {
-        if (this.CurrentTimelimitFilter.name === '月度数据') {
+      } else if (this.CurrentNavigation.code === '309' && this.CurrentTimelimitFilter.code == '5') {
           chartEntity.series.forEach((series, index) => {
             if (index == 1) {
               series.update({
@@ -564,7 +569,6 @@ export default {
               }, false);
             }
           });
-        }
       }
     });
 
