@@ -197,7 +197,6 @@ export default {
         }
     },
     data() {
-
         /**
          * [_this 当前对象实例]
          * @type {Object}
@@ -208,7 +207,6 @@ export default {
          * [解析导航时限过滤项数据]
          */
         _this.navigation.forEach((nav, navIndex) => {
-
             /**
              * [filterEntities 导航项过滤项数据]
              * @type {Array}
@@ -236,7 +234,6 @@ export default {
                     },
                  */
                 timelimitFilterEnums = _this.enums[timelimitFilterName];
-
             /**
              * [存在指定过滤项枚举列表]
              */
@@ -257,7 +254,6 @@ export default {
          * [过滤无权限导航]
          */
         let _tempNavigation = _this.navigation;
-
         /**
          * [若无权限定义的页面，不过滤导航]
          */
@@ -267,7 +263,6 @@ export default {
             })||[];
 
         };
-
         return {
 
             /**
@@ -369,7 +364,6 @@ export default {
              * @type {Promise}
              */
             const dataPromise = _this.getData(),
-
                 /**
                  * [chartOptions 图表基础配置]
                  * @type {Object}

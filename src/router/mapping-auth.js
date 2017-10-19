@@ -145,6 +145,10 @@ export default {
 		"P4PCPC": {
 			id: 71,
 			desc: "趋势图1"
+		},
+		"全网定投": {
+			id: 72,
+			desc: "趋势图1"
 		}
 	},
 	'/datapanel/effectives': {
