@@ -47,8 +47,7 @@
                 </div>
               </div>
               <chartTendency :navigation="operationChart" ref="operationChart" :timermillisec="timerMillisec" :service="service"></chartTendency>
-              <!-- <chartTendency :navigation="chartOperationKeword" ref="chartOperationKeword" :timermillisec="timerMillisec" :service="serviceKeword"></chartTendency> -->
-              <chartTendency :navigation="[]" ref="chartOperationKeword" :timermillisec="timerMillisec" :service="serviceKeword"></chartTendency>
+              <chartTendency :navigation="chartOperationKeword" ref="chartOperationKeword" :timermillisec="timerMillisec" :service="serviceKeword"></chartTendency>
             </div>
           </div>
           <!--近30天的变化趋势-->
