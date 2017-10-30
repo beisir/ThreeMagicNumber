@@ -35,7 +35,7 @@ public class LiveDataController {
     @Autowired
     private FeeUserService feeUserService;
 
-    /**
+  /**
      * 顶部各种颜色的图块的数据
      *
      * @param response
@@ -97,7 +97,7 @@ public class LiveDataController {
                 if (ChartsConstant.TODAY.equals(time)) {//今天
                     //查询小时表
                     dataMap = realTimeStaticHourService.initTodayData(otherType);
-                } else if (ChartsConstant.MONTH_DATA.equals(time)) { //当年每月维度 ---20170630
+                } else if (ChartsConstant.MONTH_DATA.equals(time) || ChartsConstant.WEEK_DATA.equals(time)) { //当年每月维度 ---20170630
                     feeUserService.initChartData(otherType, time, dataMap);
                 } else {//查询之前的数据
                     dataMap = realTimeStaticHourService.initBeforeData(otherType, time);
