@@ -813,6 +813,7 @@ public class FeeUserServiceImpl implements FeeUserService {
     @Override
     public void initChartData(Integer dataType, String time, Map<String, Object> dataMap) throws Exception {
         String day = ControllerDateUtil.getToday();//今日日期
+        List<Integer> types = new ArrayList<Integer>();
         if(dataType == DataType.FINANCE_DX_THIRDPARTNAR.getType().intValue()){//产品用户贡献
             getUserProductCont(dataMap, time);
         } else if (dataType == DataType.LEADS.getType().intValue() ) {//可分配LEADS数
@@ -898,11 +899,15 @@ public class FeeUserServiceImpl implements FeeUserService {
             if(ChartsConstant.MONTH.equals(time)){//最近三十天
                 initDayData(time, day, dataType, dataMap);
             }
-        }else if (dataType == DataType.BAIDU_LM_DAY.getType().intValue() ) {//百度联盟数
+        } else if (dataType == DataType.BAIDU_LM_DAY.getType().intValue() ) {//百度联盟数
             if (ChartsConstant.TODAY.equals(time)) {//本月天维度---20170630
                 getMonthDayData(dataType, dataMap);
             }else if(ChartsConstant.MONTH_DATA.equals(time)){ //当年每月维度 ---20170630
                 initBdMonthData(dataType, dataMap);
+            }
+        } else if (dataType == DataType.P4P_QWDT_TOTAL.getType().intValue() ) {//全网定投
+          if (ChartsConstant.WEEK_DATA.equals(time)) {//周度数据---20171018
+              initWeekData(dataType, dataMap);
             }
 
         }
@@ -1241,7 +1246,7 @@ public class FeeUserServiceImpl implements FeeUserService {
         dataMap.put("time", time);
     }
 
-    /*周度数据获取*/
+    /*周度数据获取
     private void initWeekData(Integer dataType,Map<String, Object> dataMap) throws Exception {
         List<HourChartBean> dataList = new ArrayList<HourChartBean>();//小时数据
         String year = DateUtil.getYear("yyyy");//获取当前年度
@@ -1260,8 +1265,41 @@ public class FeeUserServiceImpl implements FeeUserService {
         dataMap.put("dataList", dataList);
         dataMap.put("time", time);
 
+    }*/
+  /*周度数据获取*/
+    private void initWeekData(Integer dataType,Map<String, Object> dataMap) throws Exception {
+    List<HourChartBean> dataList = new ArrayList<HourChartBean>();//小时数据
+    String year = DateUtil.getYear("yyyy");//获取当前年度
+    List<String> time= new ArrayList<>();
+    List<Integer> types = new ArrayList<Integer>();
+    if(DataType.P4P_QWDT_TOTAL.getType().equals(dataType)){
+      types.add(DataType.P4P_QWDT_WEEK_TOTAL.getType());
+      types.add(DataType.P4P_QWDT_WEEK_JP.getType());
+      types.add(DataType.P4P_QWDT_WEEK_JP_KEY.getType());
+    } else{
+      types.add(dataType);
+    }
+    for(Integer type:types){//全网一组周度数据
+      HourChartBean bean = new HourChartBean();
+      List<String> weekTimes = new ArrayList<>();//周度数据时间轴
+      Map<String, Object> param = new HashMap<String, Object>();
+      param.put("type",type);
+      param.put("year",year);
+      List<RealtimeStaticWeek> weekData = realtimeStaticWeekMapper.findYearWeekData(param);
+      List<Object> dataCount = weekConvert(weekData, weekTimes);
+      bean.setName(CommonUtil.initName(type));
+      bean.setUnit(CommonUtil.initUnit(type));
+      bean.setData(dataCount);
+      dataList.add(bean);
+      if(weekTimes.size()>0 && weekTimes.size()>=time.size()) {
+        time = CommonUtil.initYearWeekTime(weekTimes);
+      }
     }
 
+    dataMap.put("dataList", dataList);
+    dataMap.put("time", time);
+
+  }
     /*处理多组week数据*/
     private void initWeekDatas(Map<String, Object> dataMap, int flag) throws Exception {
         List<HourChartBean> dataList = new ArrayList<HourChartBean>();//小时数据
