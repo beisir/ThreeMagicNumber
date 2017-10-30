@@ -356,10 +356,17 @@ public enum DataType {
     P4PCPC("P4PCPC",316),
 
     /*已分配LEADS总数*/
-    YLEADSCOUNT("已分配Leads数",202);
+    YLEADSCOUNT("已分配Leads数",202),
     /*leads相关*/
 
+  /*全网定投相关*/
+    P4P_QWDT_TOTAL("累计总消耗",317),
+    P4P_QWDT_WEEK_TOTAL("周度消耗",318),
+    P4P_QWDT_WEEK_JP("竞拍用户数",319),
+    P4P_QWDT_WEEK_JP_KEY("竞拍关键词数",320),
+    P4P_QWDT_USER("符合定投用户数",321);
 
+    /*全网定投相关*/
     private String name;
 
     private Integer type;
