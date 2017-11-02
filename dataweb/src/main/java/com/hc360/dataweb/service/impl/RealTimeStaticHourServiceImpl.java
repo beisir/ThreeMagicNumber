@@ -154,6 +154,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
         }
         if(DataType.P4P_QWDT_TOTAL.getType().equals(otherType) && ChartsConstant.TOTAL.equals(timeFlag)){
             types.add(DataType.P4P_QWDT_USER.getType());
+            types.add(DataType.P4P_QWDT_USER_TOTAL.getType());
         }
         types.add(otherType);
         List<DayChartBean> beans = new ArrayList<DayChartBean>();
