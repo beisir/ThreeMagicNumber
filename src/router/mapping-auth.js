@@ -167,7 +167,19 @@ export default {
 		"P4P竞价词": {
 			id: 58,
 			desc: "趋势图2"
+<<<<<<< HEAD
 		}		
+=======
+		},
+		"P4PCPC": {
+			id: 71,
+			desc: "趋势图1"
+		},
+		"全网定投": {
+			id: 72,
+			desc: "趋势图1"
+		}
+>>>>>>> a0eaa922b1ba2eaa4481c0cc0f58a4ab69c36c94
 	},
 	'/datapanel/effectives': {
 		"ID": {

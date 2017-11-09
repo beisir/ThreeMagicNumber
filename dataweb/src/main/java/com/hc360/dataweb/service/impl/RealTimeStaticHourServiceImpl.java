@@ -141,11 +141,20 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
         String preDay = ControllerDateUtil.getPreNDay(-(dayCount - 1)); // 查询多少天前的日期
         //横坐标，时间轴
         List<String> timeList = CommonUtil.getTimeShaftD(dayCount);
+       if(DataType.P4P_QWDT_TOTAL.getType().equals(otherType) && ChartsConstant.TOTAL.equals(timeFlag)){
+         day=ControllerDateUtil.getYesterday();//取昨天的日期
+         preDay = ControllerDateUtil.getPreNDay(-dayCount); // 查询多少天前的日期
+         timeList= CommonUtil.getTimeShaftPreD(dayCount);
+       }
         List<Integer> types = new ArrayList<Integer>();
         if(!(DataType.P4PCONSUMPTION.getType()==otherType && ChartsConstant.TOTAL.equals(timeFlag))
-                && !DataType.BAIDU_LM_DAY.getType().equals(otherType)){
+                && !DataType.BAIDU_LM_DAY.getType().equals(otherType) && ! DataType.P4P_QWDT_TOTAL.getType().equals(otherType)){
             types.add(DataType.IP.getType());
             types.add(DataType.UV.getType());
+        }
+        if(DataType.P4P_QWDT_TOTAL.getType().equals(otherType) && ChartsConstant.TOTAL.equals(timeFlag)){
+            types.add(DataType.P4P_QWDT_USER.getType());
+            types.add(DataType.P4P_QWDT_USER_TOTAL.getType());
         }
         types.add(otherType);
         List<DayChartBean> beans = new ArrayList<DayChartBean>();

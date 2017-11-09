@@ -32,7 +32,7 @@ public class CommonUtil {
                 || otherType == DataType.QDTURNOVERYG.getType().intValue() || otherType == DataType.QDTURNOVERLJ.getType().intValue()
                 || otherType == DataType.EVERYDAY_INCOME.getType().intValue() || otherType == DataType.P4P_KEY_TOP50_PRICE.getType().intValue()
                 || otherType == DataType.BAIDU_LM_DAY.getType().intValue() || otherType == DataType.BAIDU_LM_MONTH.getType().intValue()|| otherType == DataType.BAIDU_LM_MONTH_E.getType().intValue()
-                ){
+                || otherType==DataType.P4P_QWDT_TOTAL.getType().intValue() || otherType==DataType.P4P_QWDT_WEEK_TOTAL.getType().intValue()){
             unit = "元";
         } else if(otherType == DataType.VARIOUS_FAMILIES_ARTICLE.getType().intValue() || otherType == DataType.EVERYDAY_NEW.getType().intValue() || otherType == DataType.EXTERNALSENDDRAFT.getType().intValue()){
             unit = "篇";
@@ -123,6 +123,17 @@ public class CommonUtil {
         }
         return timeList;
     }
+  /*获取周/月时间轴截止到昨天*/
+  public static List<String> getTimeShaftPreD(int time) {
+    List<String> timeList = new ArrayList<String>();
+    for (int i = ControllerDateUtil.getPreDayNum(-time); i <= 1; i++) {
+      if (timeList.size() == time) {
+        break;
+      }
+      timeList.add(DateUtil.plusDays("yyyyMMdd", i)); //时间横坐标
+    }
+    return timeList;
+  }
     public static List<String> initWeekTime(List<String> a) {
         List<String> times = new ArrayList<String>();
         for (int i = 0; i < a.size(); i++) {
