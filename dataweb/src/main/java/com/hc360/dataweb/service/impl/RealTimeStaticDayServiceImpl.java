@@ -158,4 +158,43 @@ public class RealTimeStaticDayServiceImpl implements RealTimeStaticDayService {
             }
         }
     }
+
+  @Override
+  public void initP4PDataList(Map<String, Object> dataList) throws Exception {
+    String day = ControllerDateUtil.getToday();//取今天的日期
+    String yesterDay = ControllerDateUtil.getYesterday();//取昨天的日期
+    List<Integer> dataTypes = new ArrayList<Integer>();//今天
+    List<Integer> dataTypes1 = new ArrayList<Integer>();//昨天同一时间
+    //P4P当前时间数据
+    p4ptoday(dataTypes);
+    //P4P相同时间数据
+    p4pmeanwhile(dataTypes1);
+
+    Map<String,Object> param = new HashMap<String,Object>();
+    param.put("list",dataTypes);
+    param.put("day",day);
+    List<RealTimeStaticDoubleDay> dayData = realTimeStaticDayMapper.findRealTimeDoubleDataToday(param);//查询当前时间的数据
+
+    param.put("list",dataTypes1);
+    param.put("yesterDay",yesterDay);
+    List<RealTimeStaticDoubleDay> yesterDayData = realTimeStaticDayMapper.findRealTimeDoubleDataYester(param);//查询前一天同一时间的数据
+
+    List<MainBean> mainBeans = new ArrayList<MainBean>();
+    List<MainBean> mainBeans2 = new ArrayList<MainBean>();
+    convertDayData(mainBeans,dayData, day);
+    convertDayData(mainBeans2, yesterDayData, day);
+
+    dataList.put("yesterdaydata", mainBeans2);
+    dataList.put("todaydata", mainBeans);
+  }
+
+  private void p4ptoday(List<Integer> dataTypes) {
+    dataTypes.add(DataType.P4PCONSUMPTION.getType());//545
+  }
+  private void p4pmeanwhile(List<Integer> dataTypes) {
+    dataTypes.add(DataType.P4PCONSUMPTION.getType());//545
+  }
+  private void p4plastTime(List<Integer> dataTypes2) {
+    dataTypes2.add(DataType.FANSCOUNT.getType());//545
+  }
 }

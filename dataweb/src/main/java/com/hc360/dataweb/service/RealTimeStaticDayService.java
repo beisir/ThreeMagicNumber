@@ -19,5 +19,9 @@ public interface RealTimeStaticDayService {
      */
     void initIPUVDataList(Map<String, Object> dataTotal)throws Exception;
 
-
+    /**
+     * 获取顶部P4P实时数据
+     * @param dataList
+     */
+    void initP4PDataList(Map<String, Object> dataList)throws Exception;
 }

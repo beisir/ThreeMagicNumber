@@ -506,6 +506,10 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
             MainBean mainBean = null;
             for(RealTimeStaticHour rth : results){
                 mainBean = new MainBean(DataType.getName(rth.getDataType()),threeNumDf.format(rth.getDataCount()));
+                if (mainBeans == null || mainBeans.size()<=0){
+
+                  mainBeans=new ArrayList<>();
+                }
                 mainBeans.add(mainBean);
             }
             dataList.put(dayFlag,mainBeans);
