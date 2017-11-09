@@ -102,30 +102,6 @@ export default {
           filters: {
             timelimit: ['today', 'lastsevensays', 'lastmonth']
           }
-<<<<<<< HEAD
-=======
-        },
-        {
-          name: 'P4P消耗',
-          code: '46',
-          filters: {
-            timelimit: ['today', 'lastsevensays', 'lastmonth', 'all']
-          }
-        },
-        {
-          name: 'P4PCPC',
-          code: '316',
-          filters: {
-            timelimit: ['lastmonth']
-          }
-        },
-        {
-          name: '全网定投',
-          code: '317',
-          filters: {
-            timelimit: ['all','weekly']
-          }
->>>>>>> a0eaa922b1ba2eaa4481c0cc0f58a4ab69c36c94
         }
         // {
         //   name: 'P4P消耗',
