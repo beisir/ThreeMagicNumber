@@ -28,7 +28,15 @@ const routeConfig = [{
                 resolve(require('components/datapanel-operation.vue'));
             });
         }
-    }, {
+    },  {
+        name: 'P4P运营数据',
+        path: '/datapanel/p4pConsumption',
+        component: resolve => {
+            require.ensure(['components/datapanel-p4pConsumption.vue'], () => {
+                resolve(require('components/datapanel-p4pConsumption.vue'));
+            });
+        }
+    },{
         name: '战斗力',
         path: '/datapanel/effectives',
         component: resolve => {

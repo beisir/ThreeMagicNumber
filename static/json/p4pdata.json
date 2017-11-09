@@ -1,0 +1,31 @@
+{
+	"errno": 0,
+	"data": {
+		"dataList": {
+			"yesterdaydata": [{
+				"name": "P4P关键词总量",
+				"num": "883,567"
+			}, {
+				"name": "P4P在投词量",
+				"num": "10,656"
+			}],
+			"todaydata": [{
+				"name": "P4P关键词总量",
+				"num": "1,366,928"
+			}, {
+				"name": "P4P在投词量",
+				"num": "12,255"
+			}]
+		},
+		"dataTotal": {
+			"yesterdaydata": [{
+				"name":"P4P消耗",
+				"num": "148,999"
+			}],
+			"todaydata": [{
+				"name": "P4P消耗",
+				"num": "158,207"
+			}]
+		}
+	}
+}

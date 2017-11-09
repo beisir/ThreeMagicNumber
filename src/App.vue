@@ -206,7 +206,7 @@ export default {
             if (_this.$privileges) {
 
                 /**
-                 * [fullscreenLoading 显示全屏加载遮罩]
+                 * [fullscreenLoading 隐藏全屏加载遮罩]
                  * @type {Boolean}
                  */
                 _this.fullscreenLoading = false;
@@ -230,7 +230,6 @@ export default {
              * @return {[type]}       [description]
              */
             _promise.then((args) => {
-
                 /**
                  * [_userPrivileges 用户权限数据]
                  * @type {[type]}
@@ -247,6 +246,7 @@ export default {
                      * [_res description]
                      * @type {Object}
                      */
+                   
                     _privileges = {
 
                         /**
@@ -299,6 +299,7 @@ export default {
                     _privileges.user[privilegeid] = 1;
                 });
 
+                
                 /**
                  * [$privileges 将权限数据挂载到VUE原型对象上，以便各VUE组件都能访问]
                  * @type {[type]}
@@ -311,9 +312,11 @@ export default {
                 routerConfig.forEach((router) => {
                     (router.children || []).forEach((subRouter) => {
                         /**
+                         * 在mapping-auth.js权限列表，如果有id，表示当前组件需要受权限才能访问
                          * [若当前路由需要授权才能访问，且用户权限中无该路由名称对应的权限设置，则隐藏它]
                          */
-                        if (routerAuthMapping[subRouter.path] && routerAuthMapping[subRouter.path].ID && (!_this.$privileges.user[((routerAuthMapping[subRouter.path].ID) || {}).id])) {
+                        let mappingObj=routerAuthMapping[subRouter.path];
+                        if (mappingObj && mappingObj.ID && (!_this.$privileges.user[((mappingObj.ID) || {}).id])) {
                             subRouter.hidden = true;
                         }
                     });

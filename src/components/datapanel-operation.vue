@@ -46,8 +46,7 @@
                   </div>
                 </div>
               </div>
-              <chartTendency :navigation="operationChart" ref="operationChart" :timermillisec="timerMillisec" :service="service"></chartTendency>
-              <chartTendency :navigation="chartOperationKeword" ref="chartOperationKeword" :timermillisec="timerMillisec" :service="serviceKeword"></chartTendency>
+              <chartTendency :navigation="operationChart" ref="operationChart" :timermillisec="timerMillisec" :service="service"></chartTendency>             
             </div>
           </div>
           <!--近30天的变化趋势-->
@@ -103,21 +102,21 @@ export default {
           filters: {
             timelimit: ['today', 'lastsevensays', 'lastmonth']
           }
-        },
-        {
-          name: 'P4P消耗',
-          code: '46',
-          filters: {
-            timelimit: ['today', 'lastsevensays', 'lastmonth', 'all']
-          }
-        },
-        {
-          name: 'P4PCPC',
-          code: '316',
-          filters: {
-            timelimit: ['lastmonth']
-          }
         }
+        // {
+        //   name: 'P4P消耗',
+        //   code: '46',
+        //   filters: {
+        //     timelimit: ['today', 'lastsevensays', 'lastmonth', 'all']
+        //   }
+        // },
+        // {
+        //   name: 'P4PCPC',
+        //   code: '316',
+        //   filters: {
+        //     timelimit: ['lastmonth']
+        //   }
+        // }
       ],
 
       /**
@@ -126,35 +125,7 @@ export default {
        */
       service: {
         url: '/dataweb/chartdata'
-      },
-      /**
-       * [operationChart 图表2的配置项]
-       * @type {Number}
-       */
-      chartOperationKeword: [
-
-        {
-          name: 'P4P关键词',
-          code: '305',
-          filters: {
-            timelimit: ['lastmonth']
-          }
-        },
-        {
-          name: 'P4P竞价词',
-          code: '307',
-          filters: {
-            timelimit: ['numberPeople', 'price']
-          }
-        }
-      ],
-      /**
-       * [service 数据服务配置]
-       * @type {Object}
-       */
-      serviceKeword: {
-        url: '/dataweb/secondchartdata'
-      }
+      }      
     }
   },
   components: {
@@ -206,6 +177,7 @@ export default {
             this.dataList = this.processData(dataList.todaydata, dataList.yesterdaydata);
           }
         }
+        console.log(this.dataTotal,this.dataList);
       }, (response) => {
         console.log('用户平台数据接口获取失败')
       })
@@ -261,198 +233,13 @@ export default {
     }
   },
   created() {
+   
     this.getPlatformData();
   },
   mounted() {
     const _that = this;
     let dataList = [];
-    /****
-     * 监听趋势图2创建之前
-     */
-    _that.$refs.chartOperationKeword.$on('dataReady', function(data) {
-      dataList = data.dataList;
-    });
-    /****
-     * 监听趋势图2初始化图表对象实例之前事件
-     */
-    _that.$refs.chartOperationKeword.$on('beforeRender', function(chartOptions) {
-      if (this.CurrentNavigation.code === '307') {
-        Object.assign(chartOptions, {
-          /****
-           * 更改图表类型
-           */
-          chart: {
-            type: 'bubble',
-          },
-
-          title: {
-            text: 'P4P竞价词TOP50散点分布图'
-          },
-          /****
-           * 不显示图例
-           */
-          legend: {
-            enabled: false
-          },
-          /****
-           * x轴配置信息
-           */
-          xAxis: {
-            gridLineWidth: 1,
-            title: {
-              text: '价格（元）'
-            },
-            labels: {
-              format: '{value}'
-            }
-          },
-
-          /****
-           * 鼠标指上圆点，显示的提示信息
-           */
-          tooltip: {
-            shared: false,
-            useHTML: true,
-            // headerFormat: '<table>',
-            // pointFormat: '<tr><th colspan="2"><p>{point.name}</p></th></tr>' +
-            //   '<tr><th>人数:</th><td>{point.y:,.0f}个</td></tr>' +
-            //   '<tr><th>金额:</th><td>{point.x:.2f}元</td></tr>',
-            // footerFormat: '</table>',
-            // followPointer: true,
-            // valueDecimals: 2
-          },
-
-          /****
-           * 圆点上显示的关键词信息
-           */
-          plotOptions: {
-            series: {
-              dataLabels: {
-                enabled: true,
-                format: '{point.name}'
-              }
-            }
-          }
-        });
-      } else {
-        Object.assign(chartOptions, {
-          /****
-           * 更改图表类型
-           */
-          chart: {
-            type: 'spline'
-          },
-          xAxis: {
-            gridLineWidth: null,
-            title: {
-              text: null
-            }
-          },
-          title: {
-            text: ''
-          },
-          legend: {
-            enabled: true
-          },
-          tooltip: {
-            shared: true,
-            useHTML: true,
-            // headerFormat: '<small></small><table>',
-            // pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
-            //   '<td style="text-align: right"><b>{point.y}</b></td></tr>',
-            // footerFormat: '</table>',
-            // valueDecimals: 2
-          }
-        });
-      }
-    });
-
-    /****
-     * 监听趋势图2重新绘制之前
-     */
-    _that.$refs.chartOperationKeword.$on('beforeRedraw', function(chartEntity) {
-      /****
-       * p4p竞价词改变图表类型
-       */
-      if (this.CurrentNavigation.code === '307') {
-        chartEntity.update({
-          tooltip: {
-            formatter: function() {
-              var _t = this;
-              return [
-                '<span style="font-size: 10px">' + _t.key + '</span><br>',
-                '<tspan> 人数: </tspan>',
-                '<tspan style="font-weight:bold">' + _t.y + '个</tspan><br>',
-                '<tspan> 金额: </tspan>',
-                '<tspan style="font-weight:bold">' + _t.x.toFixed(2) + '元</tspan>'
-              ].join('');
-            }
-          }
-        }, false);
-
-        /**
-         * 删除y轴坐标轴
-         */
-        while (chartEntity.yAxis.length > 0) {
-          chartEntity.yAxis[0].remove(false);
-        }
-
-        /**
-         * 删除数据列
-         */
-        while (chartEntity.series.length > 0) {
-          chartEntity.series[0].remove(false);
-        }
-
-        /**
-         * 增加Y轴坐标
-         */
-        chartEntity.addAxis({
-
-          title: {
-            text: '人数（人）'
-          },
-          labels: {
-            format: '{value}'
-          }
-        });
-        /***
-         * 增加series
-         */
-        chartEntity.addSeries({
-          data: dataList
-        });
-
-      } else if (this.CurrentNavigation.code === '305') {
-        /****
-         * p4p关键词公用一个y轴
-         */
-        chartEntity.series.forEach((series, index) => {
-          series.update({
-            yAxis: 0
-          }, false);
-        });
-        chartEntity.update({
-          tooltip: {
-            formatter: function() {
-              var _t = this,
-                _ret = [
-                  '<table>'
-                ];
-              for (var i = 0; i < _t.points.length; i++) {
-                _ret = _ret.concat([
-                  '<tr><td style="color: ' + _t.points[i].color + '">' + _t.points[i].series.name + ': </td>',
-                  '<td style="text-align: right"><b>' + Highcharts.numberFormat(_t.points[i].y, 0, '.', ',') + '个</b></td></tr>'
-                ]);
-              }
-              _ret.push('</table>')
-              return _ret.join('');
-            }
-          }
-        }, false);
-      }
-    });
-
+    
     /****
      * 图表一创建之前
      */
@@ -460,8 +247,6 @@ export default {
       /****
        *  百度联盟收入，则修改图表类型
        */
-     
-
       if (this.CurrentNavigation.code === '309') {
         Object.assign(chartOptions, {
           chart: {
