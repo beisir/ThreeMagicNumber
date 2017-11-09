@@ -460,6 +460,7 @@ export default {
       /****
        *  百度联盟收入，则修改图表类型
        */
+     
 
       if (this.CurrentNavigation.code === '309') {
         Object.assign(chartOptions, {
