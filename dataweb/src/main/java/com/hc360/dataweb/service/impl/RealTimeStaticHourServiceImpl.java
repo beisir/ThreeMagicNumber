@@ -36,11 +36,18 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
          String yesterday = ControllerDateUtil.getYesterday();//取昨天的日期
          String weekday = ControllerDateUtil.getPreNDay(-7);//取七天前的日期
          List<String> times = new ArrayList<String>();
-         times.add(yesterday);
-         times.add(weekday);
+
          List<Integer> types = new ArrayList<Integer>();
-         types.add(DataType.IP.getType());
-         types.add(DataType.UV.getType());
+         //纯P4P消耗不显IP UV
+         if(! DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType)){
+           times.add(yesterday);
+           times.add(weekday);
+           types.add(DataType.IP.getType());
+           types.add(DataType.UV.getType());
+         } else {
+           types.add(DataType.P4P_QWDT_HOUR.getType());
+         }
+
          types.add(otherType);
 
          HourChartBean bean = null;
@@ -84,7 +91,13 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
         }else if(type == DataType.IP.getType().intValue() || type == DataType.UV.getType().intValue()){
             bean.setName(CommonUtil.initName(type));
         }else{
+
+          if(DataType.P4P_CONSUMPTION_HOUR.getType().equals(type) || DataType.P4P_QWDT_HOUR.getType().equals(type)){
+            bean.setName(CommonUtil.initName(type));
+          } else {
             bean.setName("今天");
+          }
+
         }
         if(isShow(type, time)){
             bean.setIsShow(true);
@@ -141,14 +154,14 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
         String preDay = ControllerDateUtil.getPreNDay(-(dayCount - 1)); // 查询多少天前的日期
         //横坐标，时间轴
         List<String> timeList = CommonUtil.getTimeShaftD(dayCount);
-       if(DataType.P4P_QWDT_TOTAL.getType().equals(otherType) && ChartsConstant.TOTAL.equals(timeFlag)){
+       /*if(DataType.P4P_QWDT_TOTAL.getType().equals(otherType) && ChartsConstant.TOTAL.equals(timeFlag)){
          day=ControllerDateUtil.getYesterday();//取昨天的日期
          preDay = ControllerDateUtil.getPreNDay(-dayCount); // 查询多少天前的日期
          timeList= CommonUtil.getTimeShaftPreD(dayCount);
-       }
+       }*/
         List<Integer> types = new ArrayList<Integer>();
         if(!(DataType.P4PCONSUMPTION.getType()==otherType && ChartsConstant.TOTAL.equals(timeFlag))
-                && !DataType.BAIDU_LM_DAY.getType().equals(otherType) && ! DataType.P4P_QWDT_TOTAL.getType().equals(otherType)){
+                && !DataType.BAIDU_LM_DAY.getType().equals(otherType) && ! DataType.P4P_QWDT_TOTAL.getType().equals(otherType) && ! DataType.P4P_KEY_SUM.getType().equals(otherType)  && ! DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType)){
             types.add(DataType.IP.getType());
             types.add(DataType.UV.getType());
         }
@@ -156,7 +169,17 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
             types.add(DataType.P4P_QWDT_USER.getType());
             types.add(DataType.P4P_QWDT_USER_TOTAL.getType());
         }
-        types.add(otherType);
+        //纯P4P消耗
+        if(DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType) && (!ChartsConstant.TOTAL.equals(timeFlag))){
+          types.add(DataType.P4P_CONSUMPTION_DAY.getType());
+          types.add(DataType.P4P_QWDT_DAY.getType());
+        } else if(DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType) && ChartsConstant.TOTAL.equals(timeFlag)){
+          types.add(DataType.P4P_CONSUMPTION_TOTAL.getType());
+          types.add(DataType.P4P_QWDT_TOTAL.getType());
+        }
+        if(!DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType)){
+          types.add(otherType);
+        }
         List<DayChartBean> beans = new ArrayList<DayChartBean>();
         DayChartBean bean = null;
         for(Integer type:types){//处理IP/UV/其他数据类型今天的数据

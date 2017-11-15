@@ -57,7 +57,7 @@ public class LiveDataController {
             dataMap.put("dataTotal", dataTotal);
             dataMap.put("dataList", dataList);
 //添加P4P的数据,从小时表中添加数据
-            this.realTimeStaticHourService.addP4pData(dataList);
+            //this.realTimeStaticHourService.addP4pData(dataList);
 
             _dataMap.put("errno", 0);
             _dataMap.put("data", dataMap);
@@ -100,7 +100,14 @@ public class LiveDataController {
                 } else if (ChartsConstant.MONTH_DATA.equals(time) || ChartsConstant.WEEK_DATA.equals(time)) { //当年每月维度 ---20170630
                     feeUserService.initChartData(otherType, time, dataMap);
                 } else {//查询之前的数据
+                  if ((DataType.P4P_KEY_SUM.getType() ).equals(otherType)) {
+                    dataMap = this.realTimeStaticHourService.initSecondTodayDataNew(chartBean);
+                  } else if ((DataType.P4P_KEY_TOP50_PEOPLE.getType() ).equals(otherType)) {
+                    //散点图
+                    dataMap = this.realTimeStaticHourService.loadP4pScatter(chartBean);
+                  } else {
                     dataMap = realTimeStaticHourService.initBeforeData(otherType, time);
+                  }
                 }
             } else {
                 logger.error("ChartBean.type值不是数值" + chartBean);

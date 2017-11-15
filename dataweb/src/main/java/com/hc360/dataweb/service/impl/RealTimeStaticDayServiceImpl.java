@@ -1,10 +1,8 @@
 package com.hc360.dataweb.service.impl;
 
 import com.hc360.dataweb.dao.RealTimeStaticDayMapper;
-import com.hc360.dataweb.model.DataType;
-import com.hc360.dataweb.model.MainBean;
-import com.hc360.dataweb.model.RealTimeStaticDay;
-import com.hc360.dataweb.model.RealTimeStaticDoubleDay;
+import com.hc360.dataweb.dao.RealTimeStaticHourMapper;
+import com.hc360.dataweb.model.*;
 import com.hc360.dataweb.service.RealTimeStaticDayService;
 import com.hc360.dataweb.util.CommonUtil;
 import com.hc360.dataweb.util.ControllerDateUtil;
@@ -27,7 +25,8 @@ public class RealTimeStaticDayServiceImpl implements RealTimeStaticDayService {
     private Logger logger = Logger.getLogger(RealTimeStaticDayServiceImpl.class);
     @Autowired
     private RealTimeStaticDayMapper realTimeStaticDayMapper;
-
+    @Autowired
+    private RealTimeStaticHourMapper realTimeStaticHourMapper;
     @Override
     public void initDataList(Map<String, Object> dataList) throws Exception {
         String day = ControllerDateUtil.getToday();//取今天的日期
@@ -116,7 +115,7 @@ public class RealTimeStaticDayServiceImpl implements RealTimeStaticDayService {
             for(RealTimeStaticDoubleDay data : dayData){
                 bean = new MainBean();
                 if (data.getDataType() != null && data.getDataCount() != null){
-                    if(data.getDataType().intValue() == DataType.P4PCONSUMPTION.getType()){
+                    if(data.getDataType().intValue() == DataType.P4PCONSUMPTION.getType() || data.getDataType().intValue() == DataType.P4P_CONSUMPTION_HOUR.getType()){
                         bean.setName(DataType.getName(data.getDataType()));
                         bean.setNum(df.format(data.getDataCount()));
                     }else{
@@ -159,39 +158,71 @@ public class RealTimeStaticDayServiceImpl implements RealTimeStaticDayService {
         }
     }
 
+  private void convertDayData3(List<MainBean> beans, List<RealTimeStaticHour> dayData, String time) {
+    DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
+    DecimalFormat df = new DecimalFormat("#,#00.0#");//分割千分位并保留两位小数
+    MainBean bean = null;
+    if(dayData != null && dayData.size() > 0){
+      for(RealTimeStaticHour data : dayData){
+        bean = new MainBean();
+        if (data.getDataType() != null && data.getDataCount() != null){
+          if(data.getDataType().intValue() == DataType.P4PCONSUMPTION.getType() || data.getDataType().intValue() == DataType.P4P_CONSUMPTION_HOUR.getType()){
+            bean.setName(DataType.getName(data.getDataType()));
+            bean.setNum(df.format(data.getDataCount()));
+          }else{
+            bean.setName(DataType.getName(data.getDataType()));
+            bean.setNum(threeNumDf.format(Math.floor(data.getDataCount())));
+          }
+        } else {
+          bean.setName(CommonUtil.initName(data.getDataType()));
+          bean.setNum("0");
+          logger.error("天表:数据时间:" + data.getIrslDateH() + "数据类型:" + data.getDataType() + "-- 数据为空。");
+          EmailUtil.warnEveryOne("数据时间:"+time+"---"+DataType.getName(data.getDataType())+"--数据为空。");
+        }
+        beans.add(bean);
+      }
+    }
+  }
   @Override
-  public void initP4PDataList(Map<String, Object> dataList) throws Exception {
+  public void initP4PDataList(Map<String, Object> dataList,int flag) throws Exception {
     String day = ControllerDateUtil.getToday();//取今天的日期
     String yesterDay = ControllerDateUtil.getYesterday();//取昨天的日期
     List<Integer> dataTypes = new ArrayList<Integer>();//今天
-    List<Integer> dataTypes1 = new ArrayList<Integer>();//昨天同一时间
-    //P4P当前时间数据
-    p4ptoday(dataTypes);
-    //P4P相同时间数据
-    p4pmeanwhile(dataTypes1);
+    if (flag==0){
+      dataTypes.add(DataType.P4PCONSUMPTION.getType());//
+    } else if (flag==1) {
+      dataTypes.add(DataType.P4P_CONSUMPTION_HOUR.getType());
+      dataTypes.add(DataType.P4P_QWDT_HOUR.getType());
+    }
 
     Map<String,Object> param = new HashMap<String,Object>();
     param.put("list",dataTypes);
-    param.put("day",day);
-    List<RealTimeStaticDoubleDay> dayData = realTimeStaticDayMapper.findRealTimeDoubleDataToday(param);//查询当前时间的数据
-
-    param.put("list",dataTypes1);
-    param.put("yesterDay",yesterDay);
-    List<RealTimeStaticDoubleDay> yesterDayData = realTimeStaticDayMapper.findRealTimeDoubleDataYester(param);//查询前一天同一时间的数据
-
+    param.put("yesterDay",day);
+    //List<RealTimeStaticDoubleDay> dayData = realTimeStaticDayMapper.findRealTimeDoubleDataToday(param);//查询当前时间的数据
+    List<RealTimeStaticHour> dayData =realTimeStaticHourMapper.findRealTimeLastDataYester(param);//查询当前时间的数据
+    String hh=dayData.get(0).getIrslDateH().substring(8,10);
+    param.put("list",dataTypes);
+    String yseterDayhh=yesterDay+hh;
+    param.put("yesterDay",yseterDayhh);
+    //List<RealTimeStaticDoubleDay> yesterDayData = realTimeStaticDayMapper.findRealTimeDoubleDataYester(param);//查询前一天同一时间的数据
+    List<RealTimeStaticHour> yesterDayData =realTimeStaticHourMapper.findDoubleByHour(param);//查询前一天同一时间的数据
     List<MainBean> mainBeans = new ArrayList<MainBean>();
     List<MainBean> mainBeans2 = new ArrayList<MainBean>();
-    convertDayData(mainBeans,dayData, day);
-    convertDayData(mainBeans2, yesterDayData, day);
+    convertDayData3(mainBeans,dayData, day);
+    convertDayData3(mainBeans2, yesterDayData, day);
 
     dataList.put("yesterdaydata", mainBeans2);
     dataList.put("todaydata", mainBeans);
   }
 
   private void p4ptoday(List<Integer> dataTypes) {
+    dataTypes.add(DataType.P4P_CONSUMPTION_DAY.getType());
+    dataTypes.add(DataType.P4P_QWDT_DAY.getType());
     dataTypes.add(DataType.P4PCONSUMPTION.getType());//545
   }
   private void p4pmeanwhile(List<Integer> dataTypes) {
+    dataTypes.add(DataType.P4P_CONSUMPTION_DAY.getType());
+    dataTypes.add(DataType.P4P_QWDT_DAY.getType());
     dataTypes.add(DataType.P4PCONSUMPTION.getType());//545
   }
   private void p4plastTime(List<Integer> dataTypes2) {
