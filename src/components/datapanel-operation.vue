@@ -102,21 +102,28 @@ export default {
           filters: {
             timelimit: ['today', 'lastsevensays', 'lastmonth']
           }
+        },
+        {
+          name: 'P4P消耗',
+          code: '46',
+          filters: {
+            timelimit: ['today', 'lastsevensays', 'lastmonth', 'all']
+          }
         }
-        // {
-        //   name: 'P4P消耗',
-        //   code: '46',
-        //   filters: {
-        //     timelimit: ['today', 'lastsevensays', 'lastmonth', 'all']
-        //   }
-        // },
         // {
         //   name: 'P4PCPC',
         //   code: '316',
         //   filters: {
         //     timelimit: ['lastmonth']
         //   }
-        // }
+        // },
+        // {
+        //   name: '全网定投',
+        //   code: '317',
+        //   filters: {
+        //     timelimit: ['all','weekly']
+        //   }
+        // } 
       ],
 
       /**
@@ -218,7 +225,8 @@ export default {
           'IP': '/datapanel/map',
           'PV': '/datapanel/map',
           'UV': '/datapanel/map',
-          '询盘数量': '/datapanel/map'
+          '询盘数量': '/datapanel/map',
+          'P4P消耗':'/datapanel/p4pConsumption'
         },
 
         /**

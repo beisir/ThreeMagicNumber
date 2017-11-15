@@ -35,7 +35,8 @@ const routeConfig = [{
             require.ensure(['components/datapanel-p4pConsumption.vue'], () => {
                 resolve(require('components/datapanel-p4pConsumption.vue'));
             });
-        }
+        },
+        hidden: true
     },{
         name: '战斗力',
         path: '/datapanel/effectives',
