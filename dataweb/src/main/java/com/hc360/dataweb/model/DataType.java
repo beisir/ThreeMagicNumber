@@ -365,8 +365,16 @@ public enum DataType {
     P4P_QWDT_WEEK_JP("竞拍用户数",319),
     P4P_QWDT_WEEK_JP_KEY("竞拍关键词数",320),
     P4P_QWDT_USER("符合定投用户数",321),
-    P4P_QWDT_USER_TOTAL("累计定投总用户数",322);
+    P4P_QWDT_USER_TOTAL("累计定投总用户数",322),
     /*全网定投相关*/
+
+    /*纯P4P消耗*/
+    P4P_CONSUMPTION_HOUR("纯P4P消耗", 323),
+    P4P_CONSUMPTION_DAY("纯P4P消耗", 324),
+    P4P_CONSUMPTION_TOTAL("纯P4P消耗", 325),
+    P4P_QWDT_HOUR("全网定投消耗",326),
+    P4P_QWDT_DAY("全网定投消耗",327);
+
     private String name;
 
     private Integer type;

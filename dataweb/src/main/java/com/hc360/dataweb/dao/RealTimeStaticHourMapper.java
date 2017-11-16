@@ -83,4 +83,11 @@ public interface RealTimeStaticHourMapper {
      * @return
      */
     List<RealTimeStaticHour> findRealTimeLastDataYester(Map<String, Object> param2)throws Exception;
+
+    /**
+     * 获取昨天的某一小时的一条数据
+     * @param param2
+     * @return
+     */
+    List<RealTimeStaticHour> findDoubleByHour(Map<String, Object> param2)throws Exception;
 }

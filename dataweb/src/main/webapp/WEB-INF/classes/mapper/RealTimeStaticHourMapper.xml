@@ -210,4 +210,20 @@
         ) t
         order by DATA_TYPE,IRSL_DATE_H asc
     </select>
+
+    <select id="findDoubleByHour" resultMap="BaseResultMap" parameterType="java.util.Map">
+      select DATA_TYPE,
+      data_count,
+      IRSL_DATE_H,
+      OP_DATE
+      from SJPT_REALTIME_STATIC_HOUR
+      where IRSL_DATE_H =#{yesterDay}
+      <if test="list != null and list.size > 0">
+        and DATA_TYPE in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+          #{item}
+        </foreach>
+      </if>
+
+    </select>
 </mapper>

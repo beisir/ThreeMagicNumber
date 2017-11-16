@@ -37,9 +37,9 @@ public class P4PDataController {
     Map dataMap = new HashMap();
     try {
       //橙色顶部 p4p消耗
-      realTimeStaticDayService.initP4PDataList(dataTotal);
+      realTimeStaticDayService.initP4PDataList(dataTotal,0);
       //添加P4P的数据,从小时表中添加数据
-      realTimeStaticHourService.addP4pData(dataList);
+      realTimeStaticDayService.initP4PDataList(dataList,1);
 
       dataMap.put("dataTotal", dataTotal);
       dataMap.put("dataList", dataList);

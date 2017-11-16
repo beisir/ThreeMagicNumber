@@ -23,5 +23,5 @@ public interface RealTimeStaticDayService {
      * 获取顶部P4P实时数据
      * @param dataList
      */
-    void initP4PDataList(Map<String, Object> dataList)throws Exception;
+    void initP4PDataList(Map<String, Object> dataList,int flag)throws Exception;
 }
