@@ -35,9 +35,10 @@ export default {
           style:{"fontSize":"16px"},
           y: 50
         },
+        colors: ['#19c6Ed', '#FF7C4D', '#2BCC6B', '#C275DF'], //图表序列（Series）的默认颜色数组
         tooltip: {
           headerFormat: null,
-          pointFormat: "{point.name}: <b>{point.y}%</b>"
+          pointFormat: "<b>{point.percentnum}%</b>"
         },
         plotOptions: {
           pie: {
@@ -45,7 +46,7 @@ export default {
               enabled: true,
               // format: '<b>{point.name}</b>: {point.percentage:.1f} %',
               format:
-                "<b>{point.name}</b>:{point.tadayNum}<br>与昨日对比：{point.dire} {point.y}%  ",
+                "<b>{point.name}</b>:{point.tadayNum}<br>与昨日对比：{point.trend} {point.percentnum}%  ",
               style: {
                 color: "black"
               }
@@ -83,6 +84,7 @@ export default {
           that.chartEntity.series[0].remove();
         }
 
+        console.log(chartData.dataList);
         /***增加数据列 */
         that.chartEntity.addSeries({
           type: "pie",
@@ -92,7 +94,7 @@ export default {
 
         /***更新标题 */
         that.chartEntity.title.update({
-          text: `${total.name}${total.tadayNum}<br>与昨日对比：${total.dire}${total.y}%`
+          text: `${total.name}${total.y}<br>与昨日对比：${total.trend}${total.percentnum}%`
         });
       });
     },
@@ -110,9 +112,14 @@ export default {
             percentun = this.percentum(item.num, yesterdaydata),
             seriesData = {
               name: item.name,
-              tadayNum: item.num,
-              y: Number(percentun.num),
-              dire: percentun.direction
+              //今天的数据
+              tadayNum:item.num,
+               //今天的数据
+              y:Number(item.num.replace(/,/g,'')),
+              //今天和昨天的百分比
+              percentnum:percentun.num,             
+              //上升下降
+              trend: percentun.direction 
             };
           if (!chartData[key]) {
             chartData[key] = [];
@@ -120,6 +127,7 @@ export default {
           chartData[key].push(seriesData);
         });
       }
+      console.log(chartData)
       return chartData;
     },
     /**
