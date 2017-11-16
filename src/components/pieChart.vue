@@ -84,7 +84,6 @@ export default {
           that.chartEntity.series[0].remove();
         }
 
-        console.log(chartData.dataList);
         /***增加数据列 */
         that.chartEntity.addSeries({
           type: "pie",
@@ -127,7 +126,6 @@ export default {
           chartData[key].push(seriesData);
         });
       }
-      console.log(chartData)
       return chartData;
     },
     /**
