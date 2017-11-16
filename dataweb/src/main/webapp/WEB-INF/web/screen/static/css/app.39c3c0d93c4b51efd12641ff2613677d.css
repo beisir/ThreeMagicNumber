@@ -2642,7 +2642,7 @@ body{min-width:400px;}
 	.userPlatDataConP4P{width:33.333%;}
 	.userPlatNumP4P{width:100%;}
 	.dataBoxTop .dataBoxTopCon{width:25%;}
-	.dataBoxBotCon ul li{width:16.666666%!important;}
+	.dataBoxBotCon ul li{width:25%!important;}
 	.data2BoxTop .data2BoxTopCon{width:25%;}
 	.data2BoxBotCon ul li{width:20%!important;}
 	.data3BoxTop .data2BoxTopCon{width:25%;}
@@ -2699,7 +2699,7 @@ aside .main-menu>ul>li a{cursor:pointer;}
 .dataBoxTopCon dl dd span.l-02{width:100%;font-size:22px;}
 .dataBoxTopCon dl dd span.l-03{width:100%;font-size:22px;}
 .dataBoxBot{border:1px dotted #ddd;background:#f9f9f9;overflow:hidden;padding:10px 10px 0;border-radius:5px;border-top:#ff7c4d 2px solid;}
-.dataBoxBotCon ul li{float:left;}
+.dataBoxBotCon ul li{ display:inline-block}
 .dataBoxBotList{overflow:hidden;margin:0 5px;}
 .dataBoxBotList dt{text-align:center;line-height:40px;padding-top:5px;border-bottom:1px dotted #ddd;font-size:15px;margin:0 10px;}
 .dataBoxBotList dl{background:#19c6e0;height:90px;width:100%;border-radius:10px;color:#fff;font-size:15px;cursor:pointer;}
@@ -2852,3 +2852,4 @@ a.userAdd{display:block;float:left;width:27px;height:27px;background:url(//data.
 .userAddInput input{border:1px solid #dce0e2;height:30px;width:260px;border-radius:3px;padding:0 0 0 10px;}
 
 .seleBoxConList dd label{height:24px;line-height:24px;width:166px;color:#333;padding:5px 0;box-sizing:initial;margin: 0px !important;}
+.dataBoxBotCon,.data2BoxBotCon,.data3BoxBotCon{text-align:center;}

@@ -45,20 +45,7 @@ export default {
        * @type {Number}
        */
       operationChart: [
-        {
-          name: 'P4P关键词',
-          code: '305',
-          filters: {
-            timelimit: ['lastmonth']
-          }
-        },
-        {
-          name: 'P4P竞价词',
-          code: '307',
-          filters: {
-            timelimit: ['numberPeople', 'price']
-          }
-        },
+        
         {
           name: 'P4P消耗',
           code: '323',
@@ -79,7 +66,21 @@ export default {
           filters: {
             timelimit: ['all','weekly']
           }
-        }        
+        },
+        {
+          name: 'P4P关键词',
+          code: '305',
+          filters: {
+            timelimit: ['lastmonth']
+          }
+        },
+        {
+          name: 'P4P竞价词',
+          code: '307',
+          filters: {
+            timelimit: ['numberPeople', 'price']
+          }
+        }       
       ],
 
       /**

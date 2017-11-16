@@ -184,7 +184,6 @@ export default {
             this.dataList = this.processData(dataList.todaydata, dataList.yesterdaydata);
           }
         }
-        console.log(this.dataTotal,this.dataList);
       }, (response) => {
         console.log('用户平台数据接口获取失败')
       })
