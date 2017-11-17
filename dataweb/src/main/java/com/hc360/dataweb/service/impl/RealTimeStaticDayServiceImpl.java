@@ -115,7 +115,7 @@ public class RealTimeStaticDayServiceImpl implements RealTimeStaticDayService {
             for(RealTimeStaticDoubleDay data : dayData){
                 bean = new MainBean();
                 if (data.getDataType() != null && data.getDataCount() != null){
-                    if(data.getDataType().intValue() == DataType.P4PCONSUMPTION.getType() || data.getDataType().intValue() == DataType.P4P_CONSUMPTION_HOUR.getType()){
+                    if(data.getDataType().intValue() == DataType.P4PCONSUMPTION.getType() || data.getDataType().intValue() == DataType.P4P_CONSUMPTION_HOUR.getType() || data.getDataType().intValue() == DataType.P4P_CONSUMPTION_DAY.getType() || data.getDataType().intValue() == DataType.P4P_QWDT_DAY.getType()){
                         bean.setName(DataType.getName(data.getDataType()));
                         bean.setNum(df.format(data.getDataCount()));
                     }else{
@@ -191,25 +191,29 @@ public class RealTimeStaticDayServiceImpl implements RealTimeStaticDayService {
     if (flag==0){
       dataTypes.add(DataType.P4PCONSUMPTION.getType());//
     } else if (flag==1) {
-      dataTypes.add(DataType.P4P_CONSUMPTION_HOUR.getType());
-      dataTypes.add(DataType.P4P_QWDT_HOUR.getType());
+      //dataTypes.add(DataType.P4P_CONSUMPTION_HOUR.getType());
+      //dataTypes.add(DataType.P4P_QWDT_HOUR.getType());
+      dataTypes.add(DataType.P4P_CONSUMPTION_DAY.getType());
+      dataTypes.add(DataType.P4P_QWDT_DAY.getType());
     }
 
     Map<String,Object> param = new HashMap<String,Object>();
     param.put("list",dataTypes);
-    param.put("yesterDay",day);
-    //List<RealTimeStaticDoubleDay> dayData = realTimeStaticDayMapper.findRealTimeDoubleDataToday(param);//查询当前时间的数据
-    List<RealTimeStaticHour> dayData =realTimeStaticHourMapper.findRealTimeLastDataYester(param);//查询当前时间的数据
-    String hh=dayData.get(0).getIrslDateH().substring(8,10);
+    param.put("day",day);
+    List<RealTimeStaticDoubleDay> dayData = realTimeStaticDayMapper.findRealTimeDoubleDataToday(param);//查询当前时间的数据
+    //List<RealTimeStaticHour> dayData =realTimeStaticHourMapper.findRealTimeLastDataYester(param);//查询当前时间的数据
+    //String hh=dayData.get(0).getIrslDateH().substring(8,10);
+    //String hh=dayData.get(0).getOpDate().toString().substring(8,10);
     param.put("list",dataTypes);
-    String yseterDayhh=yesterDay+hh;
-    param.put("yesterDay",yseterDayhh);
-    //List<RealTimeStaticDoubleDay> yesterDayData = realTimeStaticDayMapper.findRealTimeDoubleDataYester(param);//查询前一天同一时间的数据
-    List<RealTimeStaticHour> yesterDayData =realTimeStaticHourMapper.findDoubleByHour(param);//查询前一天同一时间的数据
+   // String yseterDayhh=yesterDay+hh;
+    param.put("day",day);
+    param.put("yesterDay",yesterDay);
+    List<RealTimeStaticDoubleDay> yesterDayData = realTimeStaticDayMapper.findRealTimeDoubleDataYester(param);//查询前一天同一时间的数据
+    //List<RealTimeStaticHour> yesterDayData =realTimeStaticHourMapper.findDoubleByHour(param);//查询前一天同一时间的数据
     List<MainBean> mainBeans = new ArrayList<MainBean>();
     List<MainBean> mainBeans2 = new ArrayList<MainBean>();
-    convertDayData3(mainBeans,dayData, day);
-    convertDayData3(mainBeans2, yesterDayData, day);
+    convertDayData(mainBeans,dayData,day);
+    convertDayData(mainBeans2,yesterDayData,day);
 
     dataList.put("yesterdaydata", mainBeans2);
     dataList.put("todaydata", mainBeans);

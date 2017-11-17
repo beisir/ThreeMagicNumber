@@ -442,7 +442,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
                     if(CommonUtil.initArith(realTimeStaticDouble.getDataType())){
                         initMap.put(realTimeStaticDouble.getIrslDate(), (realTimeStaticDouble.getDataCount().doubleValue() / 10000)); //单位为万
                     }else{
-                        if(realTimeStaticDouble.getDataType().intValue() == DataType.P4PCONSUMPTION.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4PCONSUMPTIONTOTAL.getType()){
+                        if(realTimeStaticDouble.getDataType().intValue() == DataType.P4PCONSUMPTION.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4PCONSUMPTIONTOTAL.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_CONSUMPTION_HOUR.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_CONSUMPTION_DAY.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_QWDT_HOUR.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_QWDT_DAY.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_CONSUMPTION_TOTAL.getType()){
                             format = df.format(realTimeStaticDouble.getDataCount());
                             initMap.put(realTimeStaticDouble.getIrslDate(), Double.parseDouble(format)); //单位为元
                         }else{
@@ -478,7 +478,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
                     if (CommonUtil.initArith(realTimeStaticHour.getDataType())) {
                         initMap.put(realTimeStaticHour.getIrslDateH(), (realTimeStaticHour.getDataCount().doubleValue() / 10000)); //单位为万
                     } else {
-                        if(realTimeStaticHour.getDataType().intValue() == DataType.P4PCONSUMPTION.getType()){//P4P消耗
+                        if(realTimeStaticHour.getDataType().intValue() == DataType.P4PCONSUMPTION.getType() || realTimeStaticHour.getDataType().intValue() == DataType.P4P_CONSUMPTION_HOUR.getType() || realTimeStaticHour.getDataType().intValue() == DataType.P4P_CONSUMPTION_DAY.getType() || realTimeStaticHour.getDataType().intValue() == DataType.P4P_QWDT_HOUR.getType() || realTimeStaticHour.getDataType().intValue() == DataType.P4P_QWDT_DAY.getType()){//P4P消耗
                             initMap.put(realTimeStaticHour.getIrslDateH(), Double.parseDouble(df.format(realTimeStaticHour.getDataCount()))); //单位为个/元
                         }else{
                             initMap.put(realTimeStaticHour.getIrslDateH(), Math.floor(realTimeStaticHour.getDataCount())); //单位为个/元
