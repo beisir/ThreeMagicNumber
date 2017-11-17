@@ -142,25 +142,24 @@ export default {
        * @type {Object}
        */
       splineChartOption: {
-        chart: {
-          type: "spline"
-        },
-        xAxis: {
-          gridLineWidth: null,
+          chart: {
+            type: 'spline'
+          },
+          xAxis: {
+            gridLineWidth: null,
+            title: {
+              text: null
+            }
+          },
           title: {
-            text: null
+            text: ''
+          },
+          legend: {
+            enabled: true
+          },
+          tooltip: {
+            useHTML: true            
           }
-        },
-        title: {
-          text: ""
-        },
-        legend: {
-          enabled: true
-        },
-        tooltip: {
-          shared: true,
-          useHTML: true
-        }
       }
     };
   },
@@ -220,6 +219,12 @@ export default {
       chartEntity.update(
         {
           tooltip: {
+           /**@augments
+            * 通过共享（shared） 属性来将多个数据列的信息展示在同一个提示框里
+            在共享的提示框里，数据点对象可以 this.points 来获取，该对象是个数组
+            非共享的提示框中，数据点对象是通过 this.point 来获取 当前数据点对象
+            */            
+            shared: true,
             formatter: function() {
               var _t = this,
                 _ret = ["<table>"];
@@ -252,6 +257,7 @@ export default {
       chartEntity.update(
           {
             tooltip: {
+               
               formatter: function() {
                 if (that.CurrentNavigation.code == "307") {
                   var _t = this;
