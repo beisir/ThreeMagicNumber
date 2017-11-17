@@ -32,6 +32,7 @@
                     <ul>
                       <li v-for="(item,index) in dataList" v-show="dataList.length>0" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
                         <div class="dataBoxBotList">
+                          <template  v-if="item.name!='P4P消耗'">
                           <dl>
                             <dt>{{ item.name }}</dt>
                             <dd>
@@ -40,6 +41,19 @@
                                 }}</span>
                             </dd>
                           </dl>
+                          </template >
+                          <template  v-else>
+                            <dl>
+                              <a href="javascript:;" title="点击查看更多信息">
+                              <dt>{{ item.name }}</dt>
+                              <dd>
+                                <span class="l-02">{{ item.num }}</span>
+                                <span class="l-03" :class="differ(item.num,item.yesterdayNum)=='up' ? 'icon-tt-up' : 'l-03 icon-tt-lower'">{{ percentum(item.num, item.yesterdayNum)
+                                  }}</span>
+                              </dd>
+                              </a>
+                            </dl>
+                          </template >
                         </div>
                       </li>
                     </ul>
