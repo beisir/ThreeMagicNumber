@@ -25,13 +25,12 @@
     </div>
 </template>
 <script>
-require('highcharts/js/highcharts-more')(Highcharts);
-import chartTendency from './chart-tendency.vue';
-import pieChart from './pieChart.vue'
+require("highcharts/js/highcharts-more")(Highcharts);
+import chartTendency from "./chart-tendency.vue";
+import pieChart from "./pieChart.vue";
 export default {
-   data() {
-    return {
-      dataTotal: [], // P4P消耗
+  data() {
+    return {     
       dataList: [], //P4P数据列表
 
       /**
@@ -45,42 +44,41 @@ export default {
        * @type {Number}
        */
       operationChart: [
-        
         {
-          name: 'P4P消耗',
-          code: '323',
+          name: "P4P消耗",
+          code: "323",
           filters: {
-            timelimit: ['today', 'lastsevensays', 'lastmonth', 'all']
+            timelimit: ["today", "lastsevensays", "lastmonth", "all"]
           }
         },
         {
-          name: 'P4PCPC',
-          code: '316',
+          name: "P4PCPC",
+          code: "316",
           filters: {
-            timelimit: ['lastmonth']
+            timelimit: ["lastmonth"]
           }
         },
         {
-          name: '全网定投',
-          code: '317',
+          name: "全网定投",
+          code: "317",
           filters: {
-            timelimit: ['all','weekly']
+            timelimit: ["all", "weekly"]
           }
         },
         {
-          name: 'P4P关键词',
-          code: '305',
+          name: "P4P关键词",
+          code: "305",
           filters: {
-            timelimit: ['lastmonth']
+            timelimit: ["lastmonth"]
           }
         },
         {
-          name: 'P4P竞价词',
-          code: '307',
+          name: "P4P竞价词",
+          code: "307",
           filters: {
-            timelimit: ['numberPeople', 'price']
+            timelimit: ["numberPeople", "price"]
           }
-        }       
+        }
       ],
 
       /**
@@ -88,120 +86,188 @@ export default {
        * @type {Object}
        */
       service: {
-        url: '/dataweb/chartdata'
-      }     
-    }
+        url: "/dataweb/chartdata"
+      },
+      /**
+       * [bubbleChartOption P4P竞价词图形配置]
+       * @type {Object}
+       */
+      bubbleChartOption: {
+        chart: {
+          type: "bubble"
+        },
+
+        title: {
+          text: "P4P竞价词TOP50散点分布图"
+        },
+        /****
+           * 不显示图例
+           */
+        legend: {
+          enabled: false
+        },
+        /****
+           * x轴配置信息
+           */
+        xAxis: {
+          gridLineWidth: 1,
+          title: {
+            text: "价格（元）"
+          },
+          labels: {
+            format: "{value}"
+          }
+        },
+        /****
+           * 鼠标指上圆点，显示的提示信息
+           */
+        tooltip: {
+          shared: false,
+          useHTML: true
+        },
+        /****
+           * 圆点上显示的关键词信息
+           */
+        plotOptions: {
+          series: {
+            dataLabels: {
+              enabled: true,
+              format: "{point.name}"
+            }
+          }
+        }
+      },
+      /**
+       * [splineChartOption 折线图配置对象 ]
+       * @type {Object}
+       */
+      splineChartOption: {
+        chart: {
+          type: "spline"
+        },
+        xAxis: {
+          gridLineWidth: null,
+          title: {
+            text: null
+          }
+        },
+        title: {
+          text: ""
+        },
+        legend: {
+          enabled: true
+        },
+        tooltip: {
+          shared: true,
+          useHTML: true
+        }
+      }
+    };
   },
   components: {
     chartTendency,
     pieChart
-  }, 
+  },
   mounted() {
     const _that = this;
-    let dataList = [];    
     /****
      * 监听初始化图表一对象实例之前事件
      */
-    _that.$refs.operationChart.$on('beforeRender', function(chartOptions) {
+    _that.$refs.operationChart.$on("beforeRender", function(chartOptions) {
       /** 判断如果是P4P竞价词改变图标类型为散点图 */
-      if (this.CurrentNavigation.code === '307') {
-        Object.assign(chartOptions, {        
-          chart: {
-            type: 'bubble',
-          },
-
-          title: {
-            text: 'P4P竞价词TOP50散点分布图'
-          },
-          /****
-           * 不显示图例
-           */
-          legend: {
-            enabled: false
-          },
-          /****
-           * x轴配置信息
-           */
-          xAxis: {
-            gridLineWidth: 1,
-            title: {
-              text: '价格（元）'
-            },
-            labels: {
-              format: '{value}'
-            }
-          },
-          /****
-           * 鼠标指上圆点，显示的提示信息
-           */
-          tooltip: {
-            shared: false,
-            useHTML: true           
-          },
-          /****
-           * 圆点上显示的关键词信息
-           */
-          plotOptions: {
-            series: {
-              dataLabels: {
-                enabled: true,
-                format: '{point.name}'
-              }
-            }
-          }
-        });
+      if (this.CurrentNavigation.code === "307") {
+        Object.assign(chartOptions, _that.bubbleChartOption);
       } else {
-        Object.assign(chartOptions, {         
-          chart: {
-            type: 'spline'
-          },
-          xAxis: {
-            gridLineWidth: null,
-            title: {
-              text: null
-            }
-          },
-          title: {
-            text: ''
-          },
-          legend: {
-            enabled: true
-          },
-          tooltip: {
-            shared: true,
-            useHTML: true            
-          }
-        });
+        Object.assign(chartOptions, _that.splineChartOption);
       }
     });
     /****
      * 监听图表一渲染开始事件
      */
-    _that.$refs.operationChart.$on('dataReady', function(data) {
-      dataList = data.dataList;
+    _that.$refs.operationChart.$on("dataReady", function(data) {
+      _that.dataList = data.dataList;
     });
     /****
      * 监听图表一重绘事件之前
      */
-    _that.$refs.operationChart.$on('beforeRedraw', function(chartEntity) {
+    _that.$refs.operationChart.$on("beforeRedraw", function(chartEntity) {      
       /****
        * p4p竞价词改变图表类型
        */
-      if (this.CurrentNavigation.code === '307') {
-        chartEntity.update({
+      if (this.CurrentNavigation.code == "307") {
+         _that.changeBubbleOption(chartEntity,this)
+      } else if (this.CurrentNavigation.code == "305") {
+        /****
+         * p4p关键词公用一个y轴
+         */
+        chartEntity.series.forEach((series, index) => {
+          series.update(
+            {
+              yAxis: 0
+            },
+            false
+          );
+        });
+        _that.updataTooltip(chartEntity);
+      } else {
+        _that.updataTooltip(chartEntity);
+      }
+    });
+  },
+  methods: {
+    /**@augments 更改图表显示单位 */
+    updataTooltip(chartEntity){
+      chartEntity.update(
+        {
           tooltip: {
             formatter: function() {
-              var _t = this;
-              return [
-                '<span style="font-size: 10px">' + _t.key + '</span><br>',
-                '<tspan> 人数: </tspan>',
-                '<tspan style="font-weight:bold">' + _t.y + '个</tspan><br>',
-                '<tspan> 金额: </tspan>',
-                '<tspan style="font-weight:bold">' + _t.x.toFixed(2) + '元</tspan>'
-              ].join('');
+              var _t = this,
+                _ret = ["<table>"];
+              for (var i = 0; i < _t.points.length; i++) {
+                let unit = _t.points[i].series.userOptions.tooltip.valueSuffix;
+                _ret = _ret.concat([
+                  '<tr><td style="color: ' +
+                    _t.points[i].color +
+                    '">' +
+                    _t.points[i].series.name +
+                    ": </td>",
+                  '<td style="text-align: right"><b>' +
+                    Highcharts.numberFormat(_t.points[i].y, 0, ".", ",") +
+                    unit +
+                    "</b></td></tr>"
+                ]);
+              }
+              _ret.push("</table>");
+              return _ret.join("");
             }
           }
-        }, false);
+        },
+        false
+      );
+    },
+    /****
+    * 修改p4p竞价词图表配置
+    */
+    changeBubbleOption(chartEntity,that){
+      chartEntity.update(
+          {
+            tooltip: {
+              formatter: function() {
+                if (that.CurrentNavigation.code == "307") {
+                  var _t = this;
+                  return [
+                    '<span style="font-size: 10px">' + _t.key + "</span><br>",
+                    "<tspan> 人数: </tspan>",
+                    '<tspan style="font-weight:bold">' + _t.y + "个</tspan><br>",
+                    "<tspan> 金额: </tspan>",
+                    '<tspan style="font-weight:bold">' + _t.x.toFixed(2) +"元</tspan>"
+                  ].join("");
+                }
+              }
+            }
+          },
+          false
+        );
 
         /**
          * 删除y轴坐标轴
@@ -219,50 +285,20 @@ export default {
          * 增加Y轴坐标
          */
         chartEntity.addAxis({
-
           title: {
-            text: '人数（人）'
+            text: "人数（人）"
           },
           labels: {
-            format: '{value}'
+            format: "{value}"
           }
         });
         /***
          * 增加series
          */
         chartEntity.addSeries({
-          data: dataList
+          data: this.dataList
         });
-
-      } else if (this.CurrentNavigation.code === '305') {
-        /****
-         * p4p关键词公用一个y轴
-         */
-        chartEntity.series.forEach((series, index) => {
-          series.update({
-            yAxis: 0
-          }, false);
-        });
-        chartEntity.update({
-          tooltip: {
-            formatter: function() {
-              var _t = this,
-                _ret = [
-                  '<table>'
-                ];
-              for (var i = 0; i < _t.points.length; i++) {
-                _ret = _ret.concat([
-                  '<tr><td style="color: ' + _t.points[i].color + '">' + _t.points[i].series.name + ': </td>',
-                  '<td style="text-align: right"><b>' + Highcharts.numberFormat(_t.points[i].y, 0, '.', ',') + '个</b></td></tr>'
-                ]);
-              }
-              _ret.push('</table>')
-              return _ret.join('');
-            }
-          }
-        }, false);
-      }
-    });
+    }
   }
-}
+};
 </script>
