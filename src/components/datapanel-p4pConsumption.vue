@@ -229,16 +229,12 @@ export default {
               var _t = this,
                 _ret = ["<table>"];
               for (var i = 0; i < _t.points.length; i++) {
-                let unit = _t.points[i].series.userOptions.tooltip.valueSuffix;
+                let unit = _t.points[i].series.userOptions.tooltip.valueSuffix,
+                    number=unit=='个'?0:2;
                 _ret = _ret.concat([
-                  '<tr><td style="color: ' +
-                    _t.points[i].color +
-                    '">' +
-                    _t.points[i].series.name +
-                    ": </td>",
+                  '<tr><td style="color: ' + _t.points[i].color +'">' + _t.points[i].series.name +": </td>",
                   '<td style="text-align: right"><b>' +
-                    Highcharts.numberFormat(_t.points[i].y, 0, ".", ",") +
-                    unit +
+                    Highcharts.numberFormat(_t.points[i].y, number, ".", ",") +unit +
                     "</b></td></tr>"
                 ]);
               }
@@ -256,10 +252,8 @@ export default {
     changeBubbleOption(chartEntity,that){
       chartEntity.update(
           {
-            tooltip: {
-               
+            tooltip: {               
               formatter: function() {
-                if (that.CurrentNavigation.code == "307") {
                   var _t = this;
                   return [
                     '<span style="font-size: 10px">' + _t.key + "</span><br>",
@@ -268,7 +262,7 @@ export default {
                     "<tspan> 金额: </tspan>",
                     '<tspan style="font-weight:bold">' + _t.x.toFixed(2) +"元</tspan>"
                   ].join("");
-                }
+                
               }
             }
           },
