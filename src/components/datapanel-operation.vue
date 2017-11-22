@@ -73,7 +73,7 @@
             <div class="popupCon">
             	<div class="popupClose" @click="closeMask"></div>
                 <div class="popupData" v-if="P4PData.name">
-                	<dl @click="redirect(P4PData)">
+                	<dl @click="gotoP4pConsumption">
                     	<dt>{{P4PData.name}}</dt>
                         <dd>
                         	<span class="l-02">{{ P4PData.num }}</span>
@@ -246,6 +246,11 @@ export default {
         }
       });
       return dataArr
+    },
+    gotoP4pConsumption:function(){
+       document.body.setAttribute('class','');
+      /**@description 跳转路由 */
+      this.$router.push('/datapanel/p4pConsumption');
     },
     /**
      * [redirect 重定向到新路由]
