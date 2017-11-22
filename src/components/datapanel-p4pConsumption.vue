@@ -30,6 +30,7 @@
 require("highcharts/js/highcharts-more")(Highcharts);
 import chartTendency from "./chart-tendency.vue";
 import pieChart from "./pieChart.vue";
+//import pieChart from "./pieChart-tt.vue";
 export default {
   data() {
     return {     
