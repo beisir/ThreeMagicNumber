@@ -17,7 +17,7 @@
                 <div class="dataBoxTop">
                   <div class="dataBoxTopCon">
                     <dl>
-                      <dd v-for="(item,index) in dataTotal" v-show="dataTotal.length>0" v-on:click="redirect(item)">
+                      <dd :key="index" v-for="(item,index) in dataTotal" v-show="dataTotal.length>0" v-on:click="redirect(item)">
                         <span class="l-01">{{ item.name }}</span>
                         <span class="l-02"><template v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">{{ item.num }}</template></span>
                         <span class="l-03" :class="differ(item.num,item.yesterdayNum)=='up' ? 'icon-tt-up' : 'l-03 icon-tt-lower' "><template v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">{{ percentum(item.num, item.yesterdayNum)
@@ -30,9 +30,9 @@
                 <div class="dataBoxBot">
                   <div class="dataBoxBotCon">
                     <ul>
-                      <li v-for="(item,index) in dataList" v-show="dataList.length>0" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
+                      <li :key="index" v-for="(item,index) in dataList" v-show="dataList.length>0" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
                         <div class="dataBoxBotList">
-                          <template  v-if="item.name!='P4P消耗'">
+                          <div  v-if="item.name!='P4P消耗'">
                           <dl>
                             <dt>{{ item.name }}</dt>
                             <dd>
@@ -41,8 +41,8 @@
                                 }}</span>
                             </dd>
                           </dl>
-                          </template >
-                          <template  v-else>
+                          </div >
+                          <div  v-else> 
                             <dl>
                               <a href="javascript:;" title="点击查看更多信息">
                               <dt>{{ item.name }}</dt>
@@ -53,7 +53,7 @@
                               </dd>
                               </a>
                             </dl>
-                          </template >
+                          </div>
                         </div>
                       </li>
                     </ul>
@@ -67,17 +67,46 @@
         </div>
       </div>
     </div>
+     <!-- 遮罩层 -->
+        <div class="popupBox" v-show="maskShow">
+        	<div class="popupBg"></div>
+            <div class="popupCon">
+            	<div class="popupClose" @click="maskShow=false"></div>
+                <div class="popupData" v-if="P4PData.name">
+                	<dl @click="redirect(P4PData)">
+                    	<dt>{{P4PData.name}}</dt>
+                        <dd>
+                        	<span class="l-02">{{ P4PData.num }}</span>
+                          <span class="l-03" :class="differ(P4PData.num,P4PData.yesterdayNum)=='up' ? 'icon-tt-up' : 'l-03 icon-tt-lower'" >{{ percentum(P4PData.num, P4PData.yesterdayNum) }}</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    <!-- 遮罩层结束 -->
   </div>
 </template>
-<script type="text/ecmascript-6">
+
+<script  type="text/ecmascript-6">
 require('highcharts/js/highcharts-more')(Highcharts);
 import chartTendency from './chart-tendency.vue'
 
 export default {
   data() {
     return {
-      dataTotal: [], // 产品运营数据ip和uv汇总数据
-      dataList: [], //产品运营数据列表
+      // 产品运营数据ip和uv汇总数据
+      dataTotal: [], 
+
+      //产品运营数据列表
+      dataList: [], 
+
+      /**
+       * @description 
+       * 遮罩的P4P数据
+       * */
+      P4PData:{},
+
+      maskShow:true,
 
       /**
        * [timerMillisec 数据定时更新时间间隔毫秒数]
@@ -123,21 +152,7 @@ export default {
           filters: {
             timelimit: ['today', 'lastsevensays', 'lastmonth', 'all']
           }
-        }
-        // {
-        //   name: 'P4PCPC',
-        //   code: '316',
-        //   filters: {
-        //     timelimit: ['lastmonth']
-        //   }
-        // },
-        // {
-        //   name: '全网定投',
-        //   code: '317',
-        //   filters: {
-        //     timelimit: ['all','weekly']
-        //   }
-        // } 
+        }       
       ],
 
       /**
@@ -206,10 +221,10 @@ export default {
      * 根据后台返回的数据处理成
      * [
      *  {
-           *    name:"会员注册"
-                num:"1,692" 今天的数据
-                yestadayNum:"1,804" 昨天的数据
-               }
+         name:"会员注册"
+         num:"1,692" 今天的数据
+         yestadayNum:"1,804" 昨天的数据
+        }
      * ]
      */
     processData(todaydata, yesterdaydata) {
@@ -229,7 +244,6 @@ export default {
      * [redirect 重定向到新路由]
      */
     redirect: function(item) {
-
       /**
        * [redirectMapping 重定向映射]
        * @type {Object}
@@ -254,13 +268,12 @@ export default {
     }
   },
   created() {
-   
-    this.getPlatformData();
+    this.getPlatformData();    
   },
   mounted() {
-    const _that = this;
-    let dataList = [];
-    
+     /** 禁止页面滚动 */
+     document.body.style.overflowY="hidden";
+     const _that = this;    
     /****
      * 图表一创建之前
      */
@@ -292,34 +305,37 @@ export default {
      */
     _that.$refs.operationChart.$on('dataReady', function(data) {
       /***
-       *  百度联盟收入的本月数据，增加总收入副标题
+       *  百度联盟收入的
        */
       if (this.CurrentNavigation.code === '309' && this.CurrentTimelimitFilter.code == '5') {
-        let numArr = [];
-        for (var i = 0; i < data.dataList[0].data.length; i++) {
-          var num1 = data.dataList[0].data[i],
-            num2 = data.dataList[1].data[i],
-            num3 = num2 / num1 * 100;
-          numArr.push(Number(num3.toFixed(2)))
-        }
-        data.dataList.splice(1, 0, {
-          "name": "月完成率",
-          "data": numArr,
-          "unit": "%",
-          "isShow": true
-        });
-      }
-      if (this.CurrentNavigation.code === '309' && this.CurrentTimelimitFilter.code == '8') {
-
-        var _data = (data.dataList || [])[0],
-          total = 0;
-        (_data.data || []).forEach(function(item) {
-          total += item
-        });
-        this.chartEntity.setTitle(null, { text: '总收入：' + total.toFixed(2) + '元', align: 'right', x: -10 })
-      } else {
+          if(this.CurrentTimelimitFilter.code == '5'){
+            //处理本月数据
+            let numArr = [];
+            for (var i = 0; i < data.dataList[0].data.length; i++) {
+              var num1 = data.dataList[0].data[i],
+                num2 = data.dataList[1].data[i],
+                num3 = num2 / num1 * 100;
+              numArr.push(Number(num3.toFixed(2)))
+            }
+            data.dataList.splice(1, 0, {
+              "name": "月完成率",
+              "data": numArr,
+              "unit": "%",
+              "isShow": true
+            });
+          }else if(this.CurrentTimelimitFilter.code == '8'){
+             //处理月度数据
+             let _data = (data.dataList || [])[0],
+                 total = 0;
+                (_data.data || []).forEach(function(item) {
+                  total += item
+                });
+               this.chartEntity.setTitle(null, { text: '总收入：' + total.toFixed(2) + '元', align: 'right', x: -10 })
+          }        
+      }else {
         this.chartEntity.setTitle(null, { text: null })
       }
+      
     });
 
     /****
@@ -371,7 +387,27 @@ export default {
       }
     });
 
+  },
+  watch:{
+     /**@augments
+      * 返回P4P消耗数据对象
+      */
+     dataList(){
+        let p4pDataArr=this.dataList.filter((item)=>{
+            return item.name=='P4P消耗'
+        })
+        this.P4PData=p4pDataArr.length>0?p4pDataArr[0]:{};
+    },
+    /**@augments
+      * 根据遮罩层变化，控制页面是否滚动
+      */
+    maskShow(){
+      if(this.maskShow==false){
+        document.body.style.overflowY='auto'
+      }
+    }
   }
+  
 }
 
 </script>

@@ -94,17 +94,19 @@ export default {
                 yesterdayNum: 0,
                 ratioNum: 0,
                 ratioTrend: null
-            }, {
-                name: '百家文章数',
-                code: '71',
-                filters: {
-                    timelimit: ['all']
-                },
-                todayNum: 0,
-                yesterdayNum: 0,
-                ratioNum: 0,
-                ratioTrend: null
-            }, {
+            },
+            // {
+            //     name: '百家文章数',
+            //     code: '71',
+            //     filters: {
+            //         timelimit: ['all']
+            //     },
+            //     todayNum: 0,
+            //     yesterdayNum: 0,
+            //     ratioNum: 0,
+            //     ratioTrend: null
+            // },
+             {
                 name: '市场部发稿量',
                 code: '78',
                 filters: {

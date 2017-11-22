@@ -2854,3 +2854,22 @@ a.userAdd{display:block;float:left;width:27px;height:27px;background:url(//data.
 .seleBoxConList dd label{height:24px;line-height:24px;width:166px;color:#333;padding:5px 0;box-sizing:initial;margin: 0px !important;}
 .dataBoxBotCon,.data2BoxBotCon,.data3BoxBotCon{text-align:center;}
 .dataBoxBotList a dt,.dataBoxBotList a dd,.dataBoxBotList a{color:#fff;}
+
+
+/* 2017-11-20 遮罩层 YLQ */
+.popupBg{position:fixed;width:100%;height:100%;background:rgba(0,0,0,0.8);background:#000\9;filter:alpha(opacity=80)\9;filter:alpha(opacity=80);-moz-opacity:0.8;-khtml-opacity:0.8;opacity:0.8;top:0;left:0;z-index:99;}
+.popupCon{width:572px;height:244px;background:url(//data.360jz.com/dataweb/static/img/dataimg2.224e15e.png) no-repeat;position:fixed;left:83px;top:324px;z-index:999;}
+.popupCon .popupClose{width:30px;height:30px;display:block;position:absolute;right:163px;bottom:60px; cursor:pointer;}
+.popupData{width:396px;height:90px;margin-left:168px;color:#fff;}
+.popupData dt{text-align:center;line-height:40px;padding-top: 5px;font-size:16px;margin:0 10px;}
+.popupData dd{line-height:40px;}
+.popupData dl span{display:block; text-align:center;line-height:40px; width:50%; float:left;font-size:14px;}
+@media (max-width: 768px)
+{
+.popupCon{width:234px;height:179px;background:url(//data.360jz.com/dataweb/static/img/dataimg3.9f7a735.png) no-repeat;background-size:234px 179px;position:fixed;left:10%;top:324px;}
+.popupCon .popupClose{right:-5px;bottom:60px;}
+.popupData{width:151px;height:54px;margin-left:8px;}
+.popupData dt{line-height:25px;padding-top:10px;font-size:14px;margin:0 10px;}
+.popupData dd{line-height:25px;margin-top: 15px;}
+.popupData dl span{display:block; text-align:center; line-height:28px; width:50%; float:left;font-size:12px;}
+}

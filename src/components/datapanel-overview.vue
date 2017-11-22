@@ -24,7 +24,7 @@
                 </nav>
                 <!--标题结束-->
                 <div id="app-overview-todayRealtime" class="row">
-                    <div class="col-sm-6 col-md-3" v-for="(item,index) in realTimeData.main" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
+                    <div class="col-sm-6 col-md-3" :key="index" v-for="(item,index) in realTimeData.main" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
                         <div class="panel-stat realtime-source" :class="getClass(index)">
                             <h5> {{ item.name }} </h5>
                             <h1 class="realtime-value"> {{ item.num }} </h1>
@@ -47,7 +47,7 @@
                     <div class="tabBotCon">
                         <h3>付费会员</h3>
                         <div class="uxerNumBox">
-                            <div class="userNumCon" v-for="(item,index) in realTimeData.feeuser" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
+                            <div class="userNumCon" :key="index" v-for="(item,index) in realTimeData.feeuser" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
                                 <div class="userNumList">
                                     <span class="userLeft">{{item.name}}</span>
                                     <span class="userRig" :class="differ(item.num,item.yesterdayNum).state=='up'?'rigUp':'rigDown'">{{ percentum(item.num, item.yesterdayNum)}}</span>
@@ -62,11 +62,11 @@
                     <div class="tabBotCon">
                         <h3>战斗力</h3>
                         <div class="uxerNumBox">
-                            <div class="userNumCon znBoxList" v-for="(item,index) in realTimeData.fight">
+                            <div class="userNumCon znBoxList" :key="index" v-for="(item,index) in realTimeData.fight">
                                 <div class="borderNone">
                                     <h4>{{ item.name }}</h4>
                                     <div class="uxerNumBox">
-                                        <div class="userNumCon" v-for="(data,i) in item.fightInfo" v-if="$privileges.user[($privileges.mapping[item.name+'-'+data.name]||{}).id]">
+                                        <div class="userNumCon"  :key="i" v-for="(data,i) in item.fightInfo" v-if="$privileges.user[($privileges.mapping[item.name+'-'+data.name]||{}).id]">
                                             <div class="userNumList">
                                                 <span class="userLeft">{{data.name}}</span>
                                                 <span class="userRig" :class="differ(data.num,data.yesterdayNum).state=='up'?'rigUp':'rigDown'">{{ differ(data.num, data.yesterdayNum, true).num}}</span>
