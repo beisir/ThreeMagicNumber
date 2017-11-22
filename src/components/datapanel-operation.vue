@@ -281,12 +281,17 @@ export default {
   },
   created() {
     this.getPlatformData();    
+
   },
   mounted() {
 
      /** 禁止页面滚动 */ 
      document.body.setAttribute('class','noSroll');
-     //document.body.style.overflowY='hidden';
+    
+     /*** 1.5秒后关闭弹窗 */
+     setTimeout(()=>{
+        this.closeMask();
+     },1500)
      
      const _that = this;    
     /****

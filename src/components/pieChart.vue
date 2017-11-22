@@ -1,5 +1,5 @@
 <template>
-  <div ref="pieChart" id="pieChartWrap"></div>
+  <div ref="pieChart" id="pieChartWrap" ></div>
 </template>
 
 <script>
@@ -45,7 +45,7 @@ export default {
           pie: {
             dataLabels: {
               enabled: true,
-              // format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+             // distance:-50,
               format:
                 "<b>{point.name}</b>:{point.tadayNum}<br>与昨日对比：{point.trend} {point.percentnum}%  ",
               style: {
