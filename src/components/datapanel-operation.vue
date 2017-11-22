@@ -291,7 +291,7 @@ export default {
      /*** 1.5秒后关闭弹窗 */
      setTimeout(()=>{
         this.closeMask();
-     },1500)
+     },2000)
      
      const _that = this;    
     /****
