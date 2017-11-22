@@ -360,13 +360,13 @@
                                         <div class="titleBox">
                                             <h2>战斗力</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
                                         <dl>
-                                            <dt>百家文章数</dt>
+                                            <!-- <dt>百家文章数</dt>
                                             <dd>
                                                 定义：百度百家10个账号的已发布的文章总数
                                                 <br /> 计算频率：一小时抓取一次
                                                 <br /> 数据来源：抓取百度百家号后台数据
                                                 <br />
-                                            </dd>
+                                            </dd> -->
                                             <dt>市场部发稿量</dt>
                                             <dd>
                                                 定义：外部媒体发布稿件的数量
