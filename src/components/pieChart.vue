@@ -38,7 +38,7 @@ export default {
         colors: ['#19c6Ed', '#FF7C4D', '#2BCC6B', '#C275DF'], //图表序列（Series）的默认颜色数组
         tooltip: {
           headerFormat: null,
-        //pointFormat: "<b>{point.name}:{point.percentage:.1f}%</b>"
+         //pointFormat: "<b>{point.name}:{point.percentage:.1f}%</b>"
           pointFormat: "<b>{point.name}</b>:{point.tadayNum}<br>与昨日对比：{point.trend} {point.percentnum}%"
         },
         plotOptions: {
