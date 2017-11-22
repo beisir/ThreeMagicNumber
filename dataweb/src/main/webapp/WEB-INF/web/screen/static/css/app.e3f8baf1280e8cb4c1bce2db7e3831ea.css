@@ -2652,7 +2652,7 @@ body{min-width:400px;}
 	.data2BoxTop .data2BoxTopCon{width:25%;}
 	.data2BoxBotCon ul li{width:20%!important;}
 	.data3BoxTop .data3BoxTopCon{width:25%;}
-	.data3BoxBotCon ul li{width:12.5%!important;}
+	.data3BoxBotCon ul li{width:14.2%!important;}
 }
 .nav.navbar-nav.operation{margin:0!important;}
 .DetailedLink{border-left:1px solid #dce0e2;}
@@ -2736,7 +2736,7 @@ aside .main-menu>ul>li a{cursor:pointer;}
 .data3BoxTopCon dl dd span.l-02{width:100%;font-size:22px;}
 .data3BoxTopCon dl dd span.l-03{width:100%;font-size:22px;}
 .data3BoxBot{border:1px dotted #ddd;background:#f9f9f9;overflow:hidden;padding:10px 10px 0;border-radius:5px;border-top:#ff7c4d 2px solid;}
-.data3BoxBotCon ul li{float:left;}
+.data3BoxBotCon ul li{display:inline-block;}
 .data3BoxBotList{overflow:hidden;margin:0 5px;}
 .data3BoxBotList dt{text-align:center;line-height:40px;padding-top:5px;border-bottom:1px dotted #ddd;font-size:15px;margin:0 10px;white-space:nowrap;}
 .data3BoxBotList dl{background:#19c6e0;height:90px;width:100%;border-radius:10px;color:#fff;font-size:16px;}

@@ -71,7 +71,7 @@
         <div class="popupBox" v-show="maskShow">
         	<div class="popupBg"></div>
             <div class="popupCon">
-            	<div class="popupClose" @click="maskShow=false"></div>
+            	<div class="popupClose" @click="closeMask"></div>
                 <div class="popupData" v-if="P4PData.name">
                 	<dl @click="redirect(P4PData)">
                     	<dt>{{P4PData.name}}</dt>
@@ -168,6 +168,13 @@ export default {
     chartTendency
   },
   methods: {
+    /**@description
+     * 关闭遮罩层
+     */
+    closeMask(){
+      this.maskShow=false;
+      document.body.setAttribute('class','');
+    },
     /*
      *计算实时数据今日和昨日的差
      * @param  todayData 昨天的数据
@@ -271,8 +278,11 @@ export default {
     this.getPlatformData();    
   },
   mounted() {
-     /** 禁止页面滚动 */
-     document.body.style.overflowY="hidden";
+
+     /** 禁止页面滚动 */ 
+     document.body.setAttribute('class','noSroll');
+     //document.body.style.overflowY='hidden';
+     
      const _that = this;    
     /****
      * 图表一创建之前
@@ -397,17 +407,15 @@ export default {
             return item.name=='P4P消耗'
         })
         this.P4PData=p4pDataArr.length>0?p4pDataArr[0]:{};
-    },
-    /**@augments
-      * 根据遮罩层变化，控制页面是否滚动
-      */
-    maskShow(){
-      if(this.maskShow==false){
-        document.body.style.overflowY='auto'
-      }
     }
-  }
-  
+  }  
 }
 
 </script>
+
+<style>
+.noSroll{
+   overflow-y: hidden
+ }
+</style>
+
