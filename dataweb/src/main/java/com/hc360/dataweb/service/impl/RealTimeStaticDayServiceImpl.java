@@ -125,8 +125,8 @@ public class RealTimeStaticDayServiceImpl implements RealTimeStaticDayService {
                 } else {
                     bean.setName(CommonUtil.initName(data.getDataType()));
                     bean.setNum("0");
-                    logger.error("天表:数据时间:" + data.getIrslDate() + "数据类型:" + data.getDataType() + "-- 数据为空。");
-                    EmailUtil.warnEveryOne("数据时间:"+time+"---"+DataType.getName(data.getDataType())+"--数据为空。");
+                    logger.error("天表:数据时间:" + data.getIrslDate() + "数据类型:" + data.getDataType() +data.getDataType()+ "-- 数据为空。");
+                    EmailUtil.warnEveryOne("天表:数据时间:"+time+"---"+DataType.getName(data.getDataType())+data.getDataType()+"--数据为空。");
                 }
                 beans.add(bean);
             }
@@ -150,8 +150,8 @@ public class RealTimeStaticDayServiceImpl implements RealTimeStaticDayService {
                 } else {
                     bean.setName(CommonUtil.initName(data.getDataType()));
                     bean.setNum("0");
-                    logger.error("天表:数据时间:" + data.getIrslDate() + "数据类型:" + data.getDataType() + "-- 数据为空。");
-                    EmailUtil.warnEveryOne("数据时间:"+time+"---"+DataType.getName(data.getDataType())+"--数据为空。");
+                    logger.error("天表:数据时间:" + data.getIrslDate() + "数据类型:" + data.getDataType() +data.getDataType()+ "-- 数据为空。");
+                    EmailUtil.warnEveryOne("天表2:数据时间:"+time+"---"+DataType.getName(data.getDataType())+data.getDataType()+"--数据为空。");
                 }
                 beans.add(bean);
             }
@@ -176,8 +176,8 @@ public class RealTimeStaticDayServiceImpl implements RealTimeStaticDayService {
         } else {
           bean.setName(CommonUtil.initName(data.getDataType()));
           bean.setNum("0");
-          logger.error("天表:数据时间:" + data.getIrslDateH() + "数据类型:" + data.getDataType() + "-- 数据为空。");
-          EmailUtil.warnEveryOne("数据时间:"+time+"---"+DataType.getName(data.getDataType())+"--数据为空。");
+          logger.error("天表:数据时间:" + data.getIrslDateH() + "数据类型:" + data.getDataType()+data.getDataType() + "-- 数据为空。");
+          EmailUtil.warnEveryOne("3数据时间:"+time+"---"+DataType.getName(data.getDataType())+data.getDataType()+"--数据为空。");
         }
         beans.add(bean);
       }
