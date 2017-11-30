@@ -133,10 +133,16 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                     }
                 }else if(ChartsConstant.MONTH_DATA.equals(chartBean.getTime())){//月度数据{月表}
                     bean = new HourChartBean();
-                    List<String> weekTimes = new ArrayList<>();
+                    List<String> weekTimes = DateUtil.getMonthInfo( 8,"yyyyMM");
                     initMonthData(DataType.DXVALIDCALLNUMBER.getType(), bean, weekTimes);
-                    time = CommonUtil.initYearMonthTime(weekTimes);
                     dataList.add(bean);
+                    bean = new HourChartBean();
+                    initMonthData(DataType.XQDXVALIDCALLNUMBER.getType(), bean, weekTimes);
+                    dataList.add(bean);
+                    bean = new HourChartBean();
+                    initMonthData(DataType.ZQDXVALIDCALLNUMBER.getType(), bean, weekTimes);
+                    dataList.add(bean);
+                    time = CommonUtil.initYearMonthTime(weekTimes);
                 } else {//周/月/全部
                     initValidCallType(dataTypes);
                     for(Integer type:dataTypes){
@@ -168,15 +174,35 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                     bean = new HourChartBean();
                     getHourData(day, dataType, bean, timeF);
                     dataList.add(bean);
-                }else if(ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月度数据{月表}
                     bean = new HourChartBean();
-                    List<String> weekTimes = new ArrayList<>();
-                    initMonthData(dataType, bean, weekTimes);
-                    time = CommonUtil.initYearMonthTime(weekTimes);
+                    getHourData(day, DataType.XQPERCAPITAONLINETIME.getType(), bean, timeF);
                     dataList.add(bean);
+                    bean = new HourChartBean();
+                    getHourData(day,  DataType.ZQPERCAPITAONLINETIME.getType(), bean, timeF);
+                    dataList.add(bean);
+                }else if(ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月度数据{月表}
+                    List<String> weekTimes = DateUtil.getMonthInfo(8,"yyyyMM");
+                    bean = new HourChartBean();
+                    initMonthData(dataType, bean, weekTimes);
+                    dataList.add(bean);
+
+                    bean = new HourChartBean();
+                    initMonthData(DataType.XQPERCAPITAONLINETIME.getType(), bean, weekTimes);
+                    dataList.add(bean);
+
+                    bean = new HourChartBean();
+                    initMonthData(DataType.ZQPERCAPITAONLINETIME.getType(), bean, weekTimes);
+                    dataList.add(bean);
+                    time = CommonUtil.initYearMonthTime(weekTimes);
                 } else {//周/月/全部
                     dayBean = new DayChartBean();
                     getDayData(dayBean, dataType, day, preDay, time);
+                    dataList.add(dayBean);
+                    dayBean = new DayChartBean();
+                    getDayData(dayBean, DataType.XQPERCAPITAONLINETIME.getType(), day, preDay, time);
+                    dataList.add(dayBean);
+                    dayBean = new DayChartBean();
+                    getDayData(dayBean, DataType.ZQPERCAPITAONLINETIME.getType(), day, preDay, time);
                     dataList.add(dayBean);
                 }
             }
@@ -192,6 +218,15 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         DayChartBean bean = new DayChartBean();
         List<String> time = getDayData(bean,dataType);
         dataList.add(bean);
+
+        bean = new DayChartBean();
+        getDayData(bean, DataType.XQDXTURNOVERZL.getType());
+        dataList.add(bean);
+
+        bean = new DayChartBean();
+        getDayData(bean, DataType.ZQDXTURNOVERZL.getType());
+        dataList.add(bean);
+
         data.put("dataList", dataList);
         data.put("time",time);
     }
@@ -228,9 +263,12 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     }
 
     private void initValidCallType(List<Integer> dataTypes) {
-        dataTypes.add(DataType.VALIDCALLNUMBER.getType());//总
+//        dataTypes.add(DataType.VALIDCALLNUMBER.getType());//总
         dataTypes.add(DataType.DXVALIDCALLNUMBER.getType());//电销
-        dataTypes.add(DataType.QDVALIDCALLNUMBER.getType());//渠道
+//        dataTypes.add(DataType.QDVALIDCALLNUMBER.getType());//渠道
+
+        dataTypes.add(DataType.XQDXVALIDCALLNUMBER.getType());//新签电销
+        dataTypes.add(DataType.ZQDXVALIDCALLNUMBER.getType());//渠道电销
     }
 
     /*获取天表数据(月/全部)*/
@@ -840,11 +878,15 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         DecimalFormat df = new DecimalFormat("0.00");
         List<Object> dataList = new ArrayList<>();
         Map<String, Double> initMap = new HashMap<String,Double>();
+        if(times!=null && times.size()>0){
+            for(String t:times){
+                initMap.put(t,0d);//初始化数据
+            }
+        }
         if(monthDatas!=null && !monthDatas.isEmpty()){
             for(RealtimeStaticMonth monthData:monthDatas){
                 if(!"".equals(monthData.getIrslDate()) && monthData.getDataCount()!=null){//有效通话次数保留两位小数
                     initMap.put(monthData.getIrslDate(), Double.valueOf(df.format(monthData.getDataCount())));
-                    times.add(monthData.getIrslDate());
                 }else {
                     logger.error("查询月表数据:数据时间:" + monthData.getDataDate() + "数据类型:" + monthData.getDataType() + "-- 数据为空。");
                 }
