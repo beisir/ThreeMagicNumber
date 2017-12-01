@@ -24,7 +24,7 @@ class DateUtil {
     }
 
     public static List<String> getMonthInfo(int monthNum,fmt){
-        List<String> months = new ArrayList<>();
+        List<String> months = new ArrayList<String>();
         for(int i=monthNum -1 ;i>= 0; i--){
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.MONTH , -i);
@@ -32,8 +32,9 @@ class DateUtil {
         }
         return months;
     }
+
     public static final void main(String[] args){
-        List<String> months = getMonthInfo(7,"yyyy年MM月");
+        List<String> months = getMonthInfo(7,"yyyyMMWW");
         for(String s : months){
             println(s)
         }

@@ -72,6 +72,13 @@ public enum DataType {
     P4PCONSUMPTIONTOTAL("P4P消耗", 4605),
     /*人均在线时长*/
     PERCAPITAONLINETIME("人均在线时长",49),
+
+    /*电销新签人均在线时长*/
+    XQPERCAPITAONLINETIME("新签人均在线时长",328),
+
+    /*电销增值人均在线时长*/
+    ZQPERCAPITAONLINETIME("新签人均在线时长",329),
+
     /*渠道拜访量*/
     CHANNELVISITCOUNT("渠道拜访量",54),
     /*微信绑定用户数(色块,今天,最近七天,最近一个月)*/
@@ -99,8 +106,10 @@ public enum DataType {
     DXVALIDCALLNUMBER("电销销售",50),
     /*渠道有效通话次数*/
     QDVALIDCALLNUMBER("渠道销售",52),
-
-
+/*电销新签人均有效通话次数 **/
+    XQDXVALIDCALLNUMBER("新签电销销售",330),
+    /*电销增值人均有效通话次数  **/
+    ZQDXVALIDCALLNUMBER("增值电销销售",331),
     /*LEADS转化率*/
     LEADSTRANSFORM("Leads转化率",98),
 
@@ -238,10 +247,20 @@ public enum DataType {
     /*销售业绩*/
     /*电销销售业绩实际值*/
     DXTURNOVERZL("电销销售业绩实际值增量",178),
+/*电销新签销售业绩实际值**/
+    XQDXTURNOVERZL("电销新签实际值",332),
+    /*电销增值销售业绩实际值**/
+    ZQDXTURNOVERZL("电销增值实际值",333),
+
     /*电销销售业绩实际值*/
-    DXTURNOVELJ("实际值",179),
+    DXTURNOVELJ("电销整体实际值",179),
     /*电销销售业绩预估值*/
-    DXTURNOVEYG("预估值",180),
+    DXTURNOVEYG("电销整体预估值",180),
+/*电销新签销售业绩预估值***/
+    XQDXTURNOVEYG("电销新签预估值",334),
+    /*电销增值销售业绩预估值**/
+    ZQDXTURNOVEYG("电销增值预估值",335),
+
     /*电销销售业绩完成率*/
     DXTURNOVERWC("电销销售业绩完成率",181),
     /*渠道销售业绩实际值*/
@@ -253,7 +272,7 @@ public enum DataType {
     /*渠道销售业绩完成率*/
     QDTURNOVERWC("渠道销售业绩完成率",185),
     /*电销月销售业绩预算值*/
-    DXTURNOVERYS("预算值",206),
+    DXTURNOVERYS("电销整体预算值",206),
     /*渠道月销售业绩预算值*/
     QDTURNOVERYS("预算值",207),
 

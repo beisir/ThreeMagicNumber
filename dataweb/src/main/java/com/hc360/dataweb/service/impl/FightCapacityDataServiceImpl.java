@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by HC360 on 2017/3/3.
@@ -91,6 +88,55 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         initEstimates(estimateBean,times,estimateType);
         dataList.add(estimateBean);
         dataList.add(practicalBean);
+        data.put("dataList", dataList);
+        data.put("time", timeList);
+    }
+    @Override
+    public void initTurnoverWeek_DX(Map<String, Object> data) throws Exception {
+        //初始化电销&渠道流水(当月周度数据实际与预估对比图)
+        List<HourChartBean> dataList = new ArrayList<>();
+
+        Integer practicalType = 0;
+        Integer estimateType = 0;
+
+        practicalType = DataType.DXTURNOVELJ.getType();//电销当天实际值(累计)
+        estimateType = DataType.DXTURNOVEYG.getType();//电销当周预估值
+
+        //实际值:查询周表最后六条数据
+        HourChartBean practicalBean = new HourChartBean();
+        List<String> times = initPractical(practicalBean,practicalType);
+        //x轴显示:2017年第n周(根据查询出的数据出x轴)
+        List<String> timeList = CommonUtil.initWeekTime(times);
+        //预估值:根据实际值最新的数据获取预估值数据
+        HourChartBean estimateBean = new HourChartBean();
+        initEstimates(estimateBean,times,estimateType);
+        estimateBean.setName("电销整体预估值");
+        dataList.add(estimateBean);
+
+        estimateBean = new HourChartBean();
+        initEstimates(estimateBean,times,DataType.XQDXTURNOVEYG.getType());
+        estimateBean.setName("电销新签预估值");
+        dataList.add(estimateBean);
+
+        estimateBean = new HourChartBean();
+        initEstimates(estimateBean,times,DataType.ZQDXTURNOVEYG.getType());
+        estimateBean.setName("电销增值预估值");
+        dataList.add(estimateBean);
+
+
+        practicalBean.setName("电销整体实际值");
+        dataList.add(practicalBean);
+
+        estimateBean = new HourChartBean();
+        initEstimates(estimateBean,times,DataType.XQDXTURNOVERZL.getType());
+        estimateBean.setName("电销新签实际值");
+        dataList.add(estimateBean);
+
+        estimateBean = new HourChartBean();
+        initEstimates(estimateBean,times,DataType.ZQDXTURNOVERZL.getType());
+        estimateBean.setName("电销增值实际值");
+        dataList.add(estimateBean);
+
         data.put("dataList", dataList);
         data.put("time", timeList);
     }
@@ -262,6 +308,38 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         data.put("time", time);
     }
 
+    @Override
+    public void initTurnoverMonth_DX(Map<String, Object> data) throws Exception {
+        //初始化电销&渠道流水(当年月度数据实际与预估对比图)
+        List<HourChartBean> dataList = new ArrayList<>();
+        List<Integer> dataTypes = new ArrayList<Integer>();
+        List<String> weekTimes = new ArrayList<>();//周度数据时间轴
+        HourChartBean bean = null;
+        HourChartBean practical = new HourChartBean();
+
+        initMonthData(DataType.DXTURNOVELJ.getType(),practical,weekTimes);//电销当月实际值
+        List<String> time = CommonUtil.initYearMonthTime(weekTimes);
+        dataTypes.add(DataType.DXTURNOVERYS.getType());//电销当月预算
+        dataTypes.add(DataType.DXTURNOVEYG.getType());//电销当月预估值
+        dataTypes.add(DataType.XQDXTURNOVEYG.getType());//新签预估
+        dataTypes.add(DataType.ZQDXTURNOVEYG.getType());//增值预估
+        dataTypes.add(DataType.XQDXTURNOVERZL.getType());//新签实际
+        dataTypes.add(DataType.ZQDXTURNOVERZL.getType());//增值实际
+
+        int i = 0 ;
+        for(Integer type:dataTypes){
+            bean = new HourChartBean();
+            getEstimatesByTime(bean,type,weekTimes);
+            if(i == 4 ){
+                dataList.add(practical);
+            }
+            dataList.add(bean);
+            i++;
+        }
+
+        data.put("dataList", dataList);
+        data.put("time", time);
+    }
     private void initValidCallType(List<Integer> dataTypes) {
 //        dataTypes.add(DataType.VALIDCALLNUMBER.getType());//总
         dataTypes.add(DataType.DXVALIDCALLNUMBER.getType());//电销
@@ -793,18 +871,26 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         Map<String,Object> param = new HashMap<>();
         param.put("type",type);
         param.put("list",times);
+        Map<String,Object > initMap = new HashMap<>();
+        for(String time : times){//初始化数据，防止有不对的数据
+            initMap.put(time,0);
+        }
         List<RealtimeStaticDoubleWeek> estimates = realtimeStaticWeekMapper.findEstimatesByPractical(param);
+        List<Object> count = new ArrayList<>();
         if(estimates!=null && !estimates.isEmpty()){
-            List<Object> count = new ArrayList<>();
             for (RealtimeStaticDoubleWeek weekData:estimates){
                 if(weekData.getDataCount()!=null){
-                    count.add(Math.floor(weekData.getDataCount()));
+//                    count.add(Math.floor(weekData.getDataCount()));
+                    initMap.put(weekData.getIrslDate(),Math.floor(weekData.getDataCount()));
                 }else{
                     logger.error("周表:数据时间:" + weekData.getIrslDate() + "数据类型:" + weekData.getDataType() + "-- 数据为空。");
                 }
             }
-            bean.setData(count);
         }
+        for(String time : times){
+            count.add(initMap.get(time));
+        }
+        bean.setData(count);
         bean.setName(CommonUtil.initName(type));
         bean.setUnit(CommonUtil.initUnit(type));
     }
@@ -844,18 +930,26 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         Map<String,Object> param = new HashMap<>();
         param.put("type",type);
         param.put("list",times);
+        Map<String ,Object> initMap = new HashMap<>();
+        for(String t : times ){
+            initMap.put(t,0);
+        }
         List<RealtimeStaticMonth> estimates = realtimeStaticMonthMapper.findEstimatesByPractical(param);
+        List<Object> count = new ArrayList<>();
         if(estimates!=null && !estimates.isEmpty()){
-            List<Object> count = new ArrayList<>();
             for (RealtimeStaticMonth monthData:estimates){
                 if(monthData.getDataCount()!=null){
-                    count.add(monthData.getDataCount());
+//                    count.add(monthData.getDataCount());
+                    initMap.put(monthData.getIrslDate(),monthData.getDataCount());
                 }else{
                     logger.error("月表:数据时间:" + monthData.getIrslDate() + "数据类型:" + monthData.getDataType() + "-- 数据为空。");
                 }
             }
-            bean.setData(count);
         }
+        for(String t: times){
+            count.add(initMap.get(t));
+        }
+        bean.setData(count);
         bean.setName(CommonUtil.initName(type));
         bean.setUnit(CommonUtil.initUnit(type));
 
@@ -868,6 +962,11 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         param.put("type",dataType);
         param.put("year",year);
         List<RealtimeStaticMonth> monthData = realtimeStaticMonthMapper.fingYearMonthData(param);
+        if(weekTimes == null || weekTimes.size()==0){
+            for(RealtimeStaticMonth realtimeStaticMonth : monthData){
+                weekTimes.add(realtimeStaticMonth.getIrslDate());
+            }
+        }
         List<Object> dataCount = monthConvert(monthData, dataType,weekTimes);
         bean.setName(CommonUtil.initName(dataType));
         bean.setUnit(CommonUtil.initUnit(dataType));
