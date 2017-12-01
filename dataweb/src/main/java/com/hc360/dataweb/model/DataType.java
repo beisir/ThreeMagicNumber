@@ -77,7 +77,7 @@ public enum DataType {
     XQPERCAPITAONLINETIME("新签人均在线时长",328),
 
     /*电销增值人均在线时长*/
-    ZQPERCAPITAONLINETIME("新签人均在线时长",329),
+    ZQPERCAPITAONLINETIME("增值人均在线时长",329),
 
     /*渠道拜访量*/
     CHANNELVISITCOUNT("渠道拜访量",54),
