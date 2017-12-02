@@ -77,9 +77,9 @@ public class FightCapacityController {
                 Integer dataType = Integer.valueOf(chartBean.getType());
                 if (dataType == DataType.DXTURNOVEYG.getType().intValue()) {//当月周度&当年月度数据实际值与预估值对比图表(电销)
                     if (!"".equals(chartBean.getTime()) && ChartsConstant.WEEK_DATA.equals(chartBean.getTime())) {//周
-                        dataService.initTurnoverWeek(data, 1);
+                        dataService.initTurnoverWeek_DX(data);
                     } else if (!"".equals(chartBean.getTime()) && ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月
-                        dataService.initTurnoverMonth(data, 1);
+                        dataService.initTurnoverMonth_DX(data);
                     }
                 } else if (dataType == DataType.QDTURNOVERYG.getType().intValue()) {//当月周度&当年月度数据实际值与预估值对比图表(渠道)
                     if (!"".equals(chartBean.getTime()) && ChartsConstant.WEEK_DATA.equals(chartBean.getTime())) {//周

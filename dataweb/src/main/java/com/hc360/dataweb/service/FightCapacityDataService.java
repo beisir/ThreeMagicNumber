@@ -45,4 +45,7 @@ public interface FightCapacityDataService {
      * @param flag 1:电销  2:渠道
      */
     void initTurnoverMonth(Map<String, Object> data, int flag) throws Exception;
+
+    void initTurnoverWeek_DX(Map<String, Object> data) throws Exception;
+    void initTurnoverMonth_DX(Map<String, Object> data) throws Exception;
 }

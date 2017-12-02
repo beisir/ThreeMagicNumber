@@ -1683,9 +1683,15 @@ public class FeeUserServiceImpl implements FeeUserService {
       bean.setData(dataCount);
       dataList.add(bean);
     }
-    List<String> time = CommonUtil.initYearMonthTime(monthTimes);
-    dataMap.put("dataList", dataList);
-    dataMap.put("time", time);
+      List<String> time = null;
+
+      if(monthTimese.size() > monthTimes.size()){
+          time = CommonUtil.initYearMonthTime(monthTimese);
+      }else{
+          time = CommonUtil.initYearMonthTime(monthTimes);
+      }
+     dataMap.put("dataList", dataList);
+      dataMap.put("time", time);
   }
 
 

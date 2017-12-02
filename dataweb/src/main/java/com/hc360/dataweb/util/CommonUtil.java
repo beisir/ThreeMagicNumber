@@ -48,7 +48,10 @@ public class CommonUtil {
                 ){
             unit = "%";
         }else if(otherType == DataType.PERCAPITAONLINETIME.getType().intValue() || otherType == DataType.LEADS.getType().intValue()|| otherType == DataType.DAUTYPE.getType().intValue() ||
-                otherType == DataType.USER3CLASS.getType().intValue() || otherType == DataType.YLEADSCOUNT.getType().intValue() ||otherType == DataType.FEEUSERTRANSACTION.getType().intValue()){
+                otherType == DataType.USER3CLASS.getType().intValue() || otherType == DataType.YLEADSCOUNT.getType().intValue() ||otherType == DataType.FEEUSERTRANSACTION.getType().intValue()
+                ||  otherType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
+                ||  otherType == DataType.ZQPERCAPITAONLINETIME.getType().intValue()
+                ){
             unit = "";//人均在线时长&leads数&卖家DAU
         }else if (otherType == DataType.P4PCPC.getType().intValue()){
             unit="元/次";
