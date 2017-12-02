@@ -106,7 +106,7 @@ export default {
        * */
       P4PData:{},
 
-      maskShow:true,
+      maskShow:false,
 
       /**
        * [timerMillisec 数据定时更新时间间隔毫秒数]
@@ -286,12 +286,11 @@ export default {
   mounted() {
 
      /** 禁止页面滚动 */ 
-     document.body.setAttribute('class','noSroll');
-    
+     // document.body.setAttribute('class','noSroll');
      /*** 1.5秒后关闭弹窗 */
-     setTimeout(()=>{
-        this.closeMask();
-     },2000)
+    //  setTimeout(()=>{
+    //     this.closeMask();
+    //  },2000)
      
      const _that = this;    
     /****

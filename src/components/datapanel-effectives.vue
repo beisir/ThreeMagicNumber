@@ -252,9 +252,9 @@ export default {
                 /**
                  * [只显示 电销销售 ]
                  */
-                data.dataList = (data.dataList || []).filter(function(item) {
-                    return item.name == '电销销售';
-                });
+                // data.dataList = (data.dataList || []).filter(function(item) {
+                //     return item.name == '电销销售';
+                // });
             }
         });
 
@@ -267,6 +267,14 @@ export default {
              * [当渲染 人均在线时长 图表时，修改图表配置]
              */
             if (this.CurrentNavigation.code == 49) {
+                 /**
+                 * [公用Y坐标轴]
+                 */
+                chartEntity.series.forEach((series, index) => {
+                    series.update({
+                        yAxis: 0
+                    }, false);
+                });
                 chartEntity.yAxis[0].update({
                     // type: 'datetime',
                     title: {
@@ -337,103 +345,28 @@ export default {
          * [监听图表组件 beforeRender 事件]
          */
         _this.$refs.chartTendencyElement_monthly.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions, {
-                plotOptions: {
-                    column: {
-                        stacking: 'normal'
-                    }
-                },
-                chart: {
-                    type: 'column'
-                },
-                // legend: {//图例反转
-                //     reversed: true
-                // },
-                colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE', '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'],
-                tooltip: {
-                    shared: true,
-                    formatter: function() {
-                        var _t = this,
-                            _total = 0,
-                            _predicted = 0;
-
-                        var _arr = [
-                            '<span style="font-size: 10px;">' + _t.x + '</span><br>'
-                        ];
-                        for (var i = 0; i < _t.points.length; i++) {
-                            _arr = _arr.concat([
-                                '<span style="color:' + _t.points[i].color + '">\u25CF</span>',
-                                '<tspan> ' + _t.points[i].series.name + ': </tspan>',
-                                '<tspan style="font-weight:bold">' + _t.points[i].y + ' 元</tspan><br/>'
-                            ]);
-
-                            /**
-                             * [获取总量]
-                             */
-                            if ((!_total) && (_t.points[i].series.name === ('实际值'))) {
-                                _total = _t.points[i].total;
-                            }
-
-                            /**
-                             * [获取预估值]
-                             */
-                            if ((!_predicted) && (_t.points[i].series.name === ('预估值'))) {
-                                _predicted = _t.points[i].total;
-                            }
-                        }
-
-                        // _arr = _arr.concat([
-                        //     '<span>\u25CF</span>',
-                        //     '<tspan> 总量: </tspan>',
-                        //     '<tspan style="font-weight:bold">' + _total + ' 元</tspan><br/>'
-                        // ]);
-
-                        /**
-                         * [预估值不为0的时候才显示完成比例，以免数据显示为 infinity]
-                         */
-                        if (_predicted !== 0) {
-                            _arr = _arr.concat([
-                                '<span>\u25CF</span>',
-                                '<tspan> 完成: </tspan>',
-                                '<tspan style="font-weight:bold">' + ((_total / _predicted) * 100).toFixed(2) + '%</tspan>'
-                            ]);
-                        }
-                        return _arr.join('');
-                    }
-                }
-            });
-        });
+             /**
+             * 当渲染 电销修改图标配置
+             */
+             if(this.CurrentNavigation.code==180){
+                 _this.changeSaleOptions(chartOptions);
+             }else{
+                 _this.changeChannelOptions(chartOptions)    
+             }
+        })
         /**
          * [监听图表组件 beforeRedraw 事件]
          */
         _this.$refs.chartTendencyElement_monthly.$on('beforeRedraw', function(chartEntity) {
-
             /**
-             * [创建分组名列表]
-             * @type {Array}
+             * 当渲染 电销修改图标配置
              */
-            var stackNameScope = [97, 122],
-                stackNameCodeList = [],
-                stackNameList = [];
-            for (var i = stackNameScope[0]; i <= stackNameScope[1]; i++) {
-                stackNameCodeList.push(i);
-            }
-            stackNameList = String.fromCharCode.apply(null, stackNameCodeList).split('');
-
-            /**
-             * [series分组]
-             */
-            chartEntity.series.forEach((series, index) => {
-
-                /**
-                 * [所有 series 单独分组]
-                 */
-                series.update({
-                    yAxis: 0,
-                    stack: stackNameList[index]
-                }, false);
-
-            });
+             if(this.CurrentNavigation.code==180){
+                  _this.changeSaleSeries(chartEntity)
+             }else{
+                  _this.changeChannelSeries(chartEntity)    
+             }
+             
         });
     },
     methods: {
@@ -601,7 +534,197 @@ export default {
                     reject(response);
                 })
             });
+        },
+
+        /**
+         * 销售预测-修改电销图表配置
+         */
+        changeSaleOptions(chartOptions){
+             Object.assign(chartOptions,{
+                    chart: {
+                        type: "column"
+                    },
+                    colors: ['#4572A7', '#AA4643', '#89A54E'],
+                    tooltip: {
+                        shared: true,
+                        formatter: function() {
+                            var toolString = "<b>" + this.x + "</b><br/>";
+                            /*** 返回电销新签和电销增值的总和 */
+                            let getTotalNumber=()=>{
+                                let pointsArr=this.points.filter((point)=>{
+                                    let pointNameLis=["电销新签","电销增值"];
+                                    return pointNameLis.includes(point.series.name)
+                                })
+                                if(pointsArr.length==2){
+                                    return pointsArr[0].y+pointsArr[1].y
+                                }else{
+                                    return 0
+                                }
+                            }
+                            /*** 遍历显示提示信息  */
+                            this.points.forEach(function(point, i) {
+                                let pointName=point.series.name,
+                                    pointNameList=["电销整体","电销新签","电销增值"],
+                                    number=point.y;
+                                /** 电销整体预估值为0，数值显示等于电销新签预估值和电销增值预估值 **/    
+                                if(pointNameList.includes(pointName)){
+                                    pointName+='预估值';
+                                    if(pointName=="电销整体预估值"&&number==0){
+                                        number=getTotalNumber();
+                                    }
+                                }
+                                toolString += pointName + ":" + number + "<br/>";
+                            }, this);
+                            return toolString;
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            stacking: "normal"
+                        }
+                    }
+                })
+        },
+
+        /**
+         * 销售预测-修改电销图表对象Series
+         */
+        changeSaleSeries(chartEntity){
+            chartEntity.series.forEach((series, index) => {
+                        /**预算值，预估值和实际值分组 */
+                        let stackList=[{stackname:"budgetValue",des:"预算值"},{stackname:"forecasts",des:"预估值"},{stackname:"actualValue",des:"实际值"}],
+                            stackName=stackList.find((val)=>{
+                                return series.name.indexOf(val.des)>=0
+                            }),
+                            /***月度数据隐藏预算值和实际值，周度数据，隐藏实际值 */
+                            showInlegendVal=stackName.stackname!=="forecasts" ? false : true,
+                            /***实际图例名称 */
+                            seriesName=series.name.replace(/预估值/g,'');
+                        /**
+                        * [所有 series 单独分组]
+                        */
+                        series.update({
+                            yAxis: 0,
+                            // 柱状图分组
+                            stack: stackName.stackname,
+                            name:seriesName,
+                            //是否显示图例
+                            showInLegend:showInlegendVal,
+                            events: {
+                                legendItemClick: function(e) {
+                                    let _series=e.target.chart.series.filter((val)=>{
+                                        return val.name==seriesName+'实际值'||val.name==seriesName+'预算值';
+                                    });
+                                    if(_series.length>=0){
+                                        _series.forEach((val)=>{
+                                            if(val.visible){
+                                                val.hide();
+                                            }else{
+                                                val.show();
+                                            }
+                                        })
+                                    }
+                                }
+                            }
+                        }, false);
+                    });
+        },
+         /**
+         * 销售预测-修改渠道图表配置
+         */
+        changeChannelOptions(chartOptions){
+            Object.assign(chartOptions, {
+                        plotOptions: {
+                            column: {
+                                stacking: 'normal'
+                            }
+                        },
+                        chart: {
+                            type: 'column'
+                        },
+                        // legend: {//图例反转
+                        //     reversed: true
+                        // },
+                        colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE', '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92'],
+                        tooltip: {
+                            shared: true,
+                            formatter: function() {
+                                var _t = this,
+                                    _total = 0,
+                                    _predicted = 0;
+
+                                var _arr = [
+                                    '<span style="font-size: 10px;">' + _t.x + '</span><br>'
+                                ];
+                                for (var i = 0; i < _t.points.length; i++) {
+                                    _arr = _arr.concat([
+                                        '<span style="color:' + _t.points[i].color + '">\u25CF</span>',
+                                        '<tspan> ' + _t.points[i].series.name + ': </tspan>',
+                                        '<tspan style="font-weight:bold">' + _t.points[i].y + ' 元</tspan><br/>'
+                                    ]);
+
+                                    /**
+                                     * [获取总量]
+                                     */
+                                    if ((!_total) && (_t.points[i].series.name === ('实际值'))) {
+                                        _total = _t.points[i].total;
+                                    }
+
+                                    /**
+                                     * [获取预估值]
+                                     */
+                                    if ((!_predicted) && (_t.points[i].series.name === ('预估值'))) {
+                                        _predicted = _t.points[i].total;
+                                    }
+                                }
+
+                                /**
+                                 * [预估值不为0的时候才显示完成比例，以免数据显示为 infinity]
+                                 */
+                                if (_predicted !== 0) {
+                                    _arr = _arr.concat([
+                                        '<span>\u25CF</span>',
+                                        '<tspan> 完成: </tspan>',
+                                        '<tspan style="font-weight:bold">' + ((_total / _predicted) * 100).toFixed(2) + '%</tspan>'
+                                    ]);
+                                }
+                                return _arr.join('');
+                            }
+                        }
+                    });
+        },
+        /**
+         * 销售预测-修改渠道图表对象Series
+         */
+        changeChannelSeries(chartEntity){
+                   /**
+                     * [创建分组名列表]
+                     * @type {Array}
+                     */
+                    var stackNameScope = [97, 122],
+                        stackNameCodeList = [],
+                        stackNameList = [];
+                    for (var i = stackNameScope[0]; i <= stackNameScope[1]; i++) {
+                        stackNameCodeList.push(i);
+                    }
+                    stackNameList = String.fromCharCode.apply(null, stackNameCodeList).split('');
+
+                    /**
+                     * [series分组]
+                     */
+                    chartEntity.series.forEach((series, index) => {
+
+                        /**
+                         * [所有 series 单独分组]
+                         */
+                        series.update({
+                            yAxis: 0,
+                            stack: stackNameList[index]
+                        }, false);
+
+                    });
         }
+       
     },
     components: {
         'chart-tendency': chartTendency
