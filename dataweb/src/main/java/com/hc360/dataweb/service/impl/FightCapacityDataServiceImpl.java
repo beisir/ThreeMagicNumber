@@ -421,7 +421,10 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         }
         if (times != null && times.size() > 0) {
             for (String time : times) {
-                if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()) {
+                if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()
+                        || dataType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
+                        || dataType == DataType.ZQPERCAPITAONLINETIME.getType().intValue()
+                        ) {
                     if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
                         dataList.add(initMap.get(time) * 1000);
                     } else {
@@ -661,7 +664,9 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                         if ("".equals(initMap.get(time))) {
                             dataList.add(0);
                         } else {
-                            if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()) {
+                            if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()
+                                    || dataType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
+                                    ||  dataType ==DataType.ZQPERCAPITAONLINETIME.getType().intValue()) {
                                 if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
                                     data = ((Integer) initMap.get(time)) * 1000;
                                     dataList.add(data);
@@ -999,7 +1004,10 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         }
         if (times != null && times.size() > 0) {
             for (String time : times) {
-                if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()) {
+                if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()
+                      || dataType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
+                        || dataType == DataType.ZQPERCAPITAONLINETIME.getType().intValue()
+                        ) {
                     if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
                         dataList.add(initMap.get(time) * 1000);
                     } else {
