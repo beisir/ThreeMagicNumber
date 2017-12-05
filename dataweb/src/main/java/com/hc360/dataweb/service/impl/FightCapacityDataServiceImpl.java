@@ -31,7 +31,6 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     private RealtimeStaticMonthMapper realtimeStaticMonthMapper;
 
 
-
     @Override
     public void initFightData(Map<String, Object> dataTotal) throws Exception {
         String day = ControllerDateUtil.getToday();//取今天的日期
@@ -64,6 +63,7 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         dataTotal.put("todaydata", mainBeans);
         dataTotal.put("yesterdaydata", mainBeans2);
     }
+
     @Override
     public void initTurnoverWeek(Map<String, Object> data, int flag) throws Exception {
         //初始化电销&渠道流水(当月周度数据实际与预估对比图)
@@ -80,17 +80,18 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         }
         //实际值:查询周表最后六条数据
         HourChartBean practicalBean = new HourChartBean();
-        List<String> times = initPractical(practicalBean,practicalType);
+        List<String> times = initPractical(practicalBean, practicalType);
         //x轴显示:2017年第n周(根据查询出的数据出x轴)
         List<String> timeList = CommonUtil.initWeekTime(times);
         //预估值:根据实际值最新的数据获取预估值数据
         HourChartBean estimateBean = new HourChartBean();
-        initEstimates(estimateBean,times,estimateType);
+        initEstimates(estimateBean, times, estimateType);
         dataList.add(estimateBean);
         dataList.add(practicalBean);
         data.put("dataList", dataList);
         data.put("time", timeList);
     }
+
     @Override
     public void initTurnoverWeek_DX(Map<String, Object> data) throws Exception {
         //初始化电销&渠道流水(当月周度数据实际与预估对比图)
@@ -104,22 +105,22 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
 
         //实际值:查询周表最后六条数据
         HourChartBean practicalBean = new HourChartBean();
-        List<String> times = initPractical(practicalBean,practicalType);
+        List<String> times = initPractical(practicalBean, practicalType);
         //x轴显示:2017年第n周(根据查询出的数据出x轴)
         List<String> timeList = CommonUtil.initWeekTime(times);
         //预估值:根据实际值最新的数据获取预估值数据
         HourChartBean estimateBean = new HourChartBean();
-        initEstimates(estimateBean,times,estimateType);
+        initEstimates(estimateBean, times, estimateType);
         estimateBean.setName("电销整体预估值");
         dataList.add(estimateBean);
 
         estimateBean = new HourChartBean();
-        initEstimates(estimateBean,times,DataType.XQDXTURNOVEYG.getType());
+        initEstimates(estimateBean, times, DataType.XQDXTURNOVEYG.getType());
         estimateBean.setName("电销新签预估值");
         dataList.add(estimateBean);
 
         estimateBean = new HourChartBean();
-        initEstimates(estimateBean,times,DataType.ZQDXTURNOVEYG.getType());
+        initEstimates(estimateBean, times, DataType.ZQDXTURNOVEYG.getType());
         estimateBean.setName("电销增值预估值");
         dataList.add(estimateBean);
 
@@ -128,18 +129,19 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         dataList.add(practicalBean);
 
         estimateBean = new HourChartBean();
-        initEstimates(estimateBean,times,DataType.XQDXTURNOVERZL.getType());
+        initEstimates(estimateBean, times, DataType.XQDXTURNOVERZL.getType());
         estimateBean.setName("电销新签实际值");
         dataList.add(estimateBean);
 
         estimateBean = new HourChartBean();
-        initEstimates(estimateBean,times,DataType.ZQDXTURNOVERZL.getType());
+        initEstimates(estimateBean, times, DataType.ZQDXTURNOVERZL.getType());
         estimateBean.setName("电销增值实际值");
         dataList.add(estimateBean);
 
         data.put("dataList", dataList);
         data.put("time", timeList);
     }
+
     @Override
     public void initFightChartData(Map<String, Object> data, ChartBean chartBean) throws Exception {
         String day = ControllerDateUtil.getToday();//取今天的日期
@@ -167,19 +169,19 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                 time = CommonUtil.initWeekTime(times);//根据查询出来的数据时间生成time时间轴
                 dataList.add(bean);
             } else if (dataType == DataType.VALIDCALLNUMBER.getType().intValue()) {//有效通话次数
-            // _ _目前电销&全部&渠道数据是都查询并且传到前端的,
-            // 全部与渠道是由汪浩隐藏,色块部分只查询电销的
+                // _ _目前电销&全部&渠道数据是都查询并且传到前端的,
+                // 全部与渠道是由汪浩隐藏,色块部分只查询电销的
                 List<Integer> dataTypes = new ArrayList<Integer>();
                 if (ChartsConstant.TODAY.equals(chartBean.getTime())) {//今天查询小时表
                     initValidCallType(dataTypes);
-                    for(Integer type:dataTypes){
+                    for (Integer type : dataTypes) {
                         bean = new HourChartBean();
                         getHourDoubleData(day, type, bean, timeF);
                         dataList.add(bean);
                     }
-                }else if(ChartsConstant.MONTH_DATA.equals(chartBean.getTime())){//月度数据{月表}
+                } else if (ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月度数据{月表}
                     bean = new HourChartBean();
-                    List<String> weekTimes = DateUtil.getMonthInfo( 8,"yyyyMM");
+                    List<String> weekTimes = DateUtil.getMonthInfo(8, "yyyyMM");
                     initMonthData(DataType.DXVALIDCALLNUMBER.getType(), bean, weekTimes);
                     dataList.add(bean);
                     bean = new HourChartBean();
@@ -191,9 +193,9 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                     time = CommonUtil.initYearMonthTime(weekTimes);
                 } else {//周/月/全部
                     initValidCallType(dataTypes);
-                    for(Integer type:dataTypes){
+                    for (Integer type : dataTypes) {
                         dayBean = new DayChartBean();
-                        getDayDoubleData(dayBean,type, day, preDay, time);
+                        getDayDoubleData(dayBean, type, day, preDay, time);
                         dataList.add(dayBean);
                     }
                 }
@@ -204,18 +206,18 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                 dataList.add(dayBean);
             } else if (dataType == DataType.VARIOUS_FAMILIES_ARTICLE.getType().intValue()) {//"百家文章数"
                 List<Integer> types = new ArrayList<>();
-                if(ChartsConstant.MONTH.equals(chartBean.getTime())){//"最近一月"
+                if (ChartsConstant.MONTH.equals(chartBean.getTime())) {//"最近一月"
                     types.add(DataType.EVERYDAY_NEW.getType());//208	百家文章日新增
                     //types.add(DataType.EVERYDAY_INCOME.getType());//209	百家文章日收入
-                }else{
+                } else {
                     types.add(dataType);
                 }
-                for (Integer type:types){
+                for (Integer type : types) {
                     dayBean = new DayChartBean();
                     getDayData(dayBean, type, day, preDay, time);
                     dataList.add(dayBean);
                 }
-            }else {//其他类型(人均在线时长转换为毫秒)
+            } else {//其他类型(人均在线时长转换为毫秒)
                 if (chartBean.getTime().equals("0")) {//今天查询小时表
                     bean = new HourChartBean();
                     getHourData(day, dataType, bean, timeF);
@@ -224,10 +226,10 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                     getHourData(day, DataType.XQPERCAPITAONLINETIME.getType(), bean, timeF);
                     dataList.add(bean);
                     bean = new HourChartBean();
-                    getHourData(day,  DataType.ZQPERCAPITAONLINETIME.getType(), bean, timeF);
+                    getHourData(day, DataType.ZQPERCAPITAONLINETIME.getType(), bean, timeF);
                     dataList.add(bean);
-                }else if(ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月度数据{月表}
-                    List<String> weekTimes = DateUtil.getMonthInfo(8,"yyyyMM");
+                } else if (ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月度数据{月表}
+                    List<String> weekTimes = DateUtil.getMonthInfo(8, "yyyyMM");
                     bean = new HourChartBean();
                     initMonthData(dataType, bean, weekTimes);
                     dataList.add(bean);
@@ -258,23 +260,25 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         data.put("time", time);
         data.put("dataList", dataList);
     }
+
     @Override
     public void initTurnoverDay(Map<String, Object> data, Integer dataType) throws Exception {
         List<Object> dataList = new ArrayList<>();
         DayChartBean bean = new DayChartBean();
-        List<String> time = getDayData(bean,dataType);
+        List<String> time = getDayData(bean, dataType);
         dataList.add(bean);
+        if (dataType == DataType.DXTURNOVERZL.getType().intValue()) {
+            bean = new DayChartBean();
+            getDayData(bean, DataType.XQDXTURNOVERZL.getType());
+            dataList.add(bean);
 
-        bean = new DayChartBean();
-        getDayData(bean, DataType.XQDXTURNOVERZL.getType());
-        dataList.add(bean);
-
-        bean = new DayChartBean();
-        getDayData(bean, DataType.ZQDXTURNOVERZL.getType());
-        dataList.add(bean);
+            bean = new DayChartBean();
+            getDayData(bean, DataType.ZQDXTURNOVERZL.getType());
+            dataList.add(bean);
+        }
 
         data.put("dataList", dataList);
-        data.put("time",time);
+        data.put("time", time);
     }
 
     @Override
@@ -285,10 +289,10 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         List<String> weekTimes = new ArrayList<>();//周度数据时间轴
         HourChartBean bean = null;
         HourChartBean practical = new HourChartBean();
-        if(flag == 1){
-            initMonthData(DataType.DXTURNOVELJ.getType(),practical,weekTimes);//电销当月实际值
-        }else if(flag == 2){
-            initMonthData(DataType.QDTURNOVERLJ.getType(),practical,weekTimes);//渠道当月实际值
+        if (flag == 1) {
+            initMonthData(DataType.DXTURNOVELJ.getType(), practical, weekTimes);//电销当月实际值
+        } else if (flag == 2) {
+            initMonthData(DataType.QDTURNOVERLJ.getType(), practical, weekTimes);//渠道当月实际值
         }
         if (flag == 1) {//电销
             dataTypes.add(DataType.DXTURNOVERYS.getType());//电销当月预算
@@ -297,9 +301,9 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
             dataTypes.add(DataType.QDTURNOVERYS.getType());//渠道当月预算
             dataTypes.add(DataType.QDTURNOVERYG.getType());//渠道当月预估值
         }
-        for(Integer type:dataTypes){
+        for (Integer type : dataTypes) {
             bean = new HourChartBean();
-            getEstimatesByTime(bean,type,weekTimes);
+            getEstimatesByTime(bean, type, weekTimes);
             dataList.add(bean);
         }
         dataList.add(practical);//保证实际值的位置在最后一个
@@ -317,7 +321,7 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         HourChartBean bean = null;
         HourChartBean practical = new HourChartBean();
 
-        initMonthData(DataType.DXTURNOVELJ.getType(),practical,weekTimes);//电销当月实际值
+        initMonthData(DataType.DXTURNOVELJ.getType(), practical, weekTimes);//电销当月实际值
         List<String> time = CommonUtil.initYearMonthTime(weekTimes);
         dataTypes.add(DataType.DXTURNOVERYS.getType());//电销当月预算
         dataTypes.add(DataType.DXTURNOVEYG.getType());//电销当月预估值
@@ -326,11 +330,11 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         dataTypes.add(DataType.XQDXTURNOVERZL.getType());//新签实际
         dataTypes.add(DataType.ZQDXTURNOVERZL.getType());//增值实际
 
-        int i = 0 ;
-        for(Integer type:dataTypes){
+        int i = 0;
+        for (Integer type : dataTypes) {
             bean = new HourChartBean();
-            getEstimatesByTime(bean,type,weekTimes);
-            if(i == 4 ){
+            getEstimatesByTime(bean, type, weekTimes);
+            if (i == 4) {
                 dataList.add(practical);
             }
             dataList.add(bean);
@@ -340,6 +344,7 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         data.put("dataList", dataList);
         data.put("time", time);
     }
+
     private void initValidCallType(List<Integer> dataTypes) {
 //        dataTypes.add(DataType.VALIDCALLNUMBER.getType());//总
         dataTypes.add(DataType.DXVALIDCALLNUMBER.getType());//电销
@@ -356,9 +361,9 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         param.put("preDay", preDay);
         param.put("type", dataType);
         List<RealTimeStaticDoubleDay> data = null;
-        if(DataType.EVERYDAY_INCOME.getType().equals(dataType)){
+        if (DataType.EVERYDAY_INCOME.getType().equals(dataType)) {
             data = realTimeStaticDayMapper.findEveryDayIncome(param);
-        }else{
+        } else {
             data = realTimeStaticDayMapper.findDayDoubleData(param);
         }
         List<Double> dataCount = dayConvert(data, dataType, time);
@@ -422,15 +427,15 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                     } else {
                         dataList.add(initMap.get(time));
                     }
-                } else if(DataType.VARIOUS_FAMILIES_ARTICLE.getType().equals(dataType)){//百家文章数(累计)
+                } else if (DataType.VARIOUS_FAMILIES_ARTICLE.getType().equals(dataType)) {//百家文章数(累计)
                     String day = ControllerDateUtil.getToday();//取今天的日期
                     String yesterday = ControllerDateUtil.getYesterday();//昨天的日期
-                    if(time.equals(day) && initMap.get(day) == 0d){//今天没有数据
+                    if (time.equals(day) && initMap.get(day) == 0d) {//今天没有数据
                         dataList.add(initMap.get(yesterday));
-                    }else{
+                    } else {
                         dataList.add(initMap.get(time));
                     }
-                }else{
+                } else {
                     dataList.add(initMap.get(time));
                 }
             }
@@ -519,6 +524,7 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
 
     /**
      * 转换周表数据
+     *
      * @param weekDatas2 电销
      * @param weekDatas3 渠道
      * @param times      时间轴
@@ -598,26 +604,26 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     private List<Object> hourDoubleConvert(List<RealTimeStaticDoubleHour> hourDatas, Integer dataType, List<String> times) {
         DecimalFormat df = new DecimalFormat("0.00");
         Map<String, Object> initMap = CommonUtil.initHourTimeMap(times);//初始化时间
-        Map<String,Object> tempMap = new HashMap<>();//用于数据补零,小时数据当前最新数据之前的补零,之后的维持原有""处理
+        Map<String, Object> tempMap = new HashMap<>();//用于数据补零,小时数据当前最新数据之前的补零,之后的维持原有""处理
         List<Object> dataList = new ArrayList<Object>();
         if (hourDatas != null && hourDatas.size() > 0) {
             for (RealTimeStaticDoubleHour realTimeStaticHour : hourDatas) {
                 if (!"".equals(realTimeStaticHour.getIrslDateH()) && realTimeStaticHour.getDataCount() != null) {
                     initMap.put(realTimeStaticHour.getIrslDateH(), Double.parseDouble(df.format(realTimeStaticHour.getDataCount())));
-                    tempMap.put("temp",realTimeStaticHour.getIrslDateH());
+                    tempMap.put("temp", realTimeStaticHour.getIrslDateH());
                 } else {
                     logger.error("小时表:" + "数据时间:" + realTimeStaticHour.getIrslDateH() + "数据类型:" + realTimeStaticHour.getDataType() + "-- 数据为空。");
                 }
             }
             if (times != null && times.size() > 0) {
                 for (String time : times) {
-                    if(Integer.valueOf(time)<=Integer.valueOf((String) tempMap.get("temp"))){//有数据的最大时间之前数据为空进行补零
-                        if("".equals(initMap.get(time))){
+                    if (Integer.valueOf(time) <= Integer.valueOf((String) tempMap.get("temp"))) {//有数据的最大时间之前数据为空进行补零
+                        if ("".equals(initMap.get(time))) {
                             dataList.add(0);
-                        }else{
+                        } else {
                             dataList.add(initMap.get(time));
                         }
-                    }else{
+                    } else {
                         dataList.add(initMap.get(time));
                     }
                 }
@@ -638,12 +644,12 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     private List<Object> hourConvert(List<RealTimeStaticHour> hourDatas, Integer dataType, List<String> times) {
         Map<String, Object> initMap = CommonUtil.initHourTimeMap(times);//初始化时间
         List<Object> dataList = new ArrayList<Object>();
-        Map<String,Object> tempMap = new HashMap<>();//用于数据补零,小时数据当前最新数据之前的补零,之后的维持原有""处理
+        Map<String, Object> tempMap = new HashMap<>();//用于数据补零,小时数据当前最新数据之前的补零,之后的维持原有""处理
         if (hourDatas != null && hourDatas.size() > 0) {
             for (RealTimeStaticHour realTimeStaticHour : hourDatas) {
                 if (!"".equals(realTimeStaticHour.getIrslDateH()) && realTimeStaticHour.getDataCount() != null) {
                     initMap.put(realTimeStaticHour.getIrslDateH(), realTimeStaticHour.getDataCount());
-                    tempMap.put("temp",realTimeStaticHour.getIrslDateH());
+                    tempMap.put("temp", realTimeStaticHour.getIrslDateH());
                 } else {
                     logger.error("小时表:" + "数据时间:" + realTimeStaticHour.getIrslDateH() + "数据类型:" + realTimeStaticHour.getDataType() + "-- 数据为空。");
                 }
@@ -651,10 +657,10 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
             if (times != null && times.size() > 0) {
                 Integer data = null;
                 for (String time : times) {
-                    if(Integer.valueOf(time)<=Integer.valueOf((String) tempMap.get("temp"))){//有数据的最大时间之前数据为空进行补零
-                        if("".equals(initMap.get(time))){
+                    if (Integer.valueOf(time) <= Integer.valueOf((String) tempMap.get("temp"))) {//有数据的最大时间之前数据为空进行补零
+                        if ("".equals(initMap.get(time))) {
                             dataList.add(0);
-                        }else{
+                        } else {
                             if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()) {
                                 if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
                                     data = ((Integer) initMap.get(time)) * 1000;
@@ -666,7 +672,7 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                                 dataList.add(initMap.get(time));
                             }
                         }
-                    }else{
+                    } else {
                         dataList.add(initMap.get(time));
                     }
                 }
@@ -833,12 +839,12 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         types.add(dataType);
         List<RealTimeStaticDoubleDay> dataToday = null;
         Map<String, Object> param = new HashMap<>();
-        param.put("day",day);
-        param.put("list",types);
+        param.put("day", day);
+        param.put("list", types);
         if (yesterDay == null) {//今天
             dataToday = realTimeStaticDayMapper.findRealTimeDoubleDataToday(param);
         } else {
-            param.put("yesterDay",yesterDay);
+            param.put("yesterDay", yesterDay);
             dataToday = realTimeStaticDayMapper.findRealTimeDoubleDataYester(param);
         }
         MainBean mainBean = new MainBean();
@@ -866,28 +872,27 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     }
 
 
-
     private void initEstimates(HourChartBean bean, List<String> times, Integer type) throws Exception {
-        Map<String,Object> param = new HashMap<>();
-        param.put("type",type);
-        param.put("list",times);
-        Map<String,Object > initMap = new HashMap<>();
-        for(String time : times){//初始化数据，防止有不对的数据
-            initMap.put(time,0);
+        Map<String, Object> param = new HashMap<>();
+        param.put("type", type);
+        param.put("list", times);
+        Map<String, Object> initMap = new HashMap<>();
+        for (String time : times) {//初始化数据，防止有不对的数据
+            initMap.put(time, 0);
         }
         List<RealtimeStaticDoubleWeek> estimates = realtimeStaticWeekMapper.findEstimatesByPractical(param);
         List<Object> count = new ArrayList<>();
-        if(estimates!=null && !estimates.isEmpty()){
-            for (RealtimeStaticDoubleWeek weekData:estimates){
-                if(weekData.getDataCount()!=null){
+        if (estimates != null && !estimates.isEmpty()) {
+            for (RealtimeStaticDoubleWeek weekData : estimates) {
+                if (weekData.getDataCount() != null) {
 //                    count.add(Math.floor(weekData.getDataCount()));
-                    initMap.put(weekData.getIrslDate(),Math.floor(weekData.getDataCount()));
-                }else{
+                    initMap.put(weekData.getIrslDate(), Math.floor(weekData.getDataCount()));
+                } else {
                     logger.error("周表:数据时间:" + weekData.getIrslDate() + "数据类型:" + weekData.getDataType() + "-- 数据为空。");
                 }
             }
         }
-        for(String time : times){
+        for (String time : times) {
             count.add(initMap.get(time));
         }
         bean.setData(count);
@@ -896,19 +901,19 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     }
 
     /*初始化销售实际值数据*/
-    private List<String> initPractical(HourChartBean bean,Integer type) throws Exception {
+    private List<String> initPractical(HourChartBean bean, Integer type) throws Exception {
         List<String> times = new ArrayList<>();
-        Map<String,Object> param = new HashMap<>();
-        param.put("type",type);
-        param.put("flag",6);
+        Map<String, Object> param = new HashMap<>();
+        param.put("type", type);
+        param.put("flag", 6);
         List<RealtimeStaticDoubleWeek> Practical = realtimeStaticWeekMapper.findWeekDataDoubleDay(param);
-        if(Practical!=null && !Practical.isEmpty()){
+        if (Practical != null && !Practical.isEmpty()) {
             List<Object> count = new ArrayList<>();
-            for (RealtimeStaticDoubleWeek weekData:Practical){
-                if(weekData.getDataCount()!=null){
+            for (RealtimeStaticDoubleWeek weekData : Practical) {
+                if (weekData.getDataCount() != null) {
                     count.add(Math.floor(weekData.getDataCount()));
                     times.add(weekData.getIrslDate());
-                }else{
+                } else {
                     logger.error("周表:数据时间:" + weekData.getIrslDate() + "数据类型:" + weekData.getDataType() + "-- 数据为空。");
                 }
             }
@@ -922,31 +927,32 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
 
     /**
      * 根据实际值的时间获取预估预算值得数据
+     *
      * @param bean
      * @param type
      * @param times
      */
     private void getEstimatesByTime(HourChartBean bean, Integer type, List<String> times) throws Exception {
-        Map<String,Object> param = new HashMap<>();
-        param.put("type",type);
-        param.put("list",times);
-        Map<String ,Object> initMap = new HashMap<>();
-        for(String t : times ){
-            initMap.put(t,0);
+        Map<String, Object> param = new HashMap<>();
+        param.put("type", type);
+        param.put("list", times);
+        Map<String, Object> initMap = new HashMap<>();
+        for (String t : times) {
+            initMap.put(t, 0);
         }
         List<RealtimeStaticMonth> estimates = realtimeStaticMonthMapper.findEstimatesByPractical(param);
         List<Object> count = new ArrayList<>();
-        if(estimates!=null && !estimates.isEmpty()){
-            for (RealtimeStaticMonth monthData:estimates){
-                if(monthData.getDataCount()!=null){
+        if (estimates != null && !estimates.isEmpty()) {
+            for (RealtimeStaticMonth monthData : estimates) {
+                if (monthData.getDataCount() != null) {
 //                    count.add(monthData.getDataCount());
-                    initMap.put(monthData.getIrslDate(),monthData.getDataCount());
-                }else{
+                    initMap.put(monthData.getIrslDate(), monthData.getDataCount());
+                } else {
                     logger.error("月表:数据时间:" + monthData.getIrslDate() + "数据类型:" + monthData.getDataType() + "-- 数据为空。");
                 }
             }
         }
-        for(String t: times){
+        for (String t : times) {
             count.add(initMap.get(t));
         }
         bean.setData(count);
@@ -959,15 +965,15 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     private void initMonthData(Integer dataType, HourChartBean bean, List<String> weekTimes) throws Exception {
         String year = DateUtil.getYear("yyyy");//获取当前年度
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("type",dataType);
-        param.put("year",year);
+        param.put("type", dataType);
+        param.put("year", year);
         List<RealtimeStaticMonth> monthData = realtimeStaticMonthMapper.fingYearMonthData(param);
-        if(weekTimes == null || weekTimes.size()==0){
-            for(RealtimeStaticMonth realtimeStaticMonth : monthData){
+        if (weekTimes == null || weekTimes.size() == 0) {
+            for (RealtimeStaticMonth realtimeStaticMonth : monthData) {
                 weekTimes.add(realtimeStaticMonth.getIrslDate());
             }
         }
-        List<Object> dataCount = monthConvert(monthData, dataType,weekTimes);
+        List<Object> dataCount = monthConvert(monthData, dataType, weekTimes);
         bean.setName(CommonUtil.initName(dataType));
         bean.setUnit(CommonUtil.initUnit(dataType));
         bean.setData(dataCount);
@@ -976,22 +982,22 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     private List<Object> monthConvert(List<RealtimeStaticMonth> monthDatas, Integer dataType, List<String> times) {
         DecimalFormat df = new DecimalFormat("0.00");
         List<Object> dataList = new ArrayList<>();
-        Map<String, Double> initMap = new HashMap<String,Double>();
-        if(times!=null && times.size()>0){
-            for(String t:times){
-                initMap.put(t,0d);//初始化数据
+        Map<String, Double> initMap = new HashMap<String, Double>();
+        if (times != null && times.size() > 0) {
+            for (String t : times) {
+                initMap.put(t, 0d);//初始化数据
             }
         }
-        if(monthDatas!=null && !monthDatas.isEmpty()){
-            for(RealtimeStaticMonth monthData:monthDatas){
-                if(!"".equals(monthData.getIrslDate()) && monthData.getDataCount()!=null){//有效通话次数保留两位小数
+        if (monthDatas != null && !monthDatas.isEmpty()) {
+            for (RealtimeStaticMonth monthData : monthDatas) {
+                if (!"".equals(monthData.getIrslDate()) && monthData.getDataCount() != null) {//有效通话次数保留两位小数
                     initMap.put(monthData.getIrslDate(), Double.valueOf(df.format(monthData.getDataCount())));
-                }else {
+                } else {
                     logger.error("查询月表数据:数据时间:" + monthData.getDataDate() + "数据类型:" + monthData.getDataType() + "-- 数据为空。");
                 }
             }
         }
-        if(times != null && times.size()>0){
+        if (times != null && times.size() > 0) {
             for (String time : times) {
                 if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()) {
                     if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
@@ -1011,13 +1017,13 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     private List<String> getDayData(DayChartBean bean, Integer dataType) throws Exception {
         String day = ControllerDateUtil.getToday();//取今天的日期
         List<String> time = CommonUtil.getTimeShaftD(ChartsConstant.SHOWMONTH);//时间刻度
-        String preDay = ControllerDateUtil.getPreNDay(-(ChartsConstant.SHOWMONTH-1));
-        Map<String,Object> param = new HashMap<String,Object>();
-        param.put("day",day);
-        param.put("preDay",preDay);
-        param.put("type",dataType);
+        String preDay = ControllerDateUtil.getPreNDay(-(ChartsConstant.SHOWMONTH - 1));
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("day", day);
+        param.put("preDay", preDay);
+        param.put("type", dataType);
         List<RealTimeStaticDoubleDay> data = realTimeStaticDayMapper.findDayDoubleData(param);
-        List<Double> dataCount = dayConvert(data,dataType,time);
+        List<Double> dataCount = dayConvert(data, dataType, time);
         bean.setUnit(CommonUtil.initUnit(dataType));
         bean.setName(CommonUtil.initName(dataType));
         bean.setData(dataCount);

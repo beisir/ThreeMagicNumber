@@ -35,6 +35,8 @@ public class CommonUtil {
                 || otherType==DataType.P4P_QWDT_TOTAL.getType().intValue() || otherType==DataType.P4P_QWDT_WEEK_TOTAL.getType().intValue()
                 || otherType==DataType.P4P_CONSUMPTION_HOUR.getType().intValue() || otherType==DataType.P4P_CONSUMPTION_DAY.getType().intValue()
                 || otherType==DataType.P4P_CONSUMPTION_TOTAL.getType().intValue() || otherType==DataType.P4P_QWDT_HOUR.getType().intValue()
+                || otherType==DataType.XQDXTURNOVEYG.getType().intValue() || otherType==DataType.ZQDXTURNOVEYG.getType().intValue()
+                || otherType==DataType.XQDXTURNOVERZL.getType().intValue() || otherType==DataType.ZQDXTURNOVERZL.getType().intValue()
                 || otherType==DataType.P4P_QWDT_DAY.getType().intValue()){
             unit = "元";
         } else if(otherType == DataType.VARIOUS_FAMILIES_ARTICLE.getType().intValue() || otherType == DataType.EVERYDAY_NEW.getType().intValue() || otherType == DataType.EXTERNALSENDDRAFT.getType().intValue()){
