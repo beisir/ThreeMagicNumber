@@ -288,32 +288,19 @@ export default {
                             return _hour + ':' + _m;
                         }
                     }
-                }, false);
-                chartEntity.series[0].update({
-                    labels: {
-                        formatter: function() {
-                            var _t = this,
-                                _m = Highcharts.dateFormat('%M:%S', _t.value),
-                                _hour = ('00' + parseInt(_t.value / (1000 * 3600))).slice(-2);
-                            return _hour + ':' + _m;
-                        }
-                    }
-                }, false);
+                }, false);              
                 chartEntity.update({
                     tooltip: {
+                        shared: true,
                         formatter: function() {
-
                             var _t = this,
-                                _m = Highcharts.dateFormat('%M:%S', _t.y),
-                                _hour = ('00' + parseInt(_t.y / (1000 * 3600))).slice(-2);
-
-                            return [
-                                '<span style="font-size: 10px">' + _t.x + '</span><br>',
-                                '<span style="color:' + _t.points[0].color + '">\u25CF</span>',
-                                '<tspan> ' + _t.points[0].series.name + ': </tspan>',
-                                '<tspan style="font-weight:bold">' + (_hour + ':' + _m) + '</tspan>'
-                            ].join('');
-
+                                toolString='<span style="font-size: 10px">' + this.x + '</span><br>';
+                             this.points.forEach((val,i,arr)=>{
+                                    toolString+='<span style="color:' + val.color + '">\u25CF</span>';
+                                    toolString+='<tspan> ' + val.series.name + ': </tspan>';
+                                    toolString+='<tspan style="font-weight:bold">' + (('00' + parseInt(val.y / (1000 * 3600))).slice(-2) + ':' + Highcharts.dateFormat('%M:%S', val.y)) + '</tspan><br>';
+                             });
+                            return toolString;
                         }
                     }
                 }, false);
@@ -368,6 +355,19 @@ export default {
              }
              
         });
+
+        /**
+         * [监听销售业绩趋势图表组件 beforeRedraw 事件 显示一个y轴] 
+         */
+        _this.$refs.navigation_yearly.$on('beforeRedraw',function(chartEntity){
+            if (this.CurrentNavigation.code === '178') {
+                chartEntity.series.forEach((series, index) => {                    
+                    series.update({
+                        yAxis: 0
+                    }, false);
+                });
+            }
+        })
     },
     methods: {
 
@@ -544,15 +544,14 @@ export default {
                     chart: {
                         type: "column"
                     },
-                    colors: ['#4572A7', '#AA4643', '#89A54E'],
+                    colors:['#4572A7', "#bb7c2c", '#89A54E'],
                     tooltip: {
                         shared: true,
                         formatter: function() {
                             var toolString = "<b>" + this.x + "</b><br/>";
                             /*** 返回电销新签和电销增值的总和 */
-                            let getTotalNumber=()=>{
+                            let getTotalNumber=(pointNameLis)=>{
                                 let pointsArr=this.points.filter((point)=>{
-                                    let pointNameLis=["电销新签","电销增值"];
                                     return pointNameLis.includes(point.series.name)
                                 })
                                 if(pointsArr.length==2){
@@ -566,14 +565,26 @@ export default {
                                 let pointName=point.series.name,
                                     pointNameList=["电销整体","电销新签","电销增值"],
                                     number=point.y;
-                                /** 电销整体预估值为0，数值显示等于电销新签预估值和电销增值预估值 **/    
+                                /***@augments
+                                *  "电销整体","电销新签","电销增值" 加上预估值
+                                *   电销整体预估值和电销整体实际值为0，数值显示等于电销新签预估值和电销增值预估值
+                                    电销新签和电销增值如果为0则不显示
+                                */ 
                                 if(pointNameList.includes(pointName)){
+                                    if(pointName=="电销整体"&&number==0){
+                                        number=getTotalNumber(["电销新签","电销增值"]);
+                                    }else if(number==0){
+                                        return;
+                                    }
                                     pointName+='预估值';
-                                    if(pointName=="电销整体预估值"&&number==0){
-                                        number=getTotalNumber();
+                                }else{
+                                    if(pointName=="电销整体实际值"&&number==0){
+                                         number=getTotalNumber(["电销新签实际值","电销增值实际值"]);
+                                    }else if(number==0){
+                                        return;
                                     }
                                 }
-                                toolString += pointName + ":" + number + "<br/>";
+                                toolString += pointName + ":" + number + "元" + "<br/>";
                             }, this);
                             return toolString;
                         }
@@ -592,7 +603,7 @@ export default {
         changeSaleSeries(chartEntity){
             chartEntity.series.forEach((series, index) => {
                         /**预算值，预估值和实际值分组 */
-                        let stackList=[{stackname:"budgetValue",des:"预算值"},{stackname:"forecasts",des:"预估值"},{stackname:"actualValue",des:"实际值"}],
+                        let stackList=[{stackname:"budgetValue",des:"预算值",color:"#7d6f4c"},{stackname:"forecasts",des:"预估值"},{stackname:"actualValue",des:"实际值"}],
                             stackName=stackList.find((val)=>{
                                 return series.name.indexOf(val.des)>=0
                             }),
@@ -607,6 +618,7 @@ export default {
                             yAxis: 0,
                             // 柱状图分组
                             stack: stackName.stackname,
+                            color:stackName.color,
                             name:seriesName,
                             //是否显示图例
                             showInLegend:showInlegendVal,
