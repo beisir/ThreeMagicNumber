@@ -15,7 +15,7 @@
 
     <!-- 拦截器 -->
 
-    <!-- 登陆权限验证
+     <!--登陆权限验证-->
    <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"></mvc:mapping>
@@ -33,7 +33,7 @@
 
             <bean class="com.hc360.dataweb.inteceptor.LoginInteceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 
 
     <mvc:annotation-driven/>

@@ -891,7 +891,8 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         for (String time : times) {//初始化数据，防止有不对的数据
             initMap.put(time, 0);
         }
-        List<RealtimeStaticDoubleWeek> estimates = realtimeStaticWeekMapper.findEstimatesByPractical(param);
+        //List<RealtimeStaticDoubleWeek> estimates = realtimeStaticWeekMapper.findEstimatesByPractical(param);
+        List<RealtimeStaticDoubleWeek> estimates = realtimeStaticWeekMapper.findEstimatesByPracticalnew(param);
         List<Object> count = new ArrayList<>();
         if (estimates != null && !estimates.isEmpty()) {
             for (RealtimeStaticDoubleWeek weekData : estimates) {
@@ -951,7 +952,8 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         for (String t : times) {
             initMap.put(t, 0);
         }
-        List<RealtimeStaticMonth> estimates = realtimeStaticMonthMapper.findEstimatesByPractical(param);
+        //List<RealtimeStaticMonth> estimates = realtimeStaticMonthMapper.findEstimatesByPractical(param);
+        List<RealtimeStaticMonth> estimates = realtimeStaticMonthMapper.findEstimatesByPracticalnew(param);
         List<Object> count = new ArrayList<>();
         if (estimates != null && !estimates.isEmpty()) {
             for (RealtimeStaticMonth monthData : estimates) {
