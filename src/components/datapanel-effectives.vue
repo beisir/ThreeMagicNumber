@@ -544,6 +544,7 @@ export default {
                     chart: {
                         type: "column"
                     },
+                    // 定义图表的颜色
                     colors:['#4572A7', "#bb7c2c", '#89A54E'],
                     tooltip: {
                         shared: true,
