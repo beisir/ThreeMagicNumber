@@ -39,7 +39,7 @@ const routeConfig = [{
         hidden: true
     },{
         name: '战斗力',
-        path: '/datapanel/effectives',
+        path: '/datapanel/effectives%parms=[{"prodinstruction":"","prodname":"13","prodnum":"23","produnit":"%FS1","stproductorderid":"3828"}]',
         component: resolve => {
             require.ensure(['components/datapanel-effectives.vue'], () => {
                 resolve(require('components/datapanel-effectives.vue'));
