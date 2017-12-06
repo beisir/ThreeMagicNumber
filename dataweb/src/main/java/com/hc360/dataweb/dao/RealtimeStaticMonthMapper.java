@@ -60,5 +60,7 @@ public interface RealtimeStaticMonthMapper {
      */
     List<RealtimeStaticMonth> findEstimatesByPractical(Map<String, Object> param)throws Exception;
 
+    List<RealtimeStaticMonth> findEstimatesByPracticalnew(Map<String, Object> param)throws Exception;
+
     List<RealtimeStaticMonth> findYearMonthData(Map<String, Object> param);
 }

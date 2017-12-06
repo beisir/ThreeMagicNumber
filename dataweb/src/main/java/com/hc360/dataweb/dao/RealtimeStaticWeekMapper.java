@@ -75,4 +75,6 @@ public interface RealtimeStaticWeekMapper {
      */
     List<RealtimeStaticDoubleWeek> findEstimatesByPractical(Map<String, Object> param) throws Exception;
 
+    List<RealtimeStaticDoubleWeek> findEstimatesByPracticalnew(Map<String, Object> param) throws Exception;
+
 }
