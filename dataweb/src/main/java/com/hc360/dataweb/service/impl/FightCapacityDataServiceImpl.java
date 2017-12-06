@@ -222,36 +222,42 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                     bean = new HourChartBean();
                     getHourData(day, dataType, bean, timeF);
                     dataList.add(bean);
-                    bean = new HourChartBean();
-                    getHourData(day, DataType.XQPERCAPITAONLINETIME.getType(), bean, timeF);
-                    dataList.add(bean);
-                    bean = new HourChartBean();
-                    getHourData(day, DataType.ZQPERCAPITAONLINETIME.getType(), bean, timeF);
-                    dataList.add(bean);
+                    if(dataType == DataType.PERCAPITAONLINETIME.getType()){
+
+                        bean = new HourChartBean();
+                        getHourData(day, DataType.XQPERCAPITAONLINETIME.getType(), bean, timeF);
+                        dataList.add(bean);
+                        bean = new HourChartBean();
+                        getHourData(day, DataType.ZQPERCAPITAONLINETIME.getType(), bean, timeF);
+                        dataList.add(bean);
+                    }
                 } else if (ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月度数据{月表}
                     List<String> weekTimes = DateUtil.getMonthInfo(8, "yyyyMM");
                     bean = new HourChartBean();
                     initMonthData(dataType, bean, weekTimes);
                     dataList.add(bean);
+                    if(dataType == DataType.PERCAPITAONLINETIME.getType()) {
+                        bean = new HourChartBean();
+                        initMonthData(DataType.XQPERCAPITAONLINETIME.getType(), bean, weekTimes);
+                        dataList.add(bean);
 
-                    bean = new HourChartBean();
-                    initMonthData(DataType.XQPERCAPITAONLINETIME.getType(), bean, weekTimes);
-                    dataList.add(bean);
-
-                    bean = new HourChartBean();
-                    initMonthData(DataType.ZQPERCAPITAONLINETIME.getType(), bean, weekTimes);
-                    dataList.add(bean);
+                        bean = new HourChartBean();
+                        initMonthData(DataType.ZQPERCAPITAONLINETIME.getType(), bean, weekTimes);
+                        dataList.add(bean);
+                    }
                     time = CommonUtil.initYearMonthTime(weekTimes);
                 } else {//周/月/全部
                     dayBean = new DayChartBean();
                     getDayData(dayBean, dataType, day, preDay, time);
                     dataList.add(dayBean);
-                    dayBean = new DayChartBean();
-                    getDayData(dayBean, DataType.XQPERCAPITAONLINETIME.getType(), day, preDay, time);
-                    dataList.add(dayBean);
-                    dayBean = new DayChartBean();
-                    getDayData(dayBean, DataType.ZQPERCAPITAONLINETIME.getType(), day, preDay, time);
-                    dataList.add(dayBean);
+                    if(dataType == DataType.PERCAPITAONLINETIME.getType()) {
+                        dayBean = new DayChartBean();
+                        getDayData(dayBean, DataType.XQPERCAPITAONLINETIME.getType(), day, preDay, time);
+                        dataList.add(dayBean);
+                        dayBean = new DayChartBean();
+                        getDayData(dayBean, DataType.ZQPERCAPITAONLINETIME.getType(), day, preDay, time);
+                        dataList.add(dayBean);
+                    }
                 }
             }
         } else {
@@ -421,7 +427,10 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         }
         if (times != null && times.size() > 0) {
             for (String time : times) {
-                if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()) {
+                if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()
+                        || dataType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
+                        || dataType == DataType.ZQPERCAPITAONLINETIME.getType().intValue()
+                        ) {
                     if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
                         dataList.add(initMap.get(time) * 1000);
                     } else {
@@ -661,7 +670,9 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                         if ("".equals(initMap.get(time))) {
                             dataList.add(0);
                         } else {
-                            if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()) {
+                            if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()
+                                    || dataType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
+                                    ||  dataType ==DataType.ZQPERCAPITAONLINETIME.getType().intValue()) {
                                 if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
                                     data = ((Integer) initMap.get(time)) * 1000;
                                     dataList.add(data);
@@ -999,7 +1010,10 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         }
         if (times != null && times.size() > 0) {
             for (String time : times) {
-                if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()) {
+                if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()
+                      || dataType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
+                        || dataType == DataType.ZQPERCAPITAONLINETIME.getType().intValue()
+                        ) {
                     if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
                         dataList.add(initMap.get(time) * 1000);
                     } else {
