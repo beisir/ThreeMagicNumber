@@ -71,6 +71,14 @@ const routeConfig = [{
             });
         }
     }, {
+        name: '上传文件',
+        path: '/datapanel/uploadexcel',
+        component: resolve => {
+            require.ensure(['components/datapanel-uploadexcel.vue'], () => {
+                resolve(require('components/datapanel-uploadexcel.vue'));
+            });
+        }
+    }, {
         name: '权限管理',
         path: '/datapanel/authority',
         component: resolve => {

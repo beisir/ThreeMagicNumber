@@ -297,7 +297,7 @@ export default {
        * [_userPrivileges 获取当前用户的当前分组权限数据]
        * @type {Array}
        */
-      
+
       let _userPrivileges = _this.userPrivileges[id],
 
         /**
@@ -535,8 +535,8 @@ export default {
              */
             _userPrivileges.checkall = (_allPrivileges.length === _userPrivileges.data.length);
             _userPrivileges.indeterminate = _userPrivileges.checkall ? false : (_userPrivileges.data.length > 0);
-            
-            
+
+
           }
         });
             console.log(_this.userPrivileges)
@@ -620,7 +620,7 @@ export default {
          */
         _userPrivileges = _userPrivileges.concat(_this.userPrivileges[key].data);
       });
-     
+
 
       /**
        * [_promise 创建延迟对象]

@@ -121,7 +121,7 @@ export default {
 		"百度联盟收入": {
 			id: 46,
 			desc: "趋势图1"
-		}		
+		}
 	},
 	'/datapanel/p4pConsumption': {
 		"ID": {
@@ -135,23 +135,23 @@ export default {
 		"纯P4P消耗": {
 			id: 45,
 			desc: "P4P消耗"
-		},	
+		},
 		"全网定投消耗": {
 			id: 45,
 			desc: "P4P消耗"
-		},				
+		},
 		// "P4P关键词总量": {
 		// 	id: 45,
 		// 	desc: "P4P消耗"
-		// },	
+		// },
 		// "P4P在投词量": {
 		// 	id: 45,
 		// 	desc: "P4P消耗"
-		// },	
+		// },
 		"P4PCPC": {
 			id: 71,
 			desc: "趋势图1"
-		},		
+		},
 		"全网定投": {
 			id: 72,
 			desc: "趋势图1"
@@ -167,7 +167,7 @@ export default {
 		"P4P竞价词": {
 			id: 58,
 			desc: "趋势图1"
-		}		
+		}
 	},
 	'/datapanel/effectives': {
 		"ID": {
@@ -319,6 +319,12 @@ export default {
 		"ID": {
 			id: 5,
 			desc: '权限管理路由权限编号'
+		}
+	},
+	'/datapanel/uploadexcel': {
+		"ID": {
+			id: 74,
+			desc: '上传文件权限管理编号'
 		}
 	}
 };
