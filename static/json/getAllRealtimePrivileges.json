@@ -316,5 +316,10 @@
     "privilege": "P4P运营数据",
     "p_type": 0,
     "state": 0
+  },{
+    "id": 74,
+    "privilege": "文件上传",
+    "p_type": 0,
+    "state": 0
   }]
 }
