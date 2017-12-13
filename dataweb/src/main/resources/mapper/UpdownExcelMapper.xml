@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc360.dataweb.dao.UpdownExcelMapper" >
+
+       <resultMap id="TaskMap" type="com.hc360.dataweb.model.TaskTable" >
+              <result column="ID" property="id" jdbcType="VARCHAR" />
+              <result column="TASK_TIME" property="taskTime" jdbcType="DECIMAL" />
+              <result column="DEPARTMENT" property="department" jdbcType="VARCHAR" />
+              <result column="TASK_NUM" property="taskNum" jdbcType="VARCHAR" />
+              <result column="CREAT_TIME" property="creatTime" jdbcType="DATE" />
+              <result column="STATE" property="state" jdbcType="DECIMAL" />
+              <result column="OPERATORID" property="operatorId" jdbcType="DECIMAL" />
+       </resultMap>
+
+
+       <resultMap id="OrderMap" type="com.hc360.dataweb.model.OrderMoveTable" >
+              <result column="ID" property="id" jdbcType="VARCHAR" />
+              <result column="MOVE_DATE" property="moveDate" jdbcType="VARCHAR" />
+              <result column="ORDERID" property="orderId" jdbcType="VARCHAR" />
+              <result column="FROM_WHO" property="fromWho" jdbcType="VARCHAR" />
+              <result column="TO_WHO" property="toWho" jdbcType="VARCHAR" />
+              <result column="AMOUNT" property="amount" jdbcType="VARCHAR" />
+              <result column="CLIENT_TO_WHO" property="clientToWho" jdbcType="VARCHAR" />
+              <result column="CREAT_TIME" property="creatTime" jdbcType="DATE" />
+              <result column="STATE" property="state" jdbcType="DECIMAL" />
+              <result column="OPERATORID" property="operatorId" jdbcType="DECIMAL" />
+       </resultMap>
+
+
+
+       <select id="getTasks" resultMap="TaskMap" parameterType="java.util.Map">
+               
+       </select>
+
+       <!--<insert id="insertTasks" parameterType="java.util.List">
+              <if test="tasks != null and tasks.size > 0">
+                     INSERT ALL
+                     <foreach collection="tasks" item="task" index="index">
+                            INTO TASK_TABLE(ID,TASK_TIME,DEPARTMENT,TASK_NUM,CREAT_TIME,STATE,OPERATORID)
+                            VALUES(#{task.id},#{task.taskTime},#{task.department},#{task.taskNum},#{task.creatTime},0,#{task.operatorId})
+                     </foreach>
+                     SELECT * FROM dual
+              </if>
+       </insert>-->
+
+       <!--<insert id="insertOrders" parameterType="java.util.List">
+              <if test="orders != null and orders.size > 0">
+                     INSERT ALL
+                     <foreach collection="orders" item="order" index="index">
+                            INTO ORDER_MOVE_TABLE
+                            VALUES(#{order.id},#{order.moveDate},#{order.orderId},#{order.fromWho},#{order.toWho},#{order.amount},#{order.clientToWho},#{order.creatTime},0,#{order.operatorId})
+                     </foreach>
+                     SELECT * FROM dual
+              </if>
+       </insert>-->
+
+
+       <insert id="insertOrders" parameterType="java.util.List">
+              <if test="orders != null and orders.size > 0">
+                     INSERT INTO ORDER_MOVE_TABLE
+                     <foreach collection="orders" item="order" index="index">
+
+                            <if test="index == orders.size-1">
+                                   SELECT #{order.id},#{order.moveDate},#{order.orderId},#{order.fromWho},#{order.toWho},#{order.amount},#{order.clientToWho},#{order.creatTime},0,#{order.operatorId} FROM dual
+                            </if>
+                            <if test="index != orders.size-1">
+                                   SELECT #{order.id},#{order.moveDate},#{order.orderId},#{order.fromWho},#{order.toWho},#{order.amount},#{order.clientToWho},#{order.creatTime},0,#{order.operatorId} FROM dual UNION ALL
+                            </if>
+
+                     </foreach>
+
+              </if>
+       </insert>
+
+
+       <insert id="insertTasks" parameterType="java.util.List">
+              <if test="tasks != null and tasks.size > 0">
+                     INSERT INTO TASK_TABLE(ID,TASK_TIME,DEPARTMENT,TASK_NUM,CREAT_TIME,STATE,OPERATORID)
+                     <foreach collection="tasks" item="task" index="index">
+                            <if test="index == tasks.size-1">
+                                   SELECT #{task.id},#{task.taskTime},#{task.department},#{task.taskNum},#{task.creatTime},0,#{task.operatorId} FROM dual
+                            </if>
+                            <if test="index != tasks.size-1">
+                                   SELECT #{task.id},#{task.taskTime},#{task.department},#{task.taskNum},#{task.creatTime},0,#{task.operatorId}  FROM dual UNION ALL
+                            </if>
+                     </foreach>
+              </if>
+       </insert>
+</mapper>
