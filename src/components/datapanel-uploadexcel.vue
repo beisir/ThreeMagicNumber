@@ -115,16 +115,16 @@ export default {
     padding: 20px 10px;
   }
 .app-excel .el-icon-upload{
-    margin-right: 30px;
+    float: left;
   }
 .app-excel .el-button{
-    width: 35%;
+    width: 30%;
     height: 50px;
     background: #3680ef;
     text-overflow: ellipsis;
     overflow: hidden;
     color: #fff;
-    font-size: 18px;
+    font-size: 16px;
     border: none;
     border-radius: 4px;
     margin-top: 15px;
