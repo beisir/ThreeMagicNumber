@@ -189,7 +189,7 @@ public class CommonUtil {
             if("0".equals(a.get(i).substring(4,5))){
                 times.add(a.get(i).substring(0, 4) + "年" + "第"+a.get(i).substring(5,6) + "周" );
             }else {
-                times.add(a.get(i).substring(0, 4) + "年" + "第"+a.get(i).substring(4,6) + "周" );
+                    times.add(a.get(i).substring(0, 4) + "年" + "第" + a.get(i).substring(4) + "周");
             }
         }
         return times;

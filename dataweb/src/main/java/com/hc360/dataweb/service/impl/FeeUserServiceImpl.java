@@ -1291,7 +1291,7 @@ public class FeeUserServiceImpl implements FeeUserService {
       bean.setUnit(CommonUtil.initUnit(type));
       bean.setData(dataCount);
       dataList.add(bean);
-      if(weekTimes.size()>0 && weekTimes.size()>=time.size()) {
+      if(weekTimes!=null && weekTimes.size()>0 && weekTimes.size()>=time.size()) {
         time = CommonUtil.initYearWeekTime(weekTimes);
       }
     }
