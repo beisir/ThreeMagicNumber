@@ -1178,6 +1178,10 @@ public class FeeUserServiceImpl implements FeeUserService {
     private void initMonthData(Integer dataType,Map<String, Object> dataMap) throws Exception {
         List<HourChartBean> dataList = new ArrayList<HourChartBean>();
         String year = DateUtil.getYear("yyyy");//获取当前年度
+        String month =  DateUtil.getYear("MM");
+        if("01".equals(month)){
+            year = (Integer.parseInt(year) -1 )+""; //如果当前是1月份，那么，年度显示去年的数据
+        }
         Map<String, Object> param = new HashMap<String, Object>();
         HourChartBean bean = new HourChartBean();
         List<String> weekTimes = new ArrayList<>();//周度数据时间轴
