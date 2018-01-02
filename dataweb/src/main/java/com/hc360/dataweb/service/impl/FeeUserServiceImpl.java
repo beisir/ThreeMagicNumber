@@ -1355,6 +1355,10 @@ public class FeeUserServiceImpl implements FeeUserService {
      */
     private void initIrslDateMap(Map<String, Object> timeMap, String time, List<String> times) {
         String year = DateUtil.getYear("yyyy");//获取当前年度
+        String month =  DateUtil.getYear("MM");
+        if("01".equals(month)){
+            year = (Integer.parseInt(year) -1 )+""; //如果当前是1月份，那么，年度显示去年的数据
+        }
         Integer qw = Integer.valueOf(time.substring(4,6));
         for(int i=1; i<=qw; i++){
             if(i<10){

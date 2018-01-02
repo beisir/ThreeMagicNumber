@@ -292,7 +292,7 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         //初始化电销&渠道流水(当年月度数据实际与预估对比图)
         List<HourChartBean> dataList = new ArrayList<>();
         List<Integer> dataTypes = new ArrayList<Integer>();
-        List<String> weekTimes = new ArrayList<>();//周度数据时间轴
+        List<String> weekTimes =  DateUtil.getMonthInfo(12, "yyyyMM");//周度数据时间轴
         HourChartBean bean = null;
         HourChartBean practical = new HourChartBean();
         if (flag == 1) {
@@ -323,10 +323,10 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         //初始化电销&渠道流水(当年月度数据实际与预估对比图)
         List<HourChartBean> dataList = new ArrayList<>();
         List<Integer> dataTypes = new ArrayList<Integer>();
-        List<String> weekTimes = new ArrayList<>();//周度数据时间轴
+//        List<String> weekTimes = new ArrayList<>();
         HourChartBean bean = null;
         HourChartBean practical = new HourChartBean();
-
+        List<String> weekTimes = DateUtil.getMonthInfo(12, "yyyyMM");//周度数据时间轴
         initMonthData(DataType.DXTURNOVELJ.getType(), practical, weekTimes);//电销当月实际值
         List<String> time = CommonUtil.initYearMonthTime(weekTimes);
         dataTypes.add(DataType.DXTURNOVERYS.getType());//电销当月预算
@@ -976,10 +976,10 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
 
     /*月度数据获取*/
     private void initMonthData(Integer dataType, HourChartBean bean, List<String> weekTimes) throws Exception {
-        String year = DateUtil.getYear("yyyy");//获取当前年度
+//        String year = DateUtil.getYear("yyyy");//获取当前年度
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("type", dataType);
-        param.put("year", year);
+        param.put("months", 12); //月份的个数
         List<RealtimeStaticMonth> monthData = realtimeStaticMonthMapper.fingYearMonthData(param);
         if (weekTimes == null || weekTimes.size() == 0) {
             for (RealtimeStaticMonth realtimeStaticMonth : monthData) {
