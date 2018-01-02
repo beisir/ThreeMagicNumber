@@ -1,6 +1,7 @@
 package com.hc360.dataweb.dao;
 
 import com.hc360.dataweb.model.RealTimeMonthWeekBase;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface RealTimeMonthWeekBaseMapper {
      * @param weeks 周数
      * @return 获取某日期之前的前几周
      */
-    List<RealTimeMonthWeekBase> findMonthWeekBase(String day,int weeks);
+    List<RealTimeMonthWeekBase> findMonthWeekBase(@Param("day") String day,@Param("weeks")int weeks);
 }
