@@ -1,9 +1,10 @@
 package com.hc360.dataweb.dao;
 
 import com.hc360.dataweb.model.RealTimeMonthWeekBase;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface RealTimeMonthWeekBaseMapper {
     /**
      *
