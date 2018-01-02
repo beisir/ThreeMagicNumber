@@ -1304,6 +1304,8 @@ public class FeeUserServiceImpl implements FeeUserService {
     dataMap.put("time", time);
 
   }
+
+
     /*处理多组week数据*/
     private void initWeekDatas(Map<String, Object> dataMap, int flag) throws Exception {
         List<HourChartBean> dataList = new ArrayList<HourChartBean>();//小时数据
