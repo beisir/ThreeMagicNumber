@@ -977,10 +977,6 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     /*月度数据获取*/
     private void initMonthData(Integer dataType, HourChartBean bean, List<String> weekTimes) throws Exception {
         String year = DateUtil.getYear("yyyy");//获取当前年度
-        String month =  DateUtil.getYear("MM");
-        if("01".equals(month)){
-            year = (Integer.parseInt(year) -1 )+""; //如果当前是1月份，那么，年度显示去年的数据
-        }
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("type", dataType);
         param.put("year", year);
