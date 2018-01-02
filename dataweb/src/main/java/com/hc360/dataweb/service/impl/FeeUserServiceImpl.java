@@ -1179,15 +1179,16 @@ public class FeeUserServiceImpl implements FeeUserService {
         List<HourChartBean> dataList = new ArrayList<HourChartBean>();
         String year = DateUtil.getYear("yyyy");//获取当前年度
         String month =  DateUtil.getYear("MM");
-        if("01".equals(month)){
+        /*if("01".equals(month)){
             year = (Integer.parseInt(year) -1 )+""; //如果当前是1月份，那么，年度显示去年的数据
-        }
+        }*/
+        year = year + month;
         Map<String, Object> param = new HashMap<String, Object>();
         HourChartBean bean = new HourChartBean();
         List<String> weekTimes = new ArrayList<>();//周度数据时间轴
         param.put("type", dataType);
         param.put("year",year);
-        List<RealtimeStaticMonth> monthData = realtimeStaticMonthMapper.fingYearMonthData(param);
+        List<RealtimeStaticMonth> monthData = realtimeStaticMonthMapper.fingYearMonthDatanew(param);
         List<Object> dataCount = monthConvert(monthData, weekTimes);
         bean.setName(CommonUtil.initName(dataType));
         bean.setUnit(CommonUtil.initUnit(dataType));
@@ -1216,7 +1217,7 @@ public class FeeUserServiceImpl implements FeeUserService {
         List<String> monthTimes = new ArrayList<>();//获取map数据需要的时间list
         List<String> time = new ArrayList<>();//月度数据时间轴
         if(monthTime!=null && !"".equals(monthTime)){
-            initIrslDateMap(monthMap, monthTime, monthTimes);
+            initIrslDateMapnew(monthMap, monthTime, monthTimes);
             Map<String, Object> param = new HashMap<String, Object>();
             if(sourceTypes!=null && !sourceTypes.isEmpty()){
                 HourChartBean bean = null;
@@ -1370,6 +1371,16 @@ public class FeeUserServiceImpl implements FeeUserService {
             }
         }
     }
+    //获得连续１２月的时间
+    private void initIrslDateMapnew(Map<String, Object> timeMap, String time, List<String> times) {
+        List<String> months = DateUtil.getMonthInfo(12,"yyyyMM");
+        for (String month:months
+             ) {
+            timeMap.put(month,0);
+            times.add(month);
+        }
+    }
+
 
     /*可分配8种leads数来源的类型*/
     private void inintSourceTypesK(List<Integer> sourceTypes) {
