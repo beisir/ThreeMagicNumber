@@ -40,16 +40,19 @@
 
 
   <select id="fingYearMonthData" resultMap="BaseResultMap" parameterType="java.util.Map">
-     select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE
+   select * from(
+     select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE,
+       row_number() over( order by IRSL_DATE desc ) as rn
     from
     (select DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE,
     row_number() over(partition by irsl_date order by DATA_DATE desc ) as rn
     from  sjpt_realtime_STATIC_month
     where data_type= #{type}
-    and irsl_date like #{year}||'%'
     )  t
     where t.rn=1
     order by irsl_date
+     )f
+    <![CDATA[ where f.rn<=#{months} ]]>
   </select>
 
   <select id="findYearMonthData" resultMap="BaseResultMap" parameterType="java.util.Map">
