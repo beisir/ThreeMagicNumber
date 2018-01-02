@@ -903,7 +903,7 @@ public class FeeUserServiceImpl implements FeeUserService {
             if (ChartsConstant.TODAY.equals(time)) {//本月天维度---20170630
                 getMonthDayData(dataType, dataMap);
             }else if(ChartsConstant.MONTH_DATA.equals(time)){ //当年每月维度 ---20170630
-                initBdMonthData(dataType, dataMap);
+              initDueMonthData(dataType, dataMap);
             }
         } else if (dataType == DataType.P4P_QWDT_TOTAL.getType().intValue() ) {//全网定投
           if (ChartsConstant.WEEK_DATA.equals(time)) {//周度数据---20171018
@@ -1305,6 +1305,8 @@ public class FeeUserServiceImpl implements FeeUserService {
     dataMap.put("time", time);
 
   }
+
+
     /*处理多组week数据*/
     private void initWeekDatas(Map<String, Object> dataMap, int flag) throws Exception {
         List<HourChartBean> dataList = new ArrayList<HourChartBean>();//小时数据
@@ -1661,7 +1663,7 @@ public class FeeUserServiceImpl implements FeeUserService {
     }
 
 
-
+//当年月度数据
   @Override
   public void initBdMonthData(Integer dataType, Map<String, Object> dataMap) throws Exception {
     List<HourChartBean> dataList = new ArrayList<HourChartBean>();
@@ -1713,6 +1715,58 @@ public class FeeUserServiceImpl implements FeeUserService {
       dataMap.put("time", time);
   }
 
+  //往前推N个月，月度数据
+  @Override
+  public void initDueMonthData(Integer dataType, Map<String, Object> dataMap) throws Exception {
+    List<HourChartBean> dataList = new ArrayList<HourChartBean>();
+    String year = DateUtil.getYear("yyyy");//获取当前年度
+    String month = DateUtil.getMonth("yyyyMM");//获取当前月
+    List<Integer> dataTypes = new ArrayList<Integer>();
+    List<String> monthTimese = new ArrayList<>();//月度数据时间轴
+    List<String> monthTimes = new ArrayList<>();//月度数据时间轴
+    HourChartBean bean = null;
+    //百度联盟月收入
+    dataTypes.add(315);
+    dataTypes.add(dataType);
+    for(Integer type:dataTypes){
+      Map<String, Object> param = new HashMap<String, Object>();
+      bean = new HourChartBean();
+      List<RealtimeStaticMonth> monthData = null;
+      List<Object> dataCount = null;
+      if (type == 315)
+      {
+        param.put("type", type);
+        param.put("month",month);
+        param.put("months",12);
+        bean.setName("月收入预算");
+        monthData = realtimeStaticMonthMapper.findLastNMonthsData(param);
+        dataCount = monthConvert(monthData, monthTimese);
+
+      }
+      else
+      {
+        param.put("type", type);
+        param.put("month",month);
+        param.put("months",12);
+        bean.setName("月实际收入");
+        monthData = realtimeStaticMonthMapper.findLastNMonthsData(param);
+        dataCount = monthConvert(monthData, monthTimes);
+
+      }
+      bean.setUnit("元");
+      bean.setData(dataCount);
+      dataList.add(bean);
+    }
+    List<String> time = null;
+
+    if(monthTimese.size() > monthTimes.size()){
+      time = CommonUtil.initYearMonthTime(monthTimese);
+    }else{
+      time = CommonUtil.initYearMonthTime(monthTimes);
+    }
+    dataMap.put("dataList", dataList);
+    dataMap.put("time", time);
+  }
 
 
 

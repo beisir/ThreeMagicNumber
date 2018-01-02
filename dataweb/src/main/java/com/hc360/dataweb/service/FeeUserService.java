@@ -33,5 +33,8 @@ public interface FeeUserService {
    * 百度联盟月度数据获取
    * */
     void initBdMonthData(Integer dataType,Map<String, Object> dataMap) throws Exception;
-
+  /**
+   * 百度联盟月度数据获取
+   * */
+  void initDueMonthData(Integer dataType,Map<String, Object> dataMap) throws Exception;
 }

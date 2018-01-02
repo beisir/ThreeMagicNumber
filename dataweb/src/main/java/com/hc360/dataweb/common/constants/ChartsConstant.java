@@ -39,5 +39,7 @@ public class ChartsConstant {
     public static final String CURMONTH = "8";
 
     public static final int SHOWCURMONTH = 24;
+    //周数
+    public static final int WEEKNUMS= 12;
 
 }
