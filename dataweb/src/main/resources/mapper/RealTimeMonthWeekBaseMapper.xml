@@ -15,7 +15,8 @@
      where day <= #{day}
     order by day desc) t
     where rn = 1
-     and rownum < #{weeks}
+     and rownum <= #{weeks}
+     order by WEEK_NUM asc
         ]]>
   </select>
 </mapper>

@@ -1,10 +1,7 @@
 package com.hc360.dataweb.service.impl;
 
 import com.hc360.dataweb.common.constants.ChartsConstant;
-import com.hc360.dataweb.dao.RealTimeStaticDayMapper;
-import com.hc360.dataweb.dao.RealTimeStaticHourMapper;
-import com.hc360.dataweb.dao.RealtimeStaticMonthMapper;
-import com.hc360.dataweb.dao.RealtimeStaticWeekMapper;
+import com.hc360.dataweb.dao.*;
 import com.hc360.dataweb.model.*;
 import com.hc360.dataweb.service.FightCapacityDataService;
 import com.hc360.dataweb.util.*;
@@ -29,6 +26,8 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     private RealTimeStaticHourMapper realTimeStaticHourMapper;
     @Autowired
     private RealtimeStaticMonthMapper realtimeStaticMonthMapper;
+    @Autowired
+    private RealTimeMonthWeekBaseMapper realTimeMonthWeekBaseMapper;
 
 
     @Override
@@ -78,9 +77,12 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
             practicalType = DataType.QDTURNOVERLJ.getType();//渠道当天实际值(累计)
             estimateType = DataType.QDTURNOVERYG.getType();//渠道当周预估值
         }
+        String day = DateUtil.getNow("yyyy-MM-dd");
         //实际值:查询周表最后六条数据
+        List<String> times = getWeeks( day,ChartsConstant.WEEKNUMS);
         HourChartBean practicalBean = new HourChartBean();
-        List<String> times = initPractical(practicalBean, practicalType);
+//        List<String> times = initPractical(practicalBean, practicalType);
+        initEstimates(practicalBean, times, practicalType);
         //x轴显示:2017年第n周(根据查询出的数据出x轴)
         List<String> timeList = CommonUtil.initWeekTime(times);
         //预估值:根据实际值最新的数据获取预估值数据
@@ -92,20 +94,35 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         data.put("time", timeList);
     }
 
+    /**
+     * 获取某日期最近的weeks周，并转化成List<String>格式
+     */
+    private List<String> getWeeks(String day, int weeks){
+        List<String> _weeks = new ArrayList<>();
+        List<RealTimeMonthWeekBase> weekBases = this.realTimeMonthWeekBaseMapper.findMonthWeekBase(day,weeks);
+        if(weekBases!=null && weekBases.size()>0){
+            for(RealTimeMonthWeekBase realTimeMonthWeekBase : weekBases){
+                _weeks.add(realTimeMonthWeekBase.getWeekNum().replace("年", "").replace("月","").replace("周",""));
+            }
+        }
+        return _weeks;
+    }
+
     @Override
     public void initTurnoverWeek_DX(Map<String, Object> data) throws Exception {
         //初始化电销&渠道流水(当月周度数据实际与预估对比图)
         List<HourChartBean> dataList = new ArrayList<>();
-
+        String day = DateUtil.getNow("yyyy-MM-dd");
         Integer practicalType = 0;
         Integer estimateType = 0;
 
         practicalType = DataType.DXTURNOVELJ.getType();//电销当天实际值(累计)
         estimateType = DataType.DXTURNOVEYG.getType();//电销当周预估值
-
+        List<String> times = getWeeks( day,ChartsConstant.WEEKNUMS);
         //实际值:查询周表最后六条数据
         HourChartBean practicalBean = new HourChartBean();
-        List<String> times = initPractical(practicalBean, practicalType);
+//        initPractical(practicalBean, practicalType);
+        initEstimates(practicalBean, times, practicalType);
         //x轴显示:2017年第n周(根据查询出的数据出x轴)
         List<String> timeList = CommonUtil.initWeekTime(times);
         //预估值:根据实际值最新的数据获取预估值数据
