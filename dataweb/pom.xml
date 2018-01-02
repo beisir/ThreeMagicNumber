@@ -600,7 +600,7 @@ Caused by: org.xml.sax.SAXParseException; systemId: http://www.springframework.o
         <repository>
             <id>central</id>
             <name>nexus_public</name>
-            <url>http://192.168.34.253/nexus/content/groups/public/</url>
+            <url>http://10.158.33.194/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
