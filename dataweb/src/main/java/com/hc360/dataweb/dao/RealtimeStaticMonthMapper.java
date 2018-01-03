@@ -64,4 +64,8 @@ public interface RealtimeStaticMonthMapper {
     List<RealtimeStaticMonth> findEstimatesByPracticalnew(Map<String, Object> param)throws Exception;
 
     List<RealtimeStaticMonth> findYearMonthData(Map<String, Object> param);
+    /**
+     * 根据当前时间获取前N个月的数据，包括当前月
+     * */
+    List<RealtimeStaticMonth> findLastNMonthsData(Map<String, Object> param);
 }
