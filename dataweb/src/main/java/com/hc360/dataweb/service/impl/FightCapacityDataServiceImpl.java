@@ -309,7 +309,8 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         //初始化电销&渠道流水(当年月度数据实际与预估对比图)
         List<HourChartBean> dataList = new ArrayList<>();
         List<Integer> dataTypes = new ArrayList<Integer>();
-        List<String> weekTimes =  DateUtil.getMonthInfo(12, "yyyyMM");//周度数据时间轴
+        //List<String> weekTimes =  DateUtil.getMonthInfo(12, "yyyyMM");//周度数据时间轴
+        List<String> weekTimes = new ArrayList<String>();
         HourChartBean bean = null;
         HourChartBean practical = new HourChartBean();
         if (flag == 1) {
@@ -343,7 +344,8 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
 //        List<String> weekTimes = new ArrayList<>();
         HourChartBean bean = null;
         HourChartBean practical = new HourChartBean();
-        List<String> weekTimes = DateUtil.getMonthInfo(12, "yyyyMM");//周度数据时间轴
+        //List<String> weekTimes = DateUtil.getMonthInfo(12, "yyyyMM");//周度数据时间轴
+        List<String> weekTimes = new ArrayList<>();
         initMonthData(DataType.DXTURNOVELJ.getType(), practical, weekTimes);//电销当月实际值
         List<String> time = CommonUtil.initYearMonthTime(weekTimes);
         dataTypes.add(DataType.DXTURNOVERYS.getType());//电销当月预算
@@ -1002,6 +1004,8 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
             for (RealtimeStaticMonth realtimeStaticMonth : monthData) {
                 weekTimes.add(realtimeStaticMonth.getIrslDate());
             }
+
+
         }
         List<Object> dataCount = monthConvert(monthData, dataType, weekTimes);
         bean.setName(CommonUtil.initName(dataType));
