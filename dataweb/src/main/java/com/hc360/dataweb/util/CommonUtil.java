@@ -194,6 +194,16 @@ public class CommonUtil {
         }
         return times;
     }
+
+    public static String initYearWeekTimeSign(String a) {
+        String times = null;
+        if("0".equals(a.substring(4,5))){
+            times = a.substring(0, 4) + "年" +"第"+ a.substring(5,6) + "周" ;
+        }else {
+            times = a.substring(0, 4) + "年" +"第"+ a.substring(4) + "周" ;
+        }
+        return times;
+    }
     /*根据数据时间list转换年月*/
     public static List<String> initYearMonthTime(List<String> a) {
         List<String> times = new ArrayList<String>();
@@ -234,6 +244,11 @@ public class CommonUtil {
             }
         }
         return username;
+    }
+
+    public static void main(String[] args) {
+        String str = initYearWeekTimeSign("201712");
+        System.out.println(str);
     }
 
 }
