@@ -1,6 +1,7 @@
 package com.hc360.dataweb.util;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -107,9 +108,26 @@ public class ControllerDateUtil {
         return day;
     }
 
+    public static String strToDateFmt(String strDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date strtodate = null;
+        String str = null;
+        try {
+            strtodate = formatter.parse(strDate);
+            str = formatter1.format(strtodate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
     public static final void main(String[] args){
         String leadsDay = ControllerDateUtil.getLeadsYesterday();//取leads转化率与续签率的时间
 
         System.out.println(leadsDay.substring(0,6));
+
+        String ss = ControllerDateUtil.strToDateFmt("20180102");
+        System.out.println(ss);
     }
 }
