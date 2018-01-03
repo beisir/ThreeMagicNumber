@@ -1,10 +1,7 @@
 package com.hc360.dataweb.service.impl;
 
 import com.hc360.dataweb.common.constants.ChartsConstant;
-import com.hc360.dataweb.dao.RealTimeStaticDayMapper;
-import com.hc360.dataweb.dao.RealTimeStaticHourMapper;
-import com.hc360.dataweb.dao.RealtimeStaticMonthMapper;
-import com.hc360.dataweb.dao.RealtimeStaticWeekMapper;
+import com.hc360.dataweb.dao.*;
 import com.hc360.dataweb.model.*;
 import com.hc360.dataweb.service.FeeUserService;
 import com.hc360.dataweb.util.CommonUtil;
@@ -35,6 +32,8 @@ public class FeeUserServiceImpl implements FeeUserService {
     private RealTimeStaticHourMapper realtimeStaticHourMapper;
     @Autowired
     private RealtimeStaticWeekMapper realtimeStaticWeekMapper;
+
+    private RealTimeMonthWeekBaseMapper realTimeMonthWeekBaseMapper;
 
     @Override
     public void initFeeData(Map<String, Object> dataList) throws Exception {
@@ -822,7 +821,7 @@ public class FeeUserServiceImpl implements FeeUserService {
             } else if (ChartsConstant.MONTH.equals(time)) {//最近三十天
                 initDayData(time, day, dataType, dataMap);
             } else if (ChartsConstant.WEEK_DATA.equals(time)) {//周度数据
-                initWeekData(dataType, dataMap);
+                initWeekData(dataType, dataMap,day);
             } else if (ChartsConstant.MONTH_DATA.equals(time)) {//月度数据
                 initMonthData(dataType, dataMap);
             }
@@ -857,7 +856,7 @@ public class FeeUserServiceImpl implements FeeUserService {
             } else if (ChartsConstant.MONTH.equals(time)) {//最近三十天
                 initDayData(time, day, dataType, dataMap);
             } else if (ChartsConstant.WEEK_DATA.equals(time)) {//周度数据
-                initWeekData(dataType, dataMap);
+                initWeekData(dataType, dataMap,day);
             } else if (ChartsConstant.MONTH_DATA.equals(time)) {//月度数据
                 initMonthData(dataType, dataMap);
             }
@@ -907,7 +906,7 @@ public class FeeUserServiceImpl implements FeeUserService {
             }
         } else if (dataType == DataType.P4P_QWDT_TOTAL.getType().intValue() ) {//全网定投
           if (ChartsConstant.WEEK_DATA.equals(time)) {//周度数据---20171018
-              initWeekData(dataType, dataMap);
+              initWeekData(dataType, dataMap,day);
             }
 
         }
@@ -1272,10 +1271,19 @@ public class FeeUserServiceImpl implements FeeUserService {
 
     }*/
   /*周度数据获取*/
-    private void initWeekData(Integer dataType,Map<String, Object> dataMap) throws Exception {
+    private void initWeekData(Integer dataType,Map<String, Object> dataMap,String day) throws Exception {
     List<HourChartBean> dataList = new ArrayList<HourChartBean>();//小时数据
-    String year = DateUtil.getYear("yyyy");//获取当前年度
+        day = ControllerDateUtil.strToDateFmt(day);
+    //String year = DateUtil.getYear("yyyy");//获取当前年度
+    //获得多少周
+   /* List<RealTimeMonthWeekBase> weeks = realTimeMonthWeekBaseMapper.findMonthWeekBase(day,13);
     List<String> time= new ArrayList<>();
+    if (weeks!=null && !weeks.isEmpty()){
+       for (RealTimeMonthWeekBase rtmw:weeks){
+           time.add(rtmw.getWeekNum());
+       }
+    }*/
+
     List<Integer> types = new ArrayList<Integer>();
     if(DataType.P4P_QWDT_TOTAL.getType().equals(dataType)){
       types.add(DataType.P4P_QWDT_WEEK_TOTAL.getType());
@@ -1284,27 +1292,77 @@ public class FeeUserServiceImpl implements FeeUserService {
     } else{
       types.add(dataType);
     }
+        List<String> weekTimes = new ArrayList<>();//周度数据时间轴
     for(Integer type:types){//全网一组周度数据
       HourChartBean bean = new HourChartBean();
-      List<String> weekTimes = new ArrayList<>();//周度数据时间轴
+
       Map<String, Object> param = new HashMap<String, Object>();
       param.put("type",type);
-      param.put("year",year);
-      List<RealtimeStaticWeek> weekData = realtimeStaticWeekMapper.findYearWeekData(param);
-      List<Object> dataCount = weekConvert(weekData, weekTimes);
+      param.put("flag",12);
+      //List<RealtimeStaticWeek> weekData = realtimeStaticWeekMapper.findYearWeekData(param);
+        List<RealtimeStaticDoubleWeek> weekData = realtimeStaticWeekMapper.findWeekDataDoubleDay(param);
+      //List<Object> dataCount = weekConvert(weekData, weekTimes);
+        List<Object> dataCount = weekConvertnew(weekData, weekTimes);
       bean.setName(CommonUtil.initName(type));
       bean.setUnit(CommonUtil.initUnit(type));
       bean.setData(dataCount);
       dataList.add(bean);
-      if(weekTimes!=null && weekTimes.size()>0 && weekTimes.size()>=time.size()) {
+      /*if(weekTimes!=null && weekTimes.size()>0 && weekTimes.size()>=time.size()) {
         time = CommonUtil.initYearWeekTime(weekTimes);
-      }
+      }*/
     }
 
     dataMap.put("dataList", dataList);
-    dataMap.put("time", time);
+   dataMap.put("time", weekTimes);
 
   }
+
+    private void initWeekDatanew(Integer dataType,Map<String, Object> dataMap,String day) throws Exception {
+        List<HourChartBean> dataList = new ArrayList<HourChartBean>();//小时数据
+        day = ControllerDateUtil.strToDateFmt(day);
+
+        //获得多少周
+    List<RealTimeMonthWeekBase> weeks = realTimeMonthWeekBaseMapper.findWeekBase(13);
+
+    List<String> time= new ArrayList<>();
+    if (weeks!=null && !weeks.isEmpty()){
+       for (RealTimeMonthWeekBase rtmw:weeks){
+           time.add(rtmw.getWeekNum());
+       }
+    }
+
+        List<Integer> types = new ArrayList<Integer>();
+        if(DataType.P4P_QWDT_TOTAL.getType().equals(dataType)){
+            types.add(DataType.P4P_QWDT_WEEK_TOTAL.getType());
+            types.add(DataType.P4P_QWDT_WEEK_JP.getType());
+            types.add(DataType.P4P_QWDT_WEEK_JP_KEY.getType());
+        } else{
+            types.add(dataType);
+        }
+        List<String> weekTimes = new ArrayList<>();//周度数据时间轴
+        for(Integer type:types){//全网一组周度数据
+            HourChartBean bean = new HourChartBean();
+
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("type",type);
+            param.put("flag",12);
+            //List<RealtimeStaticWeek> weekData = realtimeStaticWeekMapper.findYearWeekData(param);
+            List<RealtimeStaticDoubleWeek> weekData = realtimeStaticWeekMapper.findWeekDataDoubleDay(param);
+            //List<Object> dataCount = weekConvert(weekData, weekTimes);
+            List<Object> dataCount = weekConvertnew(weekData, weekTimes);
+            bean.setName(CommonUtil.initName(type));
+            bean.setUnit(CommonUtil.initUnit(type));
+            bean.setData(dataCount);
+            dataList.add(bean);
+      /*if(weekTimes!=null && weekTimes.size()>0 && weekTimes.size()>=time.size()) {
+        time = CommonUtil.initYearWeekTime(weekTimes);
+      }*/
+        }
+
+        dataMap.put("dataList", dataList);
+        dataMap.put("time", weekTimes);
+
+    }
 
 
     /*处理多组week数据*/
@@ -1482,6 +1540,37 @@ public class FeeUserServiceImpl implements FeeUserService {
             for (String time : times) {
                 dataList.add(initMap.get(time));
             }
+        }
+        return dataList;
+    }
+    //对周度数据处理并且补漏数据
+    private List<Object> weekConvertnew(List<RealtimeStaticDoubleWeek> weekDatas,
+                                        List<String> times) {
+        List<Object> dataList = new ArrayList<>();
+        if (times != null && times.size()>0 && !times.isEmpty() ){
+            times.clear();
+        }
+
+        /*Map<String,Object> map = new HashedMap();
+        if (times == null || times.isEmpty()){
+            return  null;
+        }
+        for (String time: times
+                ) {
+            map.put(time,0);
+        }*/
+
+        String temp = null;
+        //initYearWeekTimeSign
+        if(weekDatas!=null && !weekDatas.isEmpty()){
+            for (RealtimeStaticDoubleWeek realtimeStaticDoubleWeek:weekDatas
+                 ) {
+               temp =  CommonUtil.initYearWeekTimeSign(realtimeStaticDoubleWeek.getIrslDate());
+               dataList.add(realtimeStaticDoubleWeek.getDataCount());
+               times.add(temp);
+
+            }
+
         }
         return dataList;
     }
@@ -1766,6 +1855,18 @@ public class FeeUserServiceImpl implements FeeUserService {
     }
     dataMap.put("dataList", dataList);
     dataMap.put("time", time);
+  }
+
+  //对周处理
+  public List<String> getWeeks(List<RealTimeMonthWeekBase> list){
+      List<String> weeks = new ArrayList<>();
+      String begin = list.get(0).getDay();
+      String end = list.get(0).getWeekNum();
+
+
+
+
+      return weeks;
   }
 
 
