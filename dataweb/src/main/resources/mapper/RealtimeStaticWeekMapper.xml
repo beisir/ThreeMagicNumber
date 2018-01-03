@@ -14,7 +14,7 @@
     <id column="ID" property="id" jdbcType="DECIMAL" />
     <result column="DATA_TYPE" property="dataType" jdbcType="DECIMAL" />
     <result column="DATA_COUNT" property="dataCount" jdbcType="DOUBLE" />
-    <result column="IRSL_DATE" property="irslDate" jdbcType="CHAR" />
+    <result column="IRSL_DATE" property="irslDate" jdbcType="VARCHAR" />
     <result column="DATA_DATE" property="dataDate" jdbcType="CHAR" />
     <result column="OP_DATE" property="opDate" jdbcType="DATE" />
   </resultMap>
