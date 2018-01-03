@@ -153,6 +153,26 @@
     where t.rn=1
    </select>
 
+    <select id="findWeekRecentlyIrsl_date_week" resultType="java.lang.String" parameterType="java.util.Map" >
+
+        select t.irsl_date from
+        (
+        select r.irsl_date,
+        row_number() over( order by irsl_date desc) as rn
+        from sjpt_realtime_static_week r
+        <where>
+            irsl_date like #{year}||'%' and
+            <if test="list != null and list.size > 0">
+                r.data_type in
+                <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ) t
+        where t.rn=1
+    </select>
+
     <select id="findEstimatesByPractical" resultMap="BaseDoubleResultMap" parameterType="java.util.Map" >
         select
         DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE

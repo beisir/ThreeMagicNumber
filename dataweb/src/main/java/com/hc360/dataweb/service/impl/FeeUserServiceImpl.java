@@ -840,7 +840,7 @@ public class FeeUserServiceImpl implements FeeUserService {
             } else if (ChartsConstant.MONTH.equals(time)) {//最近一个月(天表)
                 initMonthDayData(day, 1, dataMap);
             } else if (ChartsConstant.WEEK_DATA.equals(time)) {//周度数据
-                initWeekDatas(dataMap, 1);
+                initWeekDatas(dataMap, 1,day);
             } else if (ChartsConstant.MONTH_DATA.equals(time)) {//月度数据
                 initMonthDatas(dataMap, 1);
             }
@@ -866,7 +866,7 @@ public class FeeUserServiceImpl implements FeeUserService {
             } else if (ChartsConstant.MONTH.equals(time)) {//最近一个月(天表)
                 initMonthDayData(day, 2, dataMap);
             }  else if (ChartsConstant.WEEK_DATA.equals(time)) {//周度数据
-                initWeekDatas(dataMap, 2);
+                initWeekDatas(dataMap, 2,day);
             } else if (ChartsConstant.MONTH_DATA.equals(time)) {//月度数据
                 initMonthDatas(dataMap, 2);
             }
@@ -1317,56 +1317,11 @@ public class FeeUserServiceImpl implements FeeUserService {
 
   }
 
-    private void initWeekDatanew(Integer dataType,Map<String, Object> dataMap,String day) throws Exception {
-        List<HourChartBean> dataList = new ArrayList<HourChartBean>();//小时数据
-        day = ControllerDateUtil.strToDateFmt(day);
 
-        //获得多少周
-    List<RealTimeMonthWeekBase> weeks = realTimeMonthWeekBaseMapper.findWeekBase(13);
-
-    List<String> time= new ArrayList<>();
-    if (weeks!=null && !weeks.isEmpty()){
-       for (RealTimeMonthWeekBase rtmw:weeks){
-           time.add(rtmw.getWeekNum());
-       }
-    }
-
-        List<Integer> types = new ArrayList<Integer>();
-        if(DataType.P4P_QWDT_TOTAL.getType().equals(dataType)){
-            types.add(DataType.P4P_QWDT_WEEK_TOTAL.getType());
-            types.add(DataType.P4P_QWDT_WEEK_JP.getType());
-            types.add(DataType.P4P_QWDT_WEEK_JP_KEY.getType());
-        } else{
-            types.add(dataType);
-        }
-        List<String> weekTimes = new ArrayList<>();//周度数据时间轴
-        for(Integer type:types){//全网一组周度数据
-            HourChartBean bean = new HourChartBean();
-
-            Map<String, Object> param = new HashMap<String, Object>();
-            param.put("type",type);
-            param.put("flag",12);
-            //List<RealtimeStaticWeek> weekData = realtimeStaticWeekMapper.findYearWeekData(param);
-            List<RealtimeStaticDoubleWeek> weekData = realtimeStaticWeekMapper.findWeekDataDoubleDay(param);
-            //List<Object> dataCount = weekConvert(weekData, weekTimes);
-            List<Object> dataCount = weekConvertnew(weekData, weekTimes);
-            bean.setName(CommonUtil.initName(type));
-            bean.setUnit(CommonUtil.initUnit(type));
-            bean.setData(dataCount);
-            dataList.add(bean);
-      /*if(weekTimes!=null && weekTimes.size()>0 && weekTimes.size()>=time.size()) {
-        time = CommonUtil.initYearWeekTime(weekTimes);
-      }*/
-        }
-
-        dataMap.put("dataList", dataList);
-        dataMap.put("time", weekTimes);
-
-    }
 
 
     /*处理多组week数据*/
-    private void initWeekDatas(Map<String, Object> dataMap, int flag) throws Exception {
+    private void initWeekDatas(Map<String, Object> dataMap, int flag,String day) throws Exception {
         List<HourChartBean> dataList = new ArrayList<HourChartBean>();//小时数据
         List<Integer> sourceTypes = new ArrayList<>();//8种leads数来源的类型
         if(flag == 1){//可分配
@@ -1377,12 +1332,14 @@ public class FeeUserServiceImpl implements FeeUserService {
         Map<String, Object> paramTime = new HashMap<String, Object>();
         paramTime.put("list",sourceTypes);
         String weekTime = realtimeStaticWeekMapper.findWeekRecentlyIrsl_date(paramTime);//获取最大的周
+        paramTime.put("year",Integer.parseInt(day.substring(0,4))-1);
+        String weekTimeYear = realtimeStaticWeekMapper.findWeekRecentlyIrsl_date_week(paramTime);
         //生成匹配的map
         Map<String, Object> weekMap = new HashMap<String, Object>();
         List<String> weekTimes = new ArrayList<>();//匹配需要的周度时间list
         List<String> time = null;//周度数据时间轴
         if(weekTime!=null && !weekTime.isEmpty()){//只有查询出最新的周才可进行以下处理
-            initIrslDateMap(weekMap, weekTime, weekTimes);
+            initIrslDateMapnews(weekMap, weekTime, weekTimes,weekTimeYear);
             Map<String, Object> param = new HashMap<String, Object>();
             HourChartBean bean = null;
             for(Integer type:sourceTypes){
@@ -1430,6 +1387,41 @@ public class FeeUserServiceImpl implements FeeUserService {
                 times.add(year+i);
             }
         }
+    }
+
+    /**
+     * 生成比对结果集的map集合 new
+     * @param timeMap
+     * @param time
+     * @param times
+     */
+    private void initIrslDateMapnews(Map<String, Object> timeMap, String time, List<String> times, String weekTimeyear) {
+        String year = DateUtil.getYear("yyyy");//获取当前年度
+        String month =  DateUtil.getYear("MM");
+
+        Integer qw = Integer.valueOf(time.substring(4,6));
+        Integer qwyear = Integer.valueOf(weekTimeyear.substring(4,6));
+        String year_last = weekTimeyear.substring(0,4);
+        if (qw<12){
+            int temp = 12 - qw-1;
+            String key = null;
+            for (int i=temp;i>=0;i--){
+                key = year_last + String.valueOf(qwyear-i);
+                timeMap.put(key,0);
+                times.add(key);
+            }
+        }
+        for(int i=1; i<=qw; i++){
+            if(i<10){
+                timeMap.put(year+0+i,0);
+                times.add(year+0+i);
+            }else{
+                timeMap.put(year+i,0);
+                times.add(year+i);
+            }
+        }
+
+
     }
     //获得连续１２月的时间
     private void initIrslDateMapnew(Map<String, Object> timeMap, String time, List<String> times) {

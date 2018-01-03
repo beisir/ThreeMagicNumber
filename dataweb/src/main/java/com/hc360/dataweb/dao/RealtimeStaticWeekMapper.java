@@ -77,4 +77,12 @@ public interface RealtimeStaticWeekMapper {
 
     List<RealtimeStaticDoubleWeek> findEstimatesByPracticalnew(Map<String, Object> param) throws Exception;
 
+    /**
+     * 获得年末的最后一周
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    String findWeekRecentlyIrsl_date_week(Map<String, Object> param) throws Exception;
+
 }
