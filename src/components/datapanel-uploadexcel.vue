@@ -40,7 +40,9 @@
                   <div> 1、划转日期：时间格式为"yyyy-mm-dd",如“2017-12-01”（不能包含空格）；</div>
                   <div> 2、划出、划入签单业务员必须填写mis名（不能包含空格）；</div>
                   <div> 3、划转金额必须为正数，可以为整数，也可以保留两位小数；</div>
-                  <div> 4、备注：填写“订单划转”，“流水划转”，内容必须填写，不能为空，且前、后、中间不能有空格；</div>
+                  <div> 4、所属团队：具体划入签单业务员的部门名称，具体书写规则为：整体部门新签、增值部门名称填写：/营销中心/新签、/营销中心/增值
+            其他小部门，以ehr中部门名称为准，各级部门以“/”分割，如：营销中心/增值营销部/第一战队</div>
+                  <div> 5、备注：填写“订单划转”，“流水划转”，内容必须填写，不能为空，且前、后、中间不能有空格；</div>
                   <div> 备注：所有数据不能有空格，且不能为空</div>
                   <el-table
                     :data="tableData1"
@@ -62,6 +64,11 @@
                     <el-table-column
                       prop="misuser"
                       label="划入签单业务员（mis名）">
+                    </el-table-column>
+                    <el-table-column
+                      prop="team"
+                      label="所属团队"
+                      width="350">
                     </el-table-column>
                     <el-table-column
                       prop="price"
@@ -125,6 +132,7 @@ export default {
           name: '652147',
           address: '张文月1',
           misuser: '张立阳',
+          team: '营销中心/新签/新签一部/新签一部团队五',
           price: 5000,
           ps:'流水划转'
         },{
@@ -132,6 +140,7 @@ export default {
             name: '652147',
             address: '李郭静',
             misuser: '李晓辉2',
+            team: '营销中心/增值营销部/第五战队/第五战队团队二',
             price: 4999,
             ps:'订单划转'
       }],
