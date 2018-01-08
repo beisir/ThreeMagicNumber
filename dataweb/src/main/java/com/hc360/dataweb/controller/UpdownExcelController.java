@@ -100,8 +100,8 @@ public class UpdownExcelController {
         ResponseJson json = new ResponseJson();
         System.out.println("文件名----------" + file.getOriginalFilename());
 
-        Long operator = getLoginName(request);
-        if(null == operator || 0==operator){
+       Long operator = getLoginName(request);
+       if(null == operator || 0==operator){
             json.setErrno(1);
             json.setMsg("请先登录再操作");
             return json;
@@ -364,6 +364,7 @@ public class UpdownExcelController {
             XSSFSheet sheet = wb.getSheetAt(0);
             XSSFRow row;
             int hasTitle=0;
+            System.out.println("共几行---"+sheet.getPhysicalNumberOfRows());
             for(int i = sheet.getFirstRowNum() , rowCount = 0; rowCount < sheet.getPhysicalNumberOfRows() ; i++ ){
                 System.out.println("第"+(i+1)+"行");
                 row = sheet.getRow(i);
@@ -419,11 +420,11 @@ public class UpdownExcelController {
                     return json;
                 }else{
                     fromwho=cell3.getStringCellValue().trim().replaceAll(" ","");
-                    if("1".equals(SSOHelper.queryHCWorker(fromwho))){
+                    /*if("1".equals(SSOHelper.queryHCWorker(fromwho))){
                         json.setErrno(1);
                         json.setMsg("第"+(i+1)+"行"+3+"列 划出签单业务员 非MIS用户");
                         return json;
-                    }
+                    }*/
                     qcs.append(fromwho);
                     order.setFromWho(fromwho);
                 }
@@ -443,11 +444,11 @@ public class UpdownExcelController {
                         json.setMsg("第"+(i+1)+"行数据错误，划入业务员名称不能与划出业务员名称相同!");
                         return json;
                     }
-                    if("1".equals(SSOHelper.queryHCWorker(towho))){
+                    /*if("1".equals(SSOHelper.queryHCWorker(towho))){
                         json.setErrno(1);
                         json.setMsg("第"+(i+1)+"行"+4+"列 划入签单业务员 非MIS用户");
                         return json;
-                    }
+                    }*/
                     qcs.append(towho);
                     order.setToWho(towho);
                 }
@@ -468,7 +469,9 @@ public class UpdownExcelController {
                         return json;
                     }
                     qcs.append(nowPart);
+
                     order.setDepartment(nowPart);
+                    System.out.println("部门---"+order.getDepartment());
                 }
 
 
@@ -545,6 +548,7 @@ public class UpdownExcelController {
             HSSFRow row;
             int hasTitle=0;
             System.out.print("read2003----------row---begin");
+            System.out.println("共几行---"+sheet.getPhysicalNumberOfRows());
             for(int i = sheet.getFirstRowNum() , rowCount = 0; rowCount < sheet.getPhysicalNumberOfRows() ; i++ ){
                 System.out.println("第"+(i+1)+"行");
                 row = sheet.getRow(i);
@@ -602,11 +606,11 @@ public class UpdownExcelController {
                     return json;
                 }else{
                     fromwho=cell3.getStringCellValue().trim().replaceAll(" ","");
-                    if("1".equals(SSOHelper.queryHCWorker(fromwho))){
+                    /*if("1".equals(SSOHelper.queryHCWorker(fromwho))){
                         json.setErrno(1);
                         json.setMsg("第"+(i+1)+"行"+3+"列 划出签单业务员 非MIS用户");
                         return json;
-                    }
+                    }*/
                     qcs.append(fromwho);
                     order.setFromWho(fromwho);
                 }
@@ -626,11 +630,11 @@ public class UpdownExcelController {
                         json.setMsg("第"+(i+1)+"行数据错误，划入业务员名称不能与划出业务员名称相同!");
                         return json;
                     }
-                    if("1".equals(SSOHelper.queryHCWorker(towho))){
+                    /*if("1".equals(SSOHelper.queryHCWorker(towho))){
                         json.setErrno(1);
                         json.setMsg("第"+(i+1)+"行"+4+"列 划入签单业务员 非MIS用户");
                         return json;
-                    }
+                    }*/
                     qcs.append(towho);
                     order.setToWho(towho);
                 }
@@ -652,6 +656,7 @@ public class UpdownExcelController {
                     }
                     qcs.append(nowPart);
                     order.setDepartment(nowPart);
+                    System.out.println("部门---"+order.getDepartment());
                 }
 
 
