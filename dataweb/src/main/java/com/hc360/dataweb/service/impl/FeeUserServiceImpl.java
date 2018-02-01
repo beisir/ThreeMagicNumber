@@ -1801,7 +1801,8 @@ public class FeeUserServiceImpl implements FeeUserService {
   public void initDueMonthData(Integer dataType, Map<String, Object> dataMap) throws Exception {
     List<HourChartBean> dataList = new ArrayList<HourChartBean>();
     String year = DateUtil.getYear("yyyy");//获取当前年度
-    String month = DateUtil.getMonth("yyyyMM");//获取当前月
+    String month = DateUtil.plusDays("yyyyMM",-1);//获取当前月(前一天)
+    //String month = DateUtil.getMonth("yyyyMM");//获取当前月(前一天)
     List<Integer> dataTypes = new ArrayList<Integer>();
     List<String> monthTimese = new ArrayList<>();//月度数据时间轴
     List<String> monthTimes = new ArrayList<>();//月度数据时间轴
