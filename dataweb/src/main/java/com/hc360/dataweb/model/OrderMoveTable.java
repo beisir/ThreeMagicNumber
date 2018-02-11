@@ -23,6 +23,9 @@ public class OrderMoveTable {
     //划入业务员
     String toWho;
 
+    //所属部门
+    String department;
+
     //金额
     String amount;
 
@@ -38,6 +41,14 @@ public class OrderMoveTable {
     //操作人
     BigDecimal operatorId;
 
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 
     public String getId() {
         return id;

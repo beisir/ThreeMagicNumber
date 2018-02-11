@@ -24,6 +24,7 @@
               <result column="CREAT_TIME" property="creatTime" jdbcType="DATE" />
               <result column="STATE" property="state" jdbcType="DECIMAL" />
               <result column="OPERATORID" property="operatorId" jdbcType="DECIMAL" />
+              <result column="DEPARTMENT" property="department" jdbcType="VARCHAR" />
        </resultMap>
 
 
@@ -61,10 +62,10 @@
                      <foreach collection="orders" item="order" index="index">
 
                             <if test="index == orders.size-1">
-                                   SELECT #{order.id},#{order.moveDate},#{order.orderId},#{order.fromWho},#{order.toWho},#{order.amount},#{order.clientToWho},#{order.creatTime},0,#{order.operatorId} FROM dual
+                                   SELECT #{order.id},#{order.moveDate},#{order.orderId},#{order.fromWho},#{order.toWho},#{order.amount},#{order.clientToWho},#{order.creatTime},0,#{order.operatorId},#{order.department} FROM dual
                             </if>
                             <if test="index != orders.size-1">
-                                   SELECT #{order.id},#{order.moveDate},#{order.orderId},#{order.fromWho},#{order.toWho},#{order.amount},#{order.clientToWho},#{order.creatTime},0,#{order.operatorId} FROM dual UNION ALL
+                                   SELECT #{order.id},#{order.moveDate},#{order.orderId},#{order.fromWho},#{order.toWho},#{order.amount},#{order.clientToWho},#{order.creatTime},0,#{order.operatorId},#{order.department} FROM dual UNION ALL
                             </if>
 
                      </foreach>

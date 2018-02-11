@@ -100,8 +100,8 @@ public class UpdownExcelController {
         ResponseJson json = new ResponseJson();
         System.out.println("文件名----------" + file.getOriginalFilename());
 
-        Long operator = getLoginName(request);
-        if(null == operator || 0==operator){
+       Long operator = getLoginName(request);
+       if(null == operator || 0==operator){
             json.setErrno(1);
             json.setMsg("请先登录再操作");
             return json;
@@ -364,6 +364,7 @@ public class UpdownExcelController {
             XSSFSheet sheet = wb.getSheetAt(0);
             XSSFRow row;
             int hasTitle=0;
+            System.out.println("共几行---"+sheet.getPhysicalNumberOfRows());
             for(int i = sheet.getFirstRowNum() , rowCount = 0; rowCount < sheet.getPhysicalNumberOfRows() ; i++ ){
                 System.out.println("第"+(i+1)+"行");
                 row = sheet.getRow(i);
@@ -419,11 +420,11 @@ public class UpdownExcelController {
                     return json;
                 }else{
                     fromwho=cell3.getStringCellValue().trim().replaceAll(" ","");
-                    if("1".equals(SSOHelper.queryHCWorker(fromwho))){
+                    /*if("1".equals(SSOHelper.queryHCWorker(fromwho))){
                         json.setErrno(1);
                         json.setMsg("第"+(i+1)+"行"+3+"列 划出签单业务员 非MIS用户");
                         return json;
-                    }
+                    }*/
                     qcs.append(fromwho);
                     order.setFromWho(fromwho);
                 }
@@ -443,37 +444,59 @@ public class UpdownExcelController {
                         json.setMsg("第"+(i+1)+"行数据错误，划入业务员名称不能与划出业务员名称相同!");
                         return json;
                     }
-                    if("1".equals(SSOHelper.queryHCWorker(towho))){
+                    /*if("1".equals(SSOHelper.queryHCWorker(towho))){
                         json.setErrno(1);
                         json.setMsg("第"+(i+1)+"行"+4+"列 划入签单业务员 非MIS用户");
                         return json;
-                    }
+                    }*/
                     qcs.append(towho);
                     order.setToWho(towho);
                 }
 
-                //划转金额
+
+                //所属部门
                 XSSFCell cell5 = row.getCell(4);
-                if(null == cell5 || cell5.getCellType() != HSSFCell.CELL_TYPE_NUMERIC){
+                if(null == cell5 || cell5.getCellType() != HSSFCell.CELL_TYPE_STRING){
                     json.setErrno(1);
-                    json.setMsg("第"+(i+1)+"行"+5+"列数据格式错误,请填写正确划转金额!");
+                    json.setMsg("第"+(i+1)+"行"+5+"列数据格式错误，请填写正确部门名称!");
                     return json;
                 }else{
-                    qcs.append(cell5.getNumericCellValue());
-                    order.setAmount(nf.format(cell5.getNumericCellValue()));
+                    String nowPart = cell5.getStringCellValue().trim().replaceAll(" ","");
+                    String part = cell5.getStringCellValue().trim().replaceAll(" ","").replaceAll("/","");
+                    if("".equals(part) || !parternerP.matcher(part).matches()){
+                        json.setErrno(1);
+                        json.setMsg("第"+(i+1)+"行"+5+"列数据格式错误，请填写正确部门名称!");
+                        return json;
+                    }
+                    qcs.append(nowPart);
+
+                    order.setDepartment(nowPart);
+                    System.out.println("部门---"+order.getDepartment());
+                }
+
+
+                //划转金额
+                XSSFCell cell6 = row.getCell(5);
+                if(null == cell6 || cell6.getCellType() != HSSFCell.CELL_TYPE_NUMERIC){
+                    json.setErrno(1);
+                    json.setMsg("第"+(i+1)+"行"+6+"列数据格式错误,请填写正确划转金额!");
+                    return json;
+                }else{
+                    qcs.append(cell6.getNumericCellValue());
+                    order.setAmount(nf.format(cell6.getNumericCellValue()));
                 }
 
                 //客户划给谁
-                XSSFCell cell6 = row.getCell(5);
-                if(null == cell6 || cell6.getCellType() != HSSFCell.CELL_TYPE_STRING){
+                XSSFCell cell7 = row.getCell(6);
+                if(null == cell7 || cell7.getCellType() != HSSFCell.CELL_TYPE_STRING){
                     json.setErrno(1);
-                    json.setMsg("第"+(i+1)+"行"+6+"列数据格式错误，请填写正确划入业务员名称!");
+                    json.setMsg("第"+(i+1)+"行"+7+"列数据格式错误，请填写正确划入业务员名称!");
                     return json;
                 }else{
-                    String ctw = cell6.getStringCellValue().trim().replaceAll(" ", "");
+                    String ctw = cell7.getStringCellValue().trim().replaceAll(" ", "");
                     if(!"订单划转".equals(ctw) && !"流水划转".equals(ctw)){
                         json.setErrno(1);
-                        json.setMsg("第"+(i+ 1)+"行"+6+"列数据错误，请填写 订单划转或流水划转!");
+                        json.setMsg("第"+(i+ 1)+"行"+7+"列数据错误，请填写 订单划转或流水划转!");
                         return json;
                     }
                     qcs.append(ctw);
@@ -525,6 +548,7 @@ public class UpdownExcelController {
             HSSFRow row;
             int hasTitle=0;
             System.out.print("read2003----------row---begin");
+            System.out.println("共几行---"+sheet.getPhysicalNumberOfRows());
             for(int i = sheet.getFirstRowNum() , rowCount = 0; rowCount < sheet.getPhysicalNumberOfRows() ; i++ ){
                 System.out.println("第"+(i+1)+"行");
                 row = sheet.getRow(i);
@@ -582,11 +606,11 @@ public class UpdownExcelController {
                     return json;
                 }else{
                     fromwho=cell3.getStringCellValue().trim().replaceAll(" ","");
-                    if("1".equals(SSOHelper.queryHCWorker(fromwho))){
+                    /*if("1".equals(SSOHelper.queryHCWorker(fromwho))){
                         json.setErrno(1);
                         json.setMsg("第"+(i+1)+"行"+3+"列 划出签单业务员 非MIS用户");
                         return json;
-                    }
+                    }*/
                     qcs.append(fromwho);
                     order.setFromWho(fromwho);
                 }
@@ -606,37 +630,58 @@ public class UpdownExcelController {
                         json.setMsg("第"+(i+1)+"行数据错误，划入业务员名称不能与划出业务员名称相同!");
                         return json;
                     }
-                    if("1".equals(SSOHelper.queryHCWorker(towho))){
+                    /*if("1".equals(SSOHelper.queryHCWorker(towho))){
                         json.setErrno(1);
                         json.setMsg("第"+(i+1)+"行"+4+"列 划入签单业务员 非MIS用户");
                         return json;
-                    }
+                    }*/
                     qcs.append(towho);
                     order.setToWho(towho);
                 }
 
-                //划转金额
+
+                //所属部门
                 HSSFCell cell5 = row.getCell(4);
-                if(null == cell5 || cell5.getCellType() != HSSFCell.CELL_TYPE_NUMERIC){
+                if(null == cell5 || cell5.getCellType() != HSSFCell.CELL_TYPE_STRING){
                     json.setErrno(1);
-                    json.setMsg("第"+(i+1)+"行"+5+"列数据格式错误,请填写正确划转金额!");
+                    json.setMsg("第"+(i+1)+"行"+5+"列数据格式错误，请填写正确部门名称!");
                     return json;
                 }else{
-                    qcs.append(cell5.getNumericCellValue());
-                    order.setAmount(nf.format(cell5.getNumericCellValue()));
+                    String nowPart = cell5.getStringCellValue().trim().replaceAll(" ","");
+                    String part = cell5.getStringCellValue().trim().replaceAll(" ","").replaceAll("/","");
+                    if("".equals(part) || !parternerP.matcher(part).matches()){
+                        json.setErrno(1);
+                        json.setMsg("第"+(i+1)+"行"+5+"列数据格式错误，请填写正确部门名称!");
+                        return json;
+                    }
+                    qcs.append(nowPart);
+                    order.setDepartment(nowPart);
+                    System.out.println("部门---"+order.getDepartment());
+                }
+
+
+                //划转金额
+                HSSFCell cell6 = row.getCell(5);
+                if(null == cell6 || cell6.getCellType() != HSSFCell.CELL_TYPE_NUMERIC){
+                    json.setErrno(1);
+                    json.setMsg("第"+(i+1)+"行"+6+"列数据格式错误,请填写正确划转金额!");
+                    return json;
+                }else{
+                    qcs.append(cell6.getNumericCellValue());
+                    order.setAmount(nf.format(cell6.getNumericCellValue()));
                 }
 
                 //客户划给谁
-                HSSFCell cell6 = row.getCell(5);
-                if(null == cell6 || cell6.getCellType() != HSSFCell.CELL_TYPE_STRING){
+                HSSFCell cell7 = row.getCell(6);
+                if(null == cell7 || cell7.getCellType() != HSSFCell.CELL_TYPE_STRING){
                     json.setErrno(1);
-                    json.setMsg("第"+(i+1)+"行"+6+"列数据格式错误，请填写正确划入业务员名称!");
+                    json.setMsg("第"+(i+1)+"行"+7+"列数据格式错误，请填写正确划入业务员名称!");
                     return json;
                 }else{
-                    String ctw = cell6.getStringCellValue().trim().replaceAll(" ", "");
+                    String ctw = cell7.getStringCellValue().trim().replaceAll(" ", "");
                     if(!"订单划转".equals(ctw) && !"流水划转".equals(ctw)){
                         json.setErrno(1);
-                        json.setMsg("第"+(i+ 1)+"行"+6+"列数据错误，请填写 订单划转或流水划转!");
+                        json.setMsg("第"+(i+ 1)+"行"+7+"列数据错误，请填写 订单划转或流水划转!");
                         return json;
                     }
                     order.setClientToWho(ctw);
