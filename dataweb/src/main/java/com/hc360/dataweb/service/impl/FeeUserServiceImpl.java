@@ -729,9 +729,9 @@ public class FeeUserServiceImpl implements FeeUserService {
                 convertTop(todayData,mainBeans);
             }
         }
-        param = new HashMap<String, Object>();
+        /*param = new HashMap<String, Object>();
         Integer leadsType = DataType.LEADSTRANSFORM.getType();//leads转化率
-        /*时间为前一天的日期*/
+        *//*时间为前一天的日期*//*
         String leadsday = ControllerDateUtil.getLeadsYesterday();
         String month = leadsday.substring(0,6);//获取当前月份
         param.put("month", month);
@@ -757,7 +757,7 @@ public class FeeUserServiceImpl implements FeeUserService {
             mainBeans.add(leadsBeans.get(0));
         } else {
             logger.error("色块部分(收费会员,Leads数,LEADS转化率,3类客户数,付费会员交易率)数据为空");
-        }
+        }*/
 
     }
 
