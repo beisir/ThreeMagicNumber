@@ -155,7 +155,7 @@ public class MainController {
             }
 
 
-            //收费总人数----从天表中获取4001的数作为会员的总数。
+            /*//收费总人数----从天表中获取4001的数作为会员的总数。
             Map<String,Object> map =new HashMap<String,Object>();
             List<Integer> feeUserNumList = new ArrayList<Integer>();
             feeUserNumList.add(DataType.FEEUSERTOTAL.getType());//data_type:7-16
@@ -201,7 +201,7 @@ public class MainController {
                         EmailUtil.warnEveryOne(warnDate +"-" +"付费会员各个类型--数据为空。");
                     }
                 }
-            }
+            }*/
 
 
 
@@ -328,8 +328,56 @@ public class MainController {
             fightDxCapacityBean.setFightInfo(tmpFightCapacityOneBeanList);
             fightCapacityBeanList.add(fightDxCapacityBean);
         }
+//收费总人数----从天表中获取4001的数作为会员的总数。
+      Map<String,Object> map =new HashMap<String,Object>();
+      List<Integer> feeUserNumList = new ArrayList<Integer>();
+      feeUserNumList.add(DataType.FEEUSERTOTAL.getType());//data_type:7-16
 
-        resultMap.put("main", mainBeanList);//最大的4个颜色图
+      map.put("list",feeUserNumList);
+      map.put("yesterDay", warnDate);
+      List<RealTimeStaticDay> yeasterDayFeeAllUsers = this.realTimeStaticDayMapper.findRealTimeLastDataYester(map);
+      if(yeasterDayFeeAllUsers!=null && yeasterDayFeeAllUsers.size()> 0){
+        RealTimeStaticDay yeasterDayFeeAllUser = yeasterDayFeeAllUsers.get(0);
+        //数据非空的判断，以防止空指针
+        if(yeasterDayFeeAllUser!=null && yeasterDayFeeAllUser.getDataCount()!=null  && yeasterDayFeeAllUser.getDataCount()!=0){
+          mainBeanList.add(new MainBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount())));
+        }else{
+          mainBeanList.add(new MainBean("付费会员", "0"));
+          EmailUtil.warnEveryOne(warnDate +"-" +"付费会员总数--数据为空。");
+        }
+      }else{ // 数据库中不存在数据的判断。
+        mainBeanList.add(new MainBean("付费会员", "0"));
+        EmailUtil.warnEveryOne(warnDate +"-" +"收费会员总数--数据为空。");
+      }
+
+      map =new HashMap<String,Object>();
+      feeUserNumList = new ArrayList<Integer>();
+      feeUserNumList.add(DataType.DXFEEUSER.getType());
+      feeUserNumList.add(DataType.QDFEEUSER.getType());
+      feeUserNumList.add(DataType.HYFEEUSER.getType());
+      feeUserNumList.add(DataType.SELFFEEUSER.getType());
+      feeUserNumList.add(DataType.JMFEEUSER.getType());
+
+      map.put("list",feeUserNumList);
+      map.put("yesterDay", warnDate);
+      List<RealTimeStaticHour>  _yeasterDayFeeAllUsers = this.realTimeStaticHourMapper.findRealTimeLastDataYester(map);
+      if(_yeasterDayFeeAllUsers!=null && _yeasterDayFeeAllUsers.size()> 0){
+        for (RealTimeStaticHour yeasterDayFeeAllUser : _yeasterDayFeeAllUsers){
+          if(yeasterDayFeeAllUser!=null ){
+            if( yeasterDayFeeAllUser.getDataCount()!=null  && yeasterDayFeeAllUser.getDataCount()!=0){
+              feeuserBeanList.add(new FeeuserBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount().longValue()),0));
+            }else{
+              feeuserBeanList.add( new FeeuserBean(DataType.getName(yeasterDayFeeAllUser.getDataType()),"0", 0) );
+              EmailUtil.warnEveryOne(warnDate +"-" +"付费会员各个类型--数据为空。"+yeasterDayFeeAllUser.getDataType());
+            }
+          }else{
+            EmailUtil.warnEveryOne(warnDate +"-" +"付费会员各个类型--数据为空。");
+          }
+        }
+      }
+
+
+      resultMap.put("main", mainBeanList);//最大的4个颜色图
         resultMap.put("feeuser", feeuserBeanList);//收费会员的4个数据
         resultMap.put("fight", fightCapacityBeanList);//战斗力模块的数据
     }
