@@ -106,7 +106,7 @@ export default {
             //     ratioNum: 0,
             //     ratioTrend: null
             // },
-             {
+             /*{
                 name: '市场部发稿量',
                 code: '78',
                 filters: {
@@ -116,7 +116,7 @@ export default {
                 yesterdayNum: 0,
                 ratioNum: 0,
                 ratioTrend: null
-            }, {
+            },*/ {
                 name: '渠道拜访量',
                 code: '54',
                 filters: {
@@ -288,7 +288,7 @@ export default {
                             return _hour + ':' + _m;
                         }
                     }
-                }, false);              
+                }, false);
                 chartEntity.update({
                     tooltip: {
                         shared: true,
@@ -338,7 +338,7 @@ export default {
              if(this.CurrentNavigation.code==180){
                  _this.changeSaleOptions(chartOptions);
              }else{
-                 _this.changeChannelOptions(chartOptions)    
+                 _this.changeChannelOptions(chartOptions)
              }
         })
         /**
@@ -351,17 +351,17 @@ export default {
              if(this.CurrentNavigation.code==180){
                   _this.changeSaleSeries(chartEntity)
              }else{
-                  _this.changeChannelSeries(chartEntity)    
+                  _this.changeChannelSeries(chartEntity)
              }
-             
+
         });
 
         /**
-         * [监听销售业绩趋势图表组件 beforeRedraw 事件 显示一个y轴] 
+         * [监听销售业绩趋势图表组件 beforeRedraw 事件 显示一个y轴]
          */
         _this.$refs.navigation_yearly.$on('beforeRedraw',function(chartEntity){
             if (this.CurrentNavigation.code === '178') {
-                chartEntity.series.forEach((series, index) => {                    
+                chartEntity.series.forEach((series, index) => {
                     series.update({
                         yAxis: 0
                     }, false);
@@ -570,7 +570,7 @@ export default {
                                 *  "电销整体","电销新签","电销增值" 加上预估值
                                 *   电销整体预估值和电销整体实际值为0，数值显示等于电销新签预估值和电销增值预估值
                                     电销新签和电销增值如果为0则不显示
-                                */ 
+                                */
                                 if(pointNameList.includes(pointName)){
                                     if(pointName=="电销整体"&&number==0){
                                         number=getTotalNumber(["电销新签","电销增值"]);
@@ -737,7 +737,7 @@ export default {
 
                     });
         }
-       
+
     },
     components: {
         'chart-tendency': chartTendency
