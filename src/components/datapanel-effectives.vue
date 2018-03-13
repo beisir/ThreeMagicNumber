@@ -85,7 +85,7 @@ export default {
                 ratioNum: 0,
                 ratioTrend: null
             }, {
-                name: '渠道转正人数',
+                name: '代理商战斗力',////代理商战斗力   渠道转正人数
                 code: '10',
                 filters: {
                     timelimit: ['all']

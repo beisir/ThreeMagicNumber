@@ -109,7 +109,7 @@ export default {
                 yesterdayNum: 0,
                 ratioNum: 0,
                 ratioTrend: null
-            },*//* {
+            },*/ {
                 name: 'Leads来源转化率',
                 code: '297',
                 filters: {
@@ -119,7 +119,7 @@ export default {
                 yesterdayNum: 0,
                 ratioNum: 0,
                 ratioTrend: null
-            },*/ {
+            }, {
                 name: '3类客户数',
                 code: '62',
                 filters: {
@@ -332,7 +332,7 @@ export default {
                  * @type {Array}
                  */
                 // _names = ['Leads转化率', 'Leads来源转化率', '3类客户数', '交易付费会员数', '卖家DAU'];
-            _names = ['Leads转化率', '3类客户数', '卖家DAU'];
+            _names = ['Leads来源转化率', '3类客户数', '卖家DAU'];
 
             /**
              * [从总体数据中过滤出色块区域数据]
