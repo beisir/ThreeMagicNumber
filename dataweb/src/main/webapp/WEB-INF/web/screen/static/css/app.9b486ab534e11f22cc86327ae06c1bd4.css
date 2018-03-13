@@ -2719,6 +2719,13 @@ aside .main-menu>ul>li a{cursor:pointer;}
 .data2BoxTopCon dl dd span.l-02{width:100%;font-size:22px;}
 .data2BoxTopCon dl dd span.l-03{width:100%;font-size:22px;}
 .data2BoxBot{border:1px dotted #ddd;background:#f9f9f9;overflow:hidden;padding:10px 10px 0;border-radius:5px;border-top:#ff7c4d 2px solid;}
+.data2BoxBotCon ul{
+    float: left;
+    width: 100%;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    justify-content: space-around;
+}
 .data2BoxBotCon ul li{float:left;}
 .data2BoxBotList{overflow:hidden;margin:0 5px;}
 .data2BoxBotList dt{text-align:center;line-height:40px;padding-top:5px;border-bottom:1px dotted #ddd;font-size:15px;margin:0 10px;}
