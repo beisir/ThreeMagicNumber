@@ -31,7 +31,10 @@ public enum DataType {
     QDSHOULDEMPLOYEE("qdshouldemployee", 11),
     /*渠道离职人数*/
     QDLEAVEEMPLOYEE("qdleaveemployee", 12),
-
+    /*渠道销售人数**/
+    QDSALE("qdsale", 336),
+    /*渠道管理层人数**/
+    QDMANAGER("qdmanager", 337),
     /*职能离职人数 **/
     ZNSHOULDEMPLOYEE("znshouldemployee", 15),
     /*职能应在职人数（离职+在职）*/
