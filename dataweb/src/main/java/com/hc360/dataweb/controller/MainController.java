@@ -249,17 +249,31 @@ public class MainController {
             FightCapacityBean fightQdCapacityBean = new FightCapacityBean("渠道");
             //渠道转正人数
             if (dataMap.get(DataType.QDCOVENEMPLOYEE.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("转正人数", threeNumDf.format(dataMap.get(DataType.QDCOVENEMPLOYEE.getName()))  , 1 ));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商战斗力", threeNumDf.format(dataMap.get(DataType.QDCOVENEMPLOYEE.getName()))  , 1 ));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("转正人数", "0"  , 1 ));
-                EmailUtil.warnEveryOne(warnDate +"-" +"渠道转正人数--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商战斗力", "0"  , 1 ));
+                EmailUtil.warnEveryOne(warnDate +"-" +"代理商战斗力--数据为空。");
             }
             //渠道离职率
             if (dataMap.get(DataType.QDLEAVEEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())!=0) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("离职率", df.format(dataMap.get(DataType.QDLEAVEEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())) + "%"  , 1));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商离职率", df.format(dataMap.get(DataType.QDLEAVEEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())) + "%"  , 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("离职率", "0%"  , 1));
-                EmailUtil.warnEveryOne(warnDate +"-" +"渠道离职率--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商离职率", "0%"  , 1));
+                EmailUtil.warnEveryOne(warnDate +"-" +"代理商离职率--数据为空。");
+            }
+            //渠道中心销售人员
+            if (dataMap.get(DataType.QDSALE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())!=0) {
+              tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道销售人数", threeNumDf.format(dataMap.get(DataType.QDSALE.getName()))  , 1 ));
+            } else {
+              tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道销售人数", "0"  , 1));
+              EmailUtil.warnEveryOne(warnDate +"-" +"渠道销售人数--数据为空。");
+            }
+            //渠道中心管理层人员
+            if (dataMap.get(DataType.QDMANAGER.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())!=0) {
+              tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道职能人数", threeNumDf.format(dataMap.get(DataType.QDMANAGER.getName()))  , 1 ));
+            } else {
+              tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道职能人数", "0"  , 1));
+              EmailUtil.warnEveryOne(warnDate +"-" +"渠道职能人数--数据为空。");
             }
             fightQdCapacityBean.setFightInfo(tmpFightCapacityOneBeanList);
             if (fightQdCapacityBean.getFightInfo() != null && fightQdCapacityBean.getFightInfo().size() > 0) {
@@ -399,6 +413,8 @@ public class MainController {
         feeUserNumList.add(DataType.DX_MANAGER_COUNT.getType());//294
         feeUserNumList.add(DataType.DX_OFFICER_COUNT.getType());//313
         feeUserNumList.add(DataType.DX_ALL_COUNT.getType());//314
+        feeUserNumList.add(DataType.QDSALE.getType());//336
+        feeUserNumList.add(DataType.QDMANAGER.getType()); //337
     }
 
     /**
