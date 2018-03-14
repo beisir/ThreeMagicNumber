@@ -711,7 +711,7 @@ public class FeeUserServiceImpl implements FeeUserService {
 
         }
         /*付费会员交易率{交易付费会员数}*/
-        Integer transaction = DataType.FEEUSERTRANSACTION.getType();
+        /*Integer transaction = DataType.FEEUSERTRANSACTION.getType();
         types = new ArrayList<>();
         types.add(transaction);
         List<RealTimeStaticDay> todayData = null;
@@ -728,7 +728,7 @@ public class FeeUserServiceImpl implements FeeUserService {
             if (todayData!=null && !todayData.isEmpty()){
                 convertTop(todayData,mainBeans);
             }
-        }
+        }*/
         /*param = new HashMap<String, Object>();
         Integer leadsType = DataType.LEADSTRANSFORM.getType();//leads转化率
         *//*时间为前一天的日期*//*
@@ -890,11 +890,11 @@ public class FeeUserServiceImpl implements FeeUserService {
             }else if(ChartsConstant.TOTAL.equals(time)){//累计(新增累计数量的data_type值)
                 initDayData(time,day,dataType,dataMap);
             }
-        } else if (dataType == DataType.FEEUSERTRANSACTION.getType().intValue()) {//交易付费会员数(最近三十天)
+        } /*else if (dataType == DataType.FEEUSERTRANSACTION.getType().intValue()) {//交易付费会员数(最近三十天)
             if(ChartsConstant.MONTH.equals(time)){
                 initDayData(time, day, dataType, dataMap);
             }
-        } else if(dataType == DataType.DAUTYPE.getType().intValue()){//卖家DAU(最近三十天)
+        }*/ else if(dataType == DataType.DAUTYPE.getType().intValue()){//卖家DAU(最近三十天)
             if(ChartsConstant.MONTH.equals(time)){//最近三十天
                 initDayData(time, day, dataType, dataMap);
             }
