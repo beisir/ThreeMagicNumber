@@ -44,12 +44,12 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         MainBean validcallnum = getValidcallnum(day, null);//今天
 
         /*查询周表(市场部发稿量)*/
-        Integer flag = 1;//获取时间最近的一条数据
+        /*Integer flag = 1;//获取时间最近的一条数据
         MainBean weekDataRecently = getTodayDataWeek(flag);
         flag = 2;//获取时间第二近的一条数据
         MainBean weekData = getTodayDataWeek(flag);
 
-        mainBeans.add(weekDataRecently);
+        mainBeans.add(weekDataRecently);*/
         mainBeans.add(validcallnum);
 
         initTogetherDataTypes(lastTypes);//昨天最后时间
@@ -57,7 +57,7 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         List<MainBean> mainBeans2 = getYesterdayData(day, yesterDay, togetherTypes, lastTypes);
         /*人均有效通话次数*/
         MainBean validcallnumY = getValidcallnum(day, yesterDay);//昨天
-        mainBeans2.add(weekData);
+        //mainBeans2.add(weekData);
         mainBeans2.add(validcallnumY);
         dataTotal.put("todaydata", mainBeans);
         dataTotal.put("yesterdaydata", mainBeans2);
