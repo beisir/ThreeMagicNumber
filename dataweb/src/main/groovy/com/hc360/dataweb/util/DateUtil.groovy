@@ -34,9 +34,11 @@ class DateUtil {
     }
 
     public static final void main(String[] args){
-        List<String> months = getMonthInfo(7,"yyyyMMWW");
+        /*List<String> months = getMonthInfo(7,"yyyyMMWW");
         for(String s : months){
             println(s)
-        }
+        }*/
+      String a=plusDays('yyyy-MM',-1);
+      println(a);
     }
 }
