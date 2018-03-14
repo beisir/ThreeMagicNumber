@@ -171,7 +171,7 @@ public class CommonUtil {
         if(dataType == DataType.DXCOVENEMPLOYEE.getType().intValue()){
             return "电销转正人数";
         }else if(dataType == DataType.QDCOVENEMPLOYEE.getType().intValue()){
-            return "渠道转正人数";
+            return "代理商战斗力";
         }else if(dataType == DataType.ZNONGUARDEMPLOYEE.getType().intValue()){
             return "职能满编率";
         }else if(dataType == DataType.EXTERNALSENDDRAFT.getType().intValue()){
