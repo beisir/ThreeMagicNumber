@@ -797,7 +797,7 @@ public class FeeUserServiceImpl implements FeeUserService {
         dataTypes.add(DataType.LEADS.getType());
         dataTypes.add(DataType.FEEUSERTOTAL.getType());
         dataTypes.add(DataType.USER3CLASS.getType());
-        dataTypes.add(DataType.DAUTYPE.getType());
+        //dataTypes.add(DataType.DAUTYPE.getType());
         return dataTypes;
     }
     /*查询昨天同一时间数据*/
@@ -805,7 +805,7 @@ public class FeeUserServiceImpl implements FeeUserService {
         List<Integer> dataTypes = new ArrayList<Integer>();
         dataTypes.add(DataType.LEADS.getType());
         dataTypes.add(DataType.USER3CLASS.getType());
-        dataTypes.add(DataType.DAUTYPE.getType());
+        //dataTypes.add(DataType.DAUTYPE.getType());
         return dataTypes;
     }
 
