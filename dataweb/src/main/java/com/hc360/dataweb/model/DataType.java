@@ -395,7 +395,13 @@ public enum DataType {
     P4P_CONSUMPTION_DAY("纯P4P消耗", 324),
     P4P_CONSUMPTION_TOTAL("纯P4P消耗", 325),
     P4P_QWDT_HOUR("全网定投消耗",326),
-    P4P_QWDT_DAY("全网定投消耗",327);
+    P4P_QWDT_DAY("全网定投消耗",327),
+
+    /*MIP站流量的信息，这些数据是从百度统计抓取过来的**/
+    MIP_IP("MIP站IP",338),
+    MIP_PV("MIP站PV",339),
+    MIP_UV("MIP站UV",340);
+
 
     private String name;
 
