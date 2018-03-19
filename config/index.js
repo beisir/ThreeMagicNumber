@@ -25,7 +25,7 @@ module.exports = {
     },
     dev: {
         env: require('./dev.env'),
-        port: 8080,
+        port: 8081,
         autoOpenBrowser: true,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
@@ -44,7 +44,7 @@ module.exports = {
              * 映射到本地文件
              */
             '/dataweb': {
-                target: 'http://localhost:8080',
+                target: 'http://localhost:8081',
                 changeOrigin: true,
                 pathRewrite: function(path, req) {
                     var urlParsed = url.parse(req.url, true),

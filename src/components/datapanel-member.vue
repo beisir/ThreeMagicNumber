@@ -139,17 +139,17 @@ export default {
                 yesterdayNum: 0,
                 ratioNum: 0,
                 ratioTrend: null
-            }*/, {
-                name: '卖家DAU',
-                code: '28',
-                filters: {
-                    timelimit: ['lastmonth']
-                },
-                todayNum: 0,
-                yesterdayNum: 0,
-                ratioNum: 0,
-                ratioTrend: null
-            }, {
+            // }*//*, {
+            //     name: '卖家DAU',
+            //     code: '28',
+            //     filters: {
+            //         timelimit: ['lastmonth']
+            //     },
+            //     todayNum: 0,
+            //     yesterdayNum: 0,
+            //     ratioNum: 0,
+            //     ratioTrend: null
+            // }*/, {
                 name: '付费会员',
                 code: '0',
                 todayNum: 0,
@@ -289,7 +289,7 @@ export default {
                  * @type {Array}
                  */
                  // _names = ['新增Leads数', 'Leads转化率', '3类客户数', '交易付费会员数', '卖家DAU'];
-                _names = ['新增Leads数', '3类客户数', '卖家DAU'];
+                _names = ['新增Leads数', '3类客户数'];
 
             /**
              * [从总体数据中过滤出色块区域数据]
@@ -332,7 +332,7 @@ export default {
                  * @type {Array}
                  */
                 // _names = ['Leads转化率', 'Leads来源转化率', '3类客户数', '交易付费会员数', '卖家DAU'];
-            _names = ['Leads来源转化率', '3类客户数', '卖家DAU'];
+            _names = ['Leads来源转化率', '3类客户数'];
 
             /**
              * [从总体数据中过滤出色块区域数据]
