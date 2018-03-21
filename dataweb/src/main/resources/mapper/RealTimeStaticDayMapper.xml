@@ -310,7 +310,7 @@
         ) X
         WHERE X.DT_ORDER = 1
         group by  IRSL_DATE
-
+        order by IRSL_DATE
     </select>
     <select id="findRealTimeDataNewest" resultMap="BaseResultMap"  parameterType="java.util.Map">
 
