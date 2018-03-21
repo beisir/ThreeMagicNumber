@@ -812,7 +812,7 @@ public class FeeUserServiceImpl implements FeeUserService {
     @Override
     public void initChartData(Integer dataType, String time, Map<String, Object> dataMap) throws Exception {
         String day = ControllerDateUtil.getToday();//今日日期
-        List<Integer> types = new ArrayList<Integer>();
+//        List<Integer> types = new ArrayList<Integer>();
         if(dataType == DataType.FINANCE_DX_THIRDPARTNAR.getType().intValue()){//产品用户贡献
             getUserProductCont(dataMap, time);
         } else if (dataType == DataType.LEADS.getType().intValue() ) {//可分配LEADS数

@@ -81,7 +81,24 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
         Map<String,Object> param = new HashMap<String,Object>();
         param.put("day",time);
         param.put("type", type);
-        List<RealTimeStaticDoubleHour> hourData = realTimeStaticHourMapper.findDoubleTodayData(param);
+        List<Integer> typeList = new ArrayList<>();
+        typeList.add(type);
+        if(type == DataType.IP.getType()){
+            typeList.add(DataType.MIP_IP.getType());
+        }else if(type == DataType.PV.getType()){
+            typeList.add(DataType.MIP_PV.getType());
+        }else if(type == DataType.UV.getType()){
+            typeList.add(DataType.MIP_UV.getType());
+        }
+//将mip站的IP,PV,UV添加到对应的IP,PV,UV上
+        List<RealTimeStaticDoubleHour> hourData = null;
+        if(type == DataType.IP.getType() ||type == DataType.PV.getType() || type == DataType.UV.getType()){
+            param.put("list",typeList);
+            param.put("dataType",type);
+            hourData = realTimeStaticHourMapper.findDoubleTodayDataMip(param);
+        }else {
+            hourData = realTimeStaticHourMapper.findDoubleTodayData(param);
+        }
         List<Object> data = convertHourDouble(hourData, timeList);
         bean.setData(data);
         if(time.equals(ControllerDateUtil.getYesterday())){
@@ -246,7 +263,25 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
             type = CommonUtil.initOtherType(type);//转换新增或累计数据的data_type值
         }
         param.put("type", type);
-        List<RealTimeStaticDoubleDay> dayData = realTimeStaticDayMapper.findDayDoubleData(param);
+
+        List<Integer> typeList = new ArrayList<>();
+        typeList.add(type);
+        if(type == DataType.IP.getType()){
+            typeList.add(DataType.MIP_IP.getType());
+        }else if(type == DataType.PV.getType()){
+            typeList.add(DataType.MIP_PV.getType());
+        }else if(type == DataType.UV.getType()){
+            typeList.add(DataType.MIP_UV.getType());
+        }
+//将mip站的IP,PV,UV添加到对应的IP,PV,UV上
+        List<RealTimeStaticDoubleDay> dayData = null;
+        if(type == DataType.IP.getType() || type == DataType.PV.getType() ||type == DataType.UV.getType() ){
+            param.put("list",typeList);
+            param.put("dataType",type);
+            dayData = realTimeStaticDayMapper.findDayDoubleDataMip(param);
+        }else {
+            dayData = realTimeStaticDayMapper.findDayDoubleData(param);
+        }
         bean.setData(convertDayData(dayData, timeList));
         bean.setName(CommonUtil.initName(type));
         bean.setUnit(CommonUtil.initUnit(type));

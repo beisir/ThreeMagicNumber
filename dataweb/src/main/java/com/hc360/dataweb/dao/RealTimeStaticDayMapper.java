@@ -76,7 +76,7 @@ public interface RealTimeStaticDayMapper {
      * @return
      */
     List<RealTimeStaticDoubleDay> findDayDoubleData(Map<String, Object> param)throws Exception;
-
+    List<RealTimeStaticDoubleDay> findDayDoubleDataMip(Map<String, Object> param)throws Exception;
     /**
      * 获取昨天的最后一条数据
      * @param param2

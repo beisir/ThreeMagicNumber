@@ -284,12 +284,34 @@
         OP_DATE,
         ROW_NUMBER() OVER(PARTITION BY DATA_TYPE, IRSL_DATE ORDER BY OP_DATE DESC) AS DT_ORDER
         FROM SJPT_REALTIME_STATIC_DAY T
-        WHERE T.IRSL_DATE BETWEEN #{preDay}AND #{day}
+        WHERE T.IRSL_DATE BETWEEN #{preDay} AND #{day}
         and t.DATA_TYPE=#{type}) X
         WHERE X.DT_ORDER = 1
 
     </select>
 
+    <select id="findDayDoubleDataMip" resultMap="DoubleResultMap" parameterType="java.util.Map">
+
+        SELECT #{dataType} as DATA_TYPE, sum(DATA_COUNT)as DATA_COUNT, IRSL_DATE
+        FROM (SELECT ID,
+        DATA_TYPE,
+        DATA_COUNT,
+        IRSL_DATE,
+        OP_DATE,
+        ROW_NUMBER() OVER(PARTITION BY DATA_TYPE, IRSL_DATE ORDER BY OP_DATE DESC) AS DT_ORDER
+        FROM SJPT_REALTIME_STATIC_DAY T
+        WHERE T.IRSL_DATE BETWEEN  #{preDay}AND #{day}
+        <if test="list != null and list.size > 0">
+            and t.DATA_TYPE in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) X
+        WHERE X.DT_ORDER = 1
+        group by  IRSL_DATE
+
+    </select>
     <select id="findRealTimeDataNewest" resultMap="BaseResultMap"  parameterType="java.util.Map">
 
         select DATA_TYPE, data_count, IRSL_DATE,OP_DATE
