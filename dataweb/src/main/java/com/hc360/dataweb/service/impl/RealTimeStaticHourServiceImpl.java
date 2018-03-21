@@ -151,6 +151,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
             typeList.add(DataType.MIP_UV.getType());
         }
         param.put("list",typeList);
+        param.put("dataType",type);
         List<RealTimeStaticDoubleHour> hourData = realTimeStaticHourMapper.findDoubleTodayDataMip(param);
         List<Object> data = convertHourDouble(hourData, timeList);
         bean.setData(data);

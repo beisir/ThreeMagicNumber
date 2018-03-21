@@ -153,7 +153,7 @@
 
     <select id="findDoubleTodayDataMip" resultMap="P4PResultMap" parameterType="java.util.Map">
         select
-        1 as DATA_TYPE,IRSL_DATE_H,
+        #{dataType} as DATA_TYPE,IRSL_DATE_H,
         sum(DATA_COUNT) as DATA_COUNT
         from SJPT_REALTIME_STATIC_HOUR
         <where>
