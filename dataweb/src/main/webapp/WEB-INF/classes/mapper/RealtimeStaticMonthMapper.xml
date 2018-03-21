@@ -40,17 +40,33 @@
 
 
   <select id="fingYearMonthData" resultMap="BaseResultMap" parameterType="java.util.Map">
-     select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE
+   select * from(
+     select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE,
+       row_number() over( order by IRSL_DATE desc ) as rn
     from
     (select DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE,
     row_number() over(partition by irsl_date order by DATA_DATE desc ) as rn
     from  sjpt_realtime_STATIC_month
     where data_type= #{type}
-    and irsl_date like #{year}||'%'
     )  t
     where t.rn=1
     order by irsl_date
+     )f
+    <![CDATA[ where f.rn<=#{months} ]]>
   </select>
+    <!--leads转化率 新-->
+    <select id="fingYearMonthDatanew" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE
+        from
+        (select DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE,
+        row_number() over(partition by irsl_date order by DATA_DATE desc ) as rn
+        from  sjpt_realtime_STATIC_month
+        where data_type= #{type}
+        and irsl_date >= to_char(add_months(to_date(irsl_date,'yyyymm'), -12),'yyyymm')
+        )  t
+        where t.rn=1
+        order by irsl_date
+    </select>
 
   <select id="findYearMonthData" resultMap="BaseResultMap" parameterType="java.util.Map">
     select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE
@@ -62,6 +78,22 @@
     )  t
     where t.rn=1
     order by irsl_date
+  </select>
+
+  <select id="findLastNMonthsData" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select * from(
+    select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE,
+    row_number() over( order by IRSL_DATE desc ) as rn
+    from
+    (select DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE,
+    row_number() over(partition by irsl_date order by DATA_DATE desc ) as rn
+    from  sjpt_realtime_STATIC_month
+    where data_type= #{type}  and <![CDATA[ irsl_date <= #{month} ]]>
+    )  t
+    where t.rn=1
+    order by irsl_date
+    )f
+    <![CDATA[ where f.rn<=#{months} ]]>
   </select>
 
     <select id="findMonthDataByDataDate" resultMap="BaseResultMap" parameterType="java.util.Map" >
@@ -136,5 +168,24 @@
             </foreach>
         </if>
         order by irsl_date
+    </select>
+
+    <select id="findEstimatesByPracticalnew" resultMap="BaseResultMap" parameterType="java.util.Map" >
+        select
+        aa.DATA_TYPE,aa.DATA_COUNT,aa.IRSL_DATE,aa.DATA_DATE
+        from (select
+        DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE,
+        row_number() over(partition by irsl_date order by DATA_DATE desc ) as rn
+        from
+        sjpt_realtime_STATIC_month
+        where
+        data_type = #{type}
+        <if test="list != null and list.size > 0">
+        and irsl_date  in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        </if>
+        ) aa where aa.rn = 1
     </select>
 </mapper>

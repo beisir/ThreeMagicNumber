@@ -14,7 +14,7 @@
     <id column="ID" property="id" jdbcType="DECIMAL" />
     <result column="DATA_TYPE" property="dataType" jdbcType="DECIMAL" />
     <result column="DATA_COUNT" property="dataCount" jdbcType="DOUBLE" />
-    <result column="IRSL_DATE" property="irslDate" jdbcType="CHAR" />
+    <result column="IRSL_DATE" property="irslDate" jdbcType="VARCHAR" />
     <result column="DATA_DATE" property="dataDate" jdbcType="CHAR" />
     <result column="OP_DATE" property="opDate" jdbcType="DATE" />
   </resultMap>
@@ -80,6 +80,18 @@
        order by irsl_date
 
    </select>
+    <!--新增leads数周度数据-->
+    <select id="findYearWeekDatanew" resultMap="BaseResultMap" parameterType="java.util.Map" >
+        select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE
+        from
+        (select DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE,
+        row_number() over(partition by irsl_date order by DATA_DATE desc ) as rn
+        from  SJPT_REALTIME_STATIC_WEEK
+        where data_type= #{type} and irsl_date like #{year}||'%')  t
+        where t.rn=1
+        order by irsl_date
+
+    </select>
 
    <select id="findMonthWeekData" resultMap="BaseDoubleResultMap" parameterType="java.util.Map" >
       select t.DATA_TYPE,t.DATA_COUNT,t.IRSL_DATE,t.DATA_DATE
@@ -141,6 +153,26 @@
     where t.rn=1
    </select>
 
+    <select id="findWeekRecentlyIrsl_date_week" resultType="java.lang.String" parameterType="java.util.Map" >
+
+        select t.irsl_date from
+        (
+        select r.irsl_date,
+        row_number() over( order by irsl_date desc) as rn
+        from sjpt_realtime_static_week r
+        <where>
+            irsl_date like #{year}||'%' and
+            <if test="list != null and list.size > 0">
+                r.data_type in
+                <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ) t
+        where t.rn=1
+    </select>
+
     <select id="findEstimatesByPractical" resultMap="BaseDoubleResultMap" parameterType="java.util.Map" >
         select
         DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE
@@ -155,5 +187,24 @@
             </foreach>
         </if>
         order by irsl_date
+    </select>
+
+    <select id="findEstimatesByPracticalnew" resultMap="BaseDoubleResultMap" parameterType="java.util.Map" >
+        select
+        aa.DATA_TYPE,aa.DATA_COUNT,aa.IRSL_DATE,aa.DATA_DATE
+        from (  select
+        DATA_TYPE,DATA_COUNT,IRSL_DATE,DATA_DATE,
+        row_number() over(partition by irsl_date order by DATA_DATE desc ) as rn
+        from
+        sjpt_realtime_static_week
+        where
+        data_type = #{type}
+        <if test="list != null and list.size > 0">
+            and irsl_date  in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by irsl_date) aa where aa.rn = 1
     </select>
 </mapper>

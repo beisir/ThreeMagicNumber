@@ -132,6 +132,40 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
     }
 
     /**
+     * 趋势图_今天按钮:处理小时数据公用方法{总览页面处理}
+     * @param bean 空vo对象
+     * @param time 查询的时间{yyyymmdd}
+     * @param type 查询的类型
+     */
+    private void disposeTodayDataZLIPPVUV(HourChartBean bean, String time, Integer type) {
+        List<String> timeList = CommonUtil.getTimeShaft(time);
+        Map<String,Object> param = new HashMap<String,Object>();
+        param.put("day",time);
+        List<Integer> typeList = new ArrayList<>();
+        typeList.add(type);
+        if(type == DataType.IP.getType()){
+            typeList.add(DataType.MIP_IP.getType());
+        }else if(type == DataType.PV.getType()){
+            typeList.add(DataType.MIP_PV.getType());
+        }else if(type == DataType.UV.getType()){
+            typeList.add(DataType.MIP_UV.getType());
+        }
+        param.put("list",typeList);
+        List<RealTimeStaticDoubleHour> hourData = realTimeStaticHourMapper.findDoubleTodayDataMip(param);
+        List<Object> data = convertHourDouble(hourData, timeList);
+        bean.setData(data);
+        if(time.equals(ControllerDateUtil.getYesterday())){
+            bean.setName("昨天");
+        }else if(time.equals(ControllerDateUtil.getPreNDay(-7))){
+            bean.setName("七天前");
+        }else{
+            bean.setName("今天");
+        }
+        bean.setIsShow(true);
+        bean.setUnit(CommonUtil.initUnit(type));
+    }
+
+    /**
      * 判断是否标记默认显示的图例
      * @param type
      * @param time
@@ -420,7 +454,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
         }else{//IP&UV&PV查询今天&昨天&七天前
             for(String time:times) {//处理今天&昨天&七天前的数据
                 beanOther = new HourChartBean();
-                disposeTodayDataZL(beanOther, time, otherType);
+                disposeTodayDataZLIPPVUV(beanOther, time, otherType); // 0321 ,ZC,将mip站抓取来的数据累加到原有的IP,PV,UV上
                 beans.add(beanOther);
             }
         }

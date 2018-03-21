@@ -151,6 +151,24 @@
         order by IRSL_DATE_H
     </select>
 
+    <select id="findDoubleTodayDataMip" resultMap="P4PResultMap" parameterType="java.util.Map">
+        select
+        DATA_TYPE,IRSL_DATE_H,
+        sum(DATA_COUNT) as DATA_COUNT
+        from SJPT_REALTIME_STATIC_HOUR
+        <where>
+            <if test="list != null and list.size > 0">
+                and DATA_TYPE in
+                <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and IRSL_DATE_H between concat(#{day},'00') and concat(#{day},'23')
+        </where>
+        group by DATA_TYPE, IRSL_DATE_H
+        order by IRSL_DATE_H
+    </select>
+
     <select id="findRealTimeLastDataYester" resultMap="BaseResultMap"  parameterType="java.util.Map">
 
         select DATA_TYPE, data_count, IRSL_DATE_H,OP_DATE

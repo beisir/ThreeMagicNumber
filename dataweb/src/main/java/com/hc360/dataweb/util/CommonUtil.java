@@ -72,7 +72,8 @@ public class CommonUtil {
      */
     public static boolean initArith(Integer otherType) {
         boolean unit = false;
-        if (otherType == DataType.IP.getType().intValue() || otherType == DataType.PV.getType().intValue() || otherType == DataType.UV.getType().intValue()
+        if (otherType == DataType.IP.getType().intValue() || otherType == DataType.PV.getType().intValue() || otherType == DataType.UV.getType().intValue()||
+                otherType == DataType.MIP_IP.getType().intValue() || otherType == DataType.MIP_PV.getType().intValue() || otherType == DataType.MIP_UV.getType().intValue()
                 || otherType == DataType.INQUIRYCOUNT.getType().intValue() || otherType == DataType.VISCIDITYBUYER.getType().intValue()) {
             unit = true;
         }

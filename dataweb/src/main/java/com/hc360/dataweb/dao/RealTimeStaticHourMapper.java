@@ -56,7 +56,12 @@ public interface RealTimeStaticHourMapper {
      * @return
      */
     List<RealTimeStaticDoubleHour> findDoubleTodayData(Map<String, Object> param);
-
+    /**
+     * 查询当天的每个小时的数据 : 将mip站的数据累加到原有的IP,PV,UV上2018.03.21
+     * @param param
+     * @return
+     */
+    List<RealTimeStaticDoubleHour> findDoubleTodayDataMip(Map<String, Object> param);
     /**
      * N天的 最后一个小时的数据
      * @param param :day 日期， list，数据类型的list preday: 起始日期
