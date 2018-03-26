@@ -119,6 +119,20 @@ public class MainController {
         String  warnDate = day;
         if(StringUtils.isNotBlank(yesterday)){
             userbehaviorList = this.realTimeStaticDayMapper.findUserBehaviorByYesterday(day,yesterday);
+            //获取mip站的IP,PV,UV
+            Map<String,Object> paramMap = new HashMap<>();
+            paramMap.put("day",yesterday);
+            List<Integer> dataTypeList = new ArrayList<>();
+            dataTypeList.add(DataType.MIP_IP.getType());
+            dataTypeList.add(DataType.MIP_PV.getType());
+            dataTypeList.add(DataType.MIP_UV.getType());
+            paramMap.put("list",dataTypeList);
+            List<RealTimeStaticDay> mipInfoList = this.realTimeStaticDayMapper.findRealTimeDataToday(paramMap);
+            if(mipInfoList!=null && mipInfoList.size() >0){
+                for(RealTimeStaticDay _mipInfo :mipInfoList ){
+                    userbehaviorList.add(_mipInfo);
+                }
+            }
             warnDate = yesterday;
         }else{
             userbehaviorList = this.realTimeStaticDayMapper.findUserBehaviorByToday(day);
@@ -550,30 +564,38 @@ public class MainController {
      */
     private void userBehaviorDataAsTime(List<String> timeList, List<RealTimeStaticDay> userBehaviorList, List<DayChartBean> dataChartList) {
         Map<String, Double> initTmpMap = null;
-        Map<String, Map<String, Double>> userBehaviorDataMap = new HashMap<String, Map<String, Double>>();
+        Map<Integer, Map<String, Double>> userBehaviorDataMap = new HashMap<Integer, Map<String, Double>>();
         for (RealTimeStaticDay realTimeStaticDay : userBehaviorList) {
             if (realTimeStaticDay != null) {
-                if (userBehaviorDataMap.get(DataType.getName(realTimeStaticDay.getDataType())) == null) {
+                if (userBehaviorDataMap.get(realTimeStaticDay.getDataType()) == null) {
                     initTmpMap = initDayTimeMap(timeList);
                 } else {
-                    initTmpMap = userBehaviorDataMap.get(DataType.getName(realTimeStaticDay.getDataType()));
+                    initTmpMap = userBehaviorDataMap.get(realTimeStaticDay.getDataType());
                 }
                 initTmpMap.put(realTimeStaticDay.getIrslDate(), (realTimeStaticDay.getDataCount().doubleValue() / 10000));//单位为百万
 
-                userBehaviorDataMap.put(DataType.getName(realTimeStaticDay.getDataType()), initTmpMap);
+                userBehaviorDataMap.put(realTimeStaticDay.getDataType(), initTmpMap);
             }
         }
         DayChartBean tmpDayChartBean = null;
         List<Double> dataList = null;
-        for (String key : userBehaviorDataMap.keySet()) {
-            tmpDayChartBean = new DayChartBean(key, "万");
-            dataList = new ArrayList<Double>();
-            for (String time : timeList) {
-                dataList.add(userBehaviorDataMap.get(key).get(time));
+        for (Integer key : userBehaviorDataMap.keySet()) {
+            if(key<=DataType.UV.getType()){
+                tmpDayChartBean = new DayChartBean(DataType.getName(key), "万");
+                dataList = new ArrayList<Double>();
+                for (String time : timeList) {
+                    if(key == DataType.IP.getType()){ //累加上mip站的PV,UV,IP
+                        dataList.add(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_IP.getType()).get(time));
+                    }else if(key == DataType.PV.getType()){
+                        dataList.add(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_PV.getType()).get(time));
+                    }else if(key == DataType.UV.getType()){
+                        dataList.add(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_UV.getType()).get(time));
+                    }
+                }
+                tmpDayChartBean.setData(dataList);
+                tmpDayChartBean.setIsShow(true);
+                dataChartList.add(tmpDayChartBean);
             }
-            tmpDayChartBean.setData(dataList);
-            tmpDayChartBean.setIsShow(true);
-            dataChartList.add(tmpDayChartBean);
         }
 
     }
