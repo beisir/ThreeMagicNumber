@@ -117,6 +117,9 @@ public class MainController {
         //ip、pv、uv数据的加工
         List<RealTimeStaticDay> userbehaviorList = null;
         String  warnDate = day;
+        Integer mipIp = 0;
+        Integer mipPv=0;
+        Integer mipUv = 0;
         if(StringUtils.isNotBlank(yesterday)){
             userbehaviorList = this.realTimeStaticDayMapper.findUserBehaviorByYesterday(day,yesterday);
             //获取mip站的IP,PV,UV
@@ -130,7 +133,13 @@ public class MainController {
             List<RealTimeStaticDay> mipInfoList = this.realTimeStaticDayMapper.findRealTimeDataToday(paramMap);
             if(mipInfoList!=null && mipInfoList.size() >0){
                 for(RealTimeStaticDay _mipInfo :mipInfoList ){
-                    userbehaviorList.add(_mipInfo);
+                   if(_mipInfo.getDataType().intValue() == DataType.MIP_IP.getType().intValue()){
+                       mipIp = _mipInfo.getDataCount();
+                   }else if(_mipInfo.getDataType().intValue() == DataType.MIP_PV.getType().intValue()){
+                       mipPv= _mipInfo.getDataCount();
+                   }else if(_mipInfo.getDataType().intValue() == DataType.MIP_UV.getType().intValue()){
+                       mipUv= _mipInfo.getDataCount();
+                   }
                 }
             }
             warnDate = yesterday;
@@ -141,7 +150,15 @@ public class MainController {
         if (userbehaviorList != null && userbehaviorList.size() > 0) {
             for (RealTimeStaticDay realTimeStaticDay : userbehaviorList) {
                 if (realTimeStaticDay != null && realTimeStaticDay.getDataCount()!=null) {
-                    mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue()) ));
+                    if(realTimeStaticDay.getDataType() == DataType.IP.getType() && StringUtils.isNotBlank(yesterday)){
+                        mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue()),threeNumDf.format(mipIp) ));
+                    }else if(realTimeStaticDay.getDataType() == DataType.PV.getType() && StringUtils.isNotBlank(yesterday)){
+                        mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue()),threeNumDf.format(mipPv) ));
+                    }else if(realTimeStaticDay.getDataType() == DataType.UV.getType() && StringUtils.isNotBlank(yesterday)){
+                        mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue()),threeNumDf.format(mipUv) ));
+                    }else{
+                        mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue())));
+                    }
                 } else {
                     mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), "0" ));
                     EmailUtil.warnEveryOne(warnDate +"-" +DataType.getName(realTimeStaticDay.getDataType()) + "-- 数据为空。");

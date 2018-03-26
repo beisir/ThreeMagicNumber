@@ -24,7 +24,7 @@
                row_number() over(partition by DATA_TYPE order by OP_DATE desc) as rn
           from SJPT_REALTIME_STATIC_DAY
          where IRSL_DATE = #{day}
-         <![CDATA[ and DATA_TYPE <= 3 ]]>
+         <![CDATA[ and DATA_TYPE in(1,2,3,338,339,340) ]]>
            ) t
     where t.rn = 1
     order by DATA_TYPE
@@ -54,7 +54,7 @@
                        to_char(max(op_date), 'HH24') as datahour
                   from SJPT_REALTIME_STATIC_DAY
                  where IRSL_DATE =#{day}
-                   <![CDATA[ and DATA_TYPE <= 3 ]]>
+                   <![CDATA[ and DATA_TYPE <=3  ]]>
                  group by DATA_TYPE) a
           left join (select DATA_TYPE,
                            data_count,
@@ -63,7 +63,7 @@
                            to_char(op_date, 'HH24') as datahour
                       from SJPT_REALTIME_STATIC_DAY
                      where IRSL_DATE =#{yesterday}
-                     <![CDATA[ and DATA_TYPE <= 3 ]]>
+                     <![CDATA[ and DATA_TYPE <=3  ]]>
                      ) b
             on a.DATA_TYPE = b.DATA_TYPE
            and a.datahour >= b.datahour) c
@@ -80,7 +80,7 @@
     row_number() over(partition by DATA_TYPE,IRSL_DATE order by OP_DATE desc) as rn
     from SJPT_REALTIME_STATIC_DAY
     where IRSL_DATE between #{startDay} and #{endDay}
-      <![CDATA[ and DATA_TYPE <= 3 ]]>
+      <![CDATA[ and DATA_TYPE in(1,2,3,338,339,340)  ]]>
     ) t
     where t.rn = 1
   </select>
@@ -310,7 +310,7 @@
         ) X
         WHERE X.DT_ORDER = 1
         group by  IRSL_DATE
-
+        order by IRSL_DATE
     </select>
     <select id="findRealTimeDataNewest" resultMap="BaseResultMap"  parameterType="java.util.Map">
 
