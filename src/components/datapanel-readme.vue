@@ -19,7 +19,7 @@
                                 <ul>
                                     <li>
                                         <div class="titleBox">
-                                            <h2>实时数据</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
+                                            <h2>实时数据(全网)</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
                                         <dl>
                                             <dt>IP</dt>
                                             <dd>
@@ -28,7 +28,8 @@
                                                 <br /> &nbsp;&nbsp;&nbsp;&nbsp;当天截止到当前的独立IP数
                                                 <br /> &nbsp;&nbsp;&nbsp;&nbsp;独立IP：非公司内部IP，并且IP排重
                                                 <br /> 计算方法：
-                                                <br /> &nbsp;&nbsp;&nbsp;&nbsp;昨日同比：(&nbsp;当天独立IP数&nbsp;-&nbsp;昨天相同小时独立IP数&nbsp;)&nbsp;/&nbsp;昨天相同小时独立IP数
+                                                <br /> &nbsp;&nbsp;&nbsp;&nbsp;昨日环比：(&nbsp;当天独立IP数&nbsp;-&nbsp;昨天相同小时独立IP数&nbsp;)&nbsp;/&nbsp;昨天相同小时独立IP数
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;周同比：(&nbsp;当天独立IP数&nbsp;-&nbsp;周相同小时独立IP数&nbsp;)&nbsp;/&nbsp;周相同小时独立IP数
                                                 <br /> 计算频率：每小时
                                                 <br /> 数据来源：用户行为分析平台
                                                 <br />
@@ -38,6 +39,8 @@
                                                 定义：全网的Page View
                                                 <br /> 统计规则：去除公司内部IP产生的PV量
                                                 <br /> 计算方法：当天截止当前的全网的浏览量&nbsp;-&nbsp;公司内部IP产生的浏览量
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;昨日环比：(&nbsp;当天独立PV数&nbsp;-&nbsp;昨天相同小时独立PV数&nbsp;)&nbsp;/&nbsp;昨天相同小时独立PV数
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;周同比：(&nbsp;当天独立PV数&nbsp;-&nbsp;周相同小时独立PV数&nbsp;)&nbsp;/&nbsp;周相同小时独立PV数
                                                 <br /> 计算频率：每小时
                                                 <br /> 数据来源：用户行为分析平台
                                                 <br />
@@ -49,6 +52,9 @@
                                                 <br /> &nbsp;&nbsp;&nbsp;&nbsp;独立访客：非公司内部IP，且相同电脑的浏览终端排重
                                                 <br /> &nbsp;&nbsp;&nbsp;&nbsp;小时数据：小时内独立访客数，相同独立IP最多只记录10个UV
                                                 <br /> &nbsp;&nbsp;&nbsp;&nbsp;天数据：当天内独立访客数，相同独立IP最多只记录10个UV
+												<br /> 计算方法：
+                                                <br /> &nbsp;&nbsp;&nbsp;&nbsp;昨日环比：(&nbsp;当天独立UV数&nbsp;-&nbsp;昨天相同小时独立UV数&nbsp;)&nbsp;/&nbsp;昨天相同小时独立UV数
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;周同比：(&nbsp;当天独立UV数&nbsp;-&nbsp;周相同小时独立UV数&nbsp;)&nbsp;/&nbsp;周相同小时独立UV数
                                                 <br /> 计算频率：每小时
                                                 <br /> 数据来源：用户行为分析平台
                                                 <br />
@@ -74,6 +80,33 @@
                                                 <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加盟商        ：公司控股的公司，当前是产业带用户
                                                 <br /> 计算频率：每小时
                                                 <br /> 数据来源：订单数据
+                                                <br />
+                                            </dd>
+                                        </dl>
+                                    </li>
+									<li>
+                                        <div class="titleBox">
+                                            <h2>实时数据(MIP站)</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
+                                        <dl>
+                                            <dt>IP</dt>
+                                            <dd>
+                                                定义：访问MIP的IP数
+                                                <br /> 计算频率：每天
+                                                <br /> 数据来源：百度统计后台
+                                                <br />
+                                            </dd>
+                                            <dt>PV</dt>
+                                            <dd>
+                                                定义：MIP站的Page View
+                                                <br /> 计算频率：每天
+                                                <br /> 数据来源：百度统计后台
+                                                <br />
+                                            </dd>
+                                            <dt>UV</dt>
+                                            <dd>
+                                                定义：访问MIP站的独立访客数
+                                                <br /> 计算频率：每天
+                                                <br /> 数据来源：百度统计后台
                                                 <br />
                                             </dd>
                                         </dl>
@@ -246,7 +279,7 @@
                                                 <br /> 数据来源：用户行为分析平台
                                                 <br />
                                             </dd>
-                                            
+
                                         </dl>
                                     </li>
 									<li>
@@ -255,7 +288,7 @@
 										<dl>
 											<dt>纯P4P消耗</dt>
                                             <dd>
-                                                定义：所有消耗中关键词不包含"阿拉丁竞投"的消耗 
+                                                定义：所有消耗中关键词不包含"阿拉丁竞投"的消耗
                                                 <br /> 计算频率：每小时
                                                 <br /> 数据来源：P4P数据
                                               <br />
@@ -337,7 +370,7 @@
                                                 <br />
                                             </dd>
 										</dl>
-									</li>			
+									</li>
 								</ul>
                             </div>
                         </div>

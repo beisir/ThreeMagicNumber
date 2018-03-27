@@ -45,8 +45,8 @@
                                         <span class="value"> {{ realTimeData.weekdata[index].num}}</span>
                                         <span class="pull-right">
                                         <i
-                                          :class="differ(realTimeData.weekdata[index].num,realTimeData.weekdata[index].today).state=='up'?'icon-tt-up':'icon-tt-lower'"></i>
-                                        <span class="delta">{{ percentum(realTimeData.weekdata[index].num, realTimeData.weekdata[index].today) }}</span></span>
+                                          :class="differ(realTimeData.weekdata[index].today, realTimeData.weekdata[index].num).state=='up'?'icon-tt-up':'icon-tt-lower'"></i>
+                                        <span class="delta">{{ percentum( realTimeData.weekdata[index].today, realTimeData.weekdata[index].num) }}</span></span>
                                     </div>
                                     <!--周比结束-->
                                 </div>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="tab-contentBox">
                         <div class="tabBotCon">
-                            <h3 style="margin-bottom:10px;">MIP站  <span style="float:right;font-weight:200;">{{getNowFormatDate(1)}}</span></h3>
+                            <h3 style="margin-bottom:10px;">MIP站  <span style="float:right;font-weight:200;">{{getNowFormatDate(-1)}}</span></h3>
                             <div class="col-sm-6 col-md-4" :key="index" v-for="(item,index) in realTimeData.mipdata" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
                                 <div class="panel-stat realtime-source" :class="getClass(index)">
                                     <h5> {{ item.name }} </h5>
@@ -256,20 +256,19 @@ export default {
                 });
                 fightArr.length > 0 ? that.realTimeData.fight = fightArr : "";
             },
-            getNowFormatDate(day) {
-                var date = new Date();
-                var seperator1 = "-";
-                var year = date.getFullYear();
-                var month = date.getMonth() + 1;
-                var strDate = (date.getDate() - day);
-                if (month >= 1 && month <= 9) {
-                    month = "0" + month;
-                }
-                if (strDate >= 0 && strDate <= 9) {
-                    strDate = "0" + strDate;
-                }
-                var currentdate = year + seperator1 + month + seperator1 + strDate;
-                return currentdate;
+            getNowFormatDate(AddDayCount) {
+                    var dd = new Date();
+                    dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+                    var y = dd.getFullYear();
+                    var m = dd.getMonth()+1;//获取当前月份的日期
+                    var d = dd.getDate();
+                    if (d<=9){
+                        d = '0' + d
+                    };
+                    if (m<=9){
+                        m = '0' + m
+                    }
+                    return y+"-"+m+"-"+d;
             },
             processWeekdata (todaydata, weekdata){
                 weekdata = weekdata.map((res,index) => {
