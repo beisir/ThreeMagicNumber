@@ -503,6 +503,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
     /*转换天表数据,p4p消耗 保留两位小数*/
     private List<Double> convertDayData(List<RealTimeStaticDoubleDay> otherData, List<String> times) {
         DecimalFormat df = new DecimalFormat("#####0.00");
+        DecimalFormat df2 = new DecimalFormat("0.0000");
         Map<String, Double> initMap = CommonUtil.initDayTimeMap(times);//初始化时间
         List<Double> dataList = new ArrayList<Double>();
         if(otherData != null && otherData.size() > 0){
@@ -510,7 +511,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
             for (RealTimeStaticDoubleDay realTimeStaticDouble : otherData) {
                 if(realTimeStaticDouble.getDataCount() != null){
                     if(CommonUtil.initArith(realTimeStaticDouble.getDataType())){
-                        initMap.put(realTimeStaticDouble.getIrslDate(), (realTimeStaticDouble.getDataCount().doubleValue() / 10000)); //单位为万
+                        initMap.put(realTimeStaticDouble.getIrslDate(), Double.parseDouble(df2.format((realTimeStaticDouble.getDataCount().doubleValue() / 10000)))); //单位为万
                     }else{
                         if(realTimeStaticDouble.getDataType().intValue() == DataType.P4PCONSUMPTION.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4PCONSUMPTIONTOTAL.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_CONSUMPTION_HOUR.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_CONSUMPTION_DAY.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_QWDT_HOUR.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_QWDT_DAY.getType() || realTimeStaticDouble.getDataType().intValue() == DataType.P4P_CONSUMPTION_TOTAL.getType()){
                             format = df.format(realTimeStaticDouble.getDataCount());
@@ -539,6 +540,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
     //转换小时表数据
     private List<Object> convertHourDouble(List<RealTimeStaticDoubleHour> hourDatas, List<String> times) {
         DecimalFormat df = new DecimalFormat("#####0.00");
+        DecimalFormat df2 = new DecimalFormat("0.0000");
         Map<String, Object> initMap = CommonUtil.initHourTimeMap(times);//初始化时间
         Map<String,Object> tempMap = new HashMap<>();//用于数据补零,小时数据当前最新数据之前的补零,之后的维持原有""处理
         List<Object> dataList = new ArrayList<Object>();
@@ -546,7 +548,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
             for (RealTimeStaticDoubleHour realTimeStaticHour : hourDatas) {
                 if(realTimeStaticHour.getDataCount()!=null && realTimeStaticHour.getDataType()!=null){
                     if (CommonUtil.initArith(realTimeStaticHour.getDataType())) {
-                        initMap.put(realTimeStaticHour.getIrslDateH(), (realTimeStaticHour.getDataCount().doubleValue() / 10000)); //单位为万
+                        initMap.put(realTimeStaticHour.getIrslDateH(),Double.parseDouble(df2.format( (realTimeStaticHour.getDataCount().doubleValue() / 10000)))); //单位为万
                     } else {
                         if(realTimeStaticHour.getDataType().intValue() == DataType.P4PCONSUMPTION.getType() || realTimeStaticHour.getDataType().intValue() == DataType.P4P_CONSUMPTION_HOUR.getType() || realTimeStaticHour.getDataType().intValue() == DataType.P4P_CONSUMPTION_DAY.getType() || realTimeStaticHour.getDataType().intValue() == DataType.P4P_QWDT_HOUR.getType() || realTimeStaticHour.getDataType().intValue() == DataType.P4P_QWDT_DAY.getType()){//P4P消耗
                             initMap.put(realTimeStaticHour.getIrslDateH(), Double.parseDouble(df.format(realTimeStaticHour.getDataCount()))); //单位为个/元

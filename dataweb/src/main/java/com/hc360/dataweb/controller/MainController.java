@@ -533,6 +533,7 @@ public class MainController {
      * @param dataChartList    最终展示在chart图上的 数据集合
      */
     private void userBehaviorDataAsTime(List<String> timeList, List<RealTimeStaticDay> userBehaviorList, List<DayChartBean> dataChartList) {
+        DecimalFormat df = new DecimalFormat("0.0000");
         Map<String, Double> initTmpMap = null;
         Map<Integer, Map<String, Double>> userBehaviorDataMap = new HashMap<Integer, Map<String, Double>>();
         for (RealTimeStaticDay realTimeStaticDay : userBehaviorList) {
@@ -555,11 +556,11 @@ public class MainController {
                 dataList = new ArrayList<Double>();
                 for (String time : timeList) {
                     if (key == DataType.IP.getType()) { //累加上mip站的PV,UV,IP
-                        dataList.add(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_IP.getType()).get(time));
+                        dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_IP.getType()).get(time))));
                     } else if (key == DataType.PV.getType()) {
-                        dataList.add(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_PV.getType()).get(time));
+                        dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_PV.getType()).get(time))));
                     } else if (key == DataType.UV.getType()) {
-                        dataList.add(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_UV.getType()).get(time));
+                        dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_UV.getType()).get(time))));
                     }
                 }
                 tmpDayChartBean.setData(dataList);
