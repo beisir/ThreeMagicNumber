@@ -36,7 +36,6 @@ import java.net.URLConnection;
 import java.io.InputStreamReader;
 
 
-
 /**
  * Created by home on 2017/2/5.
  */
@@ -49,6 +48,7 @@ public class MainController {
     private RealTimeStaticDayMapper realTimeStaticDayMapper;
     @Autowired
     private RealTimeStaticHourService realTimeStaticHourService;
+
     // 没权限
     @RequestMapping("/nolimit/")
     public ModelAndView nolimit() {
@@ -57,6 +57,7 @@ public class MainController {
         mv.setViewName("/error/nolimit");
         return mv;
     }
+
     @RequestMapping("unlogin")
     public ModelAndView resource() {
         ModelAndView mv = new ModelAndView();
@@ -74,26 +75,37 @@ public class MainController {
     public void findAllByDay(HttpServletResponse response) throws Exception {
 
         response.setContentType("application/json; charset=UTF-8");
-        String day =ControllerDateUtil.getToday();//取今天的数据
+        String day = ControllerDateUtil.getToday();//取今天的数据
         //今天的
         Map<String, Object> resultMap = new HashMap<String, Object>();
         //昨天的数据
         String yesterDay = ControllerDateUtil.getYesterday();
         Map<String, Object> resultYesterdayMap = new HashMap<String, Object>();
+        //获取7天前的数据
+        String weekDay = ControllerDateUtil.getWeek();
+        Map<String, Object> resultWeekMap = new HashMap<String, Object>();
+
+        //获取MIP站的昨日信息
+        Map<String, Object> mipDataMap = new HashMap<>();
         try {
-            initAboveData(resultMap, day, null);
-            initAboveData(resultYesterdayMap, day, yesterDay);
-        }catch (Exception e){
-            EmailUtil.warnEveryOne("MainController.findAllByDay has error，"  + e.getMessage());
-            logger.error("MainController.findAllByDay has error，" ,e);
+            initAboveData(resultMap, day, null,false);
+            initAboveData(resultYesterdayMap, day, yesterDay,false);
+            initAboveData(resultWeekMap,day,weekDay,true);
+            this.mipData(mipDataMap, yesterDay);
+        } catch (Exception e) {
+            EmailUtil.warnEveryOne("MainController.findAllByDay has error，" + e.getMessage());
+            logger.error("MainController.findAllByDay has error，", e);
         }
 
         Map _dataMap = new HashMap();
         _dataMap.put("errno", 0);
         Map<String, Object> dataMap = new HashMap<String, Object>();
+        dataMap.put("mipdata", mipDataMap);
         dataMap.put("todaydata", resultMap);
+        dataMap.put("weekdata", resultWeekMap);
         dataMap.put("yesterdaydata", resultYesterdayMap);
-        _dataMap.put("data",dataMap);
+
+        _dataMap.put("data", dataMap);
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -106,8 +118,36 @@ public class MainController {
         }
     }
 
+    //获取mip站的IP,PV,UV
+    private void mipData(Map<String, Object> resultMap, String yesterday) throws Exception {
+        List<MainBean> mainBeanList = new ArrayList<MainBean>(); //最大的3个颜色图
+        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("day", yesterday);
+        List<Integer> dataTypeList = new ArrayList<>();
+        dataTypeList.add(DataType.MIP_IP.getType());
+        dataTypeList.add(DataType.MIP_PV.getType());
+        dataTypeList.add(DataType.MIP_UV.getType());
+        paramMap.put("list", dataTypeList);
+        List<RealTimeStaticDay> mipInfoList = this.realTimeStaticDayMapper.findRealTimeDataToday(paramMap);
+        if (mipInfoList != null && mipInfoList.size() > 0) {
+            String name = "";
+            for (RealTimeStaticDay _mipInfo : mipInfoList) {
+                if (_mipInfo.getDataType().intValue() == DataType.MIP_IP.getType().intValue()) {
+                    name = "IP";
+                } else if (_mipInfo.getDataType().intValue() == DataType.MIP_PV.getType().intValue()) {
+                    name = "PV";
+                } else if (_mipInfo.getDataType().intValue() == DataType.MIP_IP.getType().intValue()) {
+                    name = "IP";
+                }
+                mainBeanList.add(new MainBean(name, threeNumDf.format(_mipInfo.getDataCount().longValue())));
+            }
+        }
+        resultMap.put("main", mainBeanList);
+    }
 
-    private void initAboveData( Map<String, Object> resultMap,String day ,String yesterday) throws Exception {
+
+    private void initAboveData(Map<String, Object> resultMap, String day, String yesterday, boolean isWeekData) throws Exception {
         Map<String, Integer> dataMap = new HashMap<String, Integer>();
         DecimalFormat df = new DecimalFormat("0.00");
         DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
@@ -116,66 +156,60 @@ public class MainController {
         List<FightCapacityBean> fightCapacityBeanList = new ArrayList<FightCapacityBean>();//战斗力模块的数据
         //ip、pv、uv数据的加工
         List<RealTimeStaticDay> userbehaviorList = null;
-        String  warnDate = day;
-        Integer mipIp = 0;
-        Integer mipPv=0;
-        Integer mipUv = 0;
-        if(StringUtils.isNotBlank(yesterday)){
-            userbehaviorList = this.realTimeStaticDayMapper.findUserBehaviorByYesterday(day,yesterday);
-            //获取mip站的IP,PV,UV
-            Map<String,Object> paramMap = new HashMap<>();
-            paramMap.put("day",yesterday);
-            List<Integer> dataTypeList = new ArrayList<>();
-            dataTypeList.add(DataType.MIP_IP.getType());
-            dataTypeList.add(DataType.MIP_PV.getType());
-            dataTypeList.add(DataType.MIP_UV.getType());
-            paramMap.put("list",dataTypeList);
-            List<RealTimeStaticDay> mipInfoList = this.realTimeStaticDayMapper.findRealTimeDataToday(paramMap);
-            if(mipInfoList!=null && mipInfoList.size() >0){
-                for(RealTimeStaticDay _mipInfo :mipInfoList ){
-                   if(_mipInfo.getDataType().intValue() == DataType.MIP_IP.getType().intValue()){
-                       mipIp = _mipInfo.getDataCount();
-                   }else if(_mipInfo.getDataType().intValue() == DataType.MIP_PV.getType().intValue()){
-                       mipPv= _mipInfo.getDataCount();
-                   }else if(_mipInfo.getDataType().intValue() == DataType.MIP_UV.getType().intValue()){
-                       mipUv= _mipInfo.getDataCount();
-                   }
-                }
-            }
+        String warnDate = day;
+        if (StringUtils.isNotBlank(yesterday)) {
+            userbehaviorList = this.realTimeStaticDayMapper.findUserBehaviorByYesterday(day, yesterday);
             warnDate = yesterday;
-        }else{
+        } else {
             userbehaviorList = this.realTimeStaticDayMapper.findUserBehaviorByToday(day);
         }
 
         if (userbehaviorList != null && userbehaviorList.size() > 0) {
             for (RealTimeStaticDay realTimeStaticDay : userbehaviorList) {
-                if (realTimeStaticDay != null && realTimeStaticDay.getDataCount()!=null) {
-                    if(realTimeStaticDay.getDataType() == DataType.IP.getType() && StringUtils.isNotBlank(yesterday)){
-                        mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue()),threeNumDf.format(mipIp) ));
-                    }else if(realTimeStaticDay.getDataType() == DataType.PV.getType() && StringUtils.isNotBlank(yesterday)){
-                        mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue()),threeNumDf.format(mipPv) ));
-                    }else if(realTimeStaticDay.getDataType() == DataType.UV.getType() && StringUtils.isNotBlank(yesterday)){
-                        mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue()),threeNumDf.format(mipUv) ));
-                    }else{
-                        mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue())));
-                    }
+                if (realTimeStaticDay != null && realTimeStaticDay.getDataCount() != null) {
+                    mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), threeNumDf.format(realTimeStaticDay.getDataCount().longValue())));
                 } else {
-                    mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), "0" ));
-                    EmailUtil.warnEveryOne(warnDate +"-" +DataType.getName(realTimeStaticDay.getDataType()) + "-- 数据为空。");
+                    mainBeanList.add(new MainBean(DataType.getName(realTimeStaticDay.getDataType()), "0"));
+                    EmailUtil.warnEveryOne(warnDate + "-" + DataType.getName(realTimeStaticDay.getDataType()) + "-- 数据为空。");
                 }
             }
         }
+//收费总人数----从天表中获取4001的数作为会员的总数。
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<Integer> feeUserNumList = new ArrayList<Integer>();
+        feeUserNumList.add(DataType.FEEUSERTOTAL.getType());//data_type:7-16
+
+        map.put("list", feeUserNumList);
+        map.put("yesterDay", warnDate);
+        List<RealTimeStaticDay> yeasterDayFeeAllUsers = this.realTimeStaticDayMapper.findRealTimeLastDataYester(map);
+        if (yeasterDayFeeAllUsers != null && yeasterDayFeeAllUsers.size() > 0) {
+            RealTimeStaticDay yeasterDayFeeAllUser = yeasterDayFeeAllUsers.get(0);
+            //数据非空的判断，以防止空指针
+            if (yeasterDayFeeAllUser != null && yeasterDayFeeAllUser.getDataCount() != null && yeasterDayFeeAllUser.getDataCount() != 0) {
+                mainBeanList.add(new MainBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount())));
+            } else {
+                mainBeanList.add(new MainBean("付费会员", "0"));
+                EmailUtil.warnEveryOne(warnDate + "-" + "付费会员总数--数据为空。");
+            }
+        } else { // 数据库中不存在数据的判断。
+            mainBeanList.add(new MainBean("付费会员", "0"));
+            EmailUtil.warnEveryOne(warnDate + "-" + "收费会员总数--数据为空。");
+        }
+
+        resultMap.put("main", mainBeanList);//最大的4个颜色图
+        if(isWeekData){return;}
+
         //战斗力数据的加工
-        List<RealTimeStaticHour> findAllByDayList =null;
-        Map<String,Object> param =new HashMap<String,Object>();
+        List<RealTimeStaticHour> findAllByDayList = null;
+        Map<String, Object> param = new HashMap<String, Object>();
         List<Integer> feeUserDataTypes = new ArrayList<Integer>();//data_type:7-16
         initDate_types(feeUserDataTypes);
-        param.put("list",feeUserDataTypes);
-        if(StringUtils.isNotBlank(yesterday)){
+        param.put("list", feeUserDataTypes);
+        if (StringUtils.isNotBlank(yesterday)) {
             param.put("yesterDay", warnDate);
             findAllByDayList = this.realTimeStaticHourMapper.findRealTimeLastDataYester(param);
-        }else{
-            param.put("day",day);
+        } else {
+            param.put("day", day);
             findAllByDayList = this.realTimeStaticHourMapper.findAllByDay(param);
         }
         if (findAllByDayList != null && findAllByDayList.size() > 0) {
@@ -184,93 +218,36 @@ public class MainController {
                     dataMap.put(DataType.getName(realTimeStaticHour.getDataType()), realTimeStaticHour.getDataCount());
                 }
             }
-
-
-            /*//收费总人数----从天表中获取4001的数作为会员的总数。
-            Map<String,Object> map =new HashMap<String,Object>();
-            List<Integer> feeUserNumList = new ArrayList<Integer>();
-            feeUserNumList.add(DataType.FEEUSERTOTAL.getType());//data_type:7-16
-
-            map.put("list",feeUserNumList);
-            map.put("yesterDay", warnDate);
-            List<RealTimeStaticDay> yeasterDayFeeAllUsers = this.realTimeStaticDayMapper.findRealTimeLastDataYester(map);
-            if(yeasterDayFeeAllUsers!=null && yeasterDayFeeAllUsers.size()> 0){
-                RealTimeStaticDay yeasterDayFeeAllUser = yeasterDayFeeAllUsers.get(0);
-                    //数据非空的判断，以防止空指针
-                    if(yeasterDayFeeAllUser!=null && yeasterDayFeeAllUser.getDataCount()!=null  && yeasterDayFeeAllUser.getDataCount()!=0){
-                        mainBeanList.add(new MainBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount())));
-                    }else{
-                        mainBeanList.add(new MainBean("付费会员", "0"));
-                        EmailUtil.warnEveryOne(warnDate +"-" +"付费会员总数--数据为空。");
-                    }
-            }else{ // 数据库中不存在数据的判断。
-                mainBeanList.add(new MainBean("付费会员", "0"));
-                EmailUtil.warnEveryOne(warnDate +"-" +"收费会员总数--数据为空。");
-            }
-
-            map =new HashMap<String,Object>();
-            feeUserNumList = new ArrayList<Integer>();
-            feeUserNumList.add(DataType.DXFEEUSER.getType());
-            feeUserNumList.add(DataType.QDFEEUSER.getType());
-            feeUserNumList.add(DataType.HYFEEUSER.getType());
-            feeUserNumList.add(DataType.SELFFEEUSER.getType());
-            feeUserNumList.add(DataType.JMFEEUSER.getType());
-
-            map.put("list",feeUserNumList);
-            map.put("yesterDay", warnDate);
-            List<RealTimeStaticHour>  _yeasterDayFeeAllUsers = this.realTimeStaticHourMapper.findRealTimeLastDataYester(map);
-            if(_yeasterDayFeeAllUsers!=null && _yeasterDayFeeAllUsers.size()> 0){
-                for (RealTimeStaticHour yeasterDayFeeAllUser : _yeasterDayFeeAllUsers){
-                    if(yeasterDayFeeAllUser!=null ){
-                        if( yeasterDayFeeAllUser.getDataCount()!=null  && yeasterDayFeeAllUser.getDataCount()!=0){
-                            feeuserBeanList.add(new FeeuserBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount().longValue()),0));
-                        }else{
-                            feeuserBeanList.add( new FeeuserBean(DataType.getName(yeasterDayFeeAllUser.getDataType()),"0", 0) );
-                            EmailUtil.warnEveryOne(warnDate +"-" +"付费会员各个类型--数据为空。"+yeasterDayFeeAllUser.getDataType());
-                        }
-                    }else{
-                        EmailUtil.warnEveryOne(warnDate +"-" +"付费会员各个类型--数据为空。");
-                    }
-                }
-            }*/
-
-
-
             List<FightCapacityOneBean> tmpFightCapacityOneBeanList = new ArrayList<FightCapacityOneBean>();
-
-
-
-
-
             FightCapacityBean fightZnCapacityBean = new FightCapacityBean("职能");
             //职能满编率
-            if (dataMap.get(DataType.ZNONGUARDEMPLOYEE.getName()) != null && dataMap.get(DataType.ZNOBUILDEMPLOYEE.getName()) != null &&  dataMap.get(DataType.ZNOBUILDEMPLOYEE.getName())!=0) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("满编率", df.format(dataMap.get(DataType.ZNONGUARDEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.ZNOBUILDEMPLOYEE.getName())) + "%" , 1));
+            if (dataMap.get(DataType.ZNONGUARDEMPLOYEE.getName()) != null && dataMap.get(DataType.ZNOBUILDEMPLOYEE.getName()) != null && dataMap.get(DataType.ZNOBUILDEMPLOYEE.getName()) != 0) {
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("满编率", df.format(dataMap.get(DataType.ZNONGUARDEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.ZNOBUILDEMPLOYEE.getName())) + "%", 1));
             } else {
                 tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("满编率", "0%", 1));
-                EmailUtil.warnEveryOne(warnDate +"-" +"职能满编率--数据为空。");
+                EmailUtil.warnEveryOne(warnDate + "-" + "职能满编率--数据为空。");
             }
 
             //职能离职率
-            if (dataMap.get(DataType.ZNLEAVEEMPLOYEE.getName()) != null && dataMap.get(DataType.ZNSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.ZNLEAVEEMPLOYEE.getName())!=0 ) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("离职率", df.format(dataMap.get(DataType.ZNSHOULDEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.ZNLEAVEEMPLOYEE.getName())) + "%" , 1));
+            if (dataMap.get(DataType.ZNLEAVEEMPLOYEE.getName()) != null && dataMap.get(DataType.ZNSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.ZNLEAVEEMPLOYEE.getName()) != 0) {
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("离职率", df.format(dataMap.get(DataType.ZNSHOULDEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.ZNLEAVEEMPLOYEE.getName())) + "%", 1));
             } else {
                 tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("离职率", "0%", 1));
-                EmailUtil.warnEveryOne(warnDate +"-" +"职能离职率--数据为空。");
+                EmailUtil.warnEveryOne(warnDate + "-" + "职能离职率--数据为空。");
             }
             //职能在岗人数
-            if(dataMap.get(DataType.ZNONGUARDEMPLOYEE.getName()) != null){
+            if (dataMap.get(DataType.ZNONGUARDEMPLOYEE.getName()) != null) {
                 tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("在岗人数", dataMap.get(DataType.ZNONGUARDEMPLOYEE.getName()).toString(), 1));
-            }else{
+            } else {
                 tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("在岗人数", "0", 1));
-                EmailUtil.warnEveryOne(warnDate +"-" +"职能在岗人数--数据为空。");
+                EmailUtil.warnEveryOne(warnDate + "-" + "职能在岗人数--数据为空。");
             }
             //职能编制人数
-            if(dataMap.get(DataType.ZNOBUILDEMPLOYEE.getName()) != null){
+            if (dataMap.get(DataType.ZNOBUILDEMPLOYEE.getName()) != null) {
                 tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("编制人数", dataMap.get(DataType.ZNOBUILDEMPLOYEE.getName()).toString(), 1));
-            }else{
+            } else {
                 tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("编制人数", "0", 1));
-                EmailUtil.warnEveryOne(warnDate +"-" +"职能编制人数--数据为空。");
+                EmailUtil.warnEveryOne(warnDate + "-" + "职能编制人数--数据为空。");
             }
             fightZnCapacityBean.setFightInfo(tmpFightCapacityOneBeanList);
             fightCapacityBeanList.add(fightZnCapacityBean);
@@ -280,31 +257,31 @@ public class MainController {
             FightCapacityBean fightQdCapacityBean = new FightCapacityBean("渠道");
             //渠道转正人数
             if (dataMap.get(DataType.QDCOVENEMPLOYEE.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商战斗力", threeNumDf.format(dataMap.get(DataType.QDCOVENEMPLOYEE.getName()))  , 1 ));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商战斗力", threeNumDf.format(dataMap.get(DataType.QDCOVENEMPLOYEE.getName())), 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商战斗力", "0"  , 1 ));
-                EmailUtil.warnEveryOne(warnDate +"-" +"代理商战斗力--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商战斗力", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "代理商战斗力--数据为空。");
             }
             //渠道离职率
-            if (dataMap.get(DataType.QDLEAVEEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())!=0) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商离职率", df.format(dataMap.get(DataType.QDLEAVEEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())) + "%"  , 1));
+            if (dataMap.get(DataType.QDLEAVEEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != 0) {
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商离职率", df.format(dataMap.get(DataType.QDLEAVEEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())) + "%", 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商离职率", "0%"  , 1));
-                EmailUtil.warnEveryOne(warnDate +"-" +"代理商离职率--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("代理商离职率", "0%", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "代理商离职率--数据为空。");
             }
             //渠道中心销售人员
-            if (dataMap.get(DataType.QDSALE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())!=0) {
-              tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道销售人数", threeNumDf.format(dataMap.get(DataType.QDSALE.getName()))  , 1 ));
+            if (dataMap.get(DataType.QDSALE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != 0) {
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道销售人数", threeNumDf.format(dataMap.get(DataType.QDSALE.getName())), 1));
             } else {
-              tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道销售人数", "0"  , 1));
-              EmailUtil.warnEveryOne(warnDate +"-" +"渠道销售人数--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道销售人数", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "渠道销售人数--数据为空。");
             }
             //渠道中心管理层人员
-            if (dataMap.get(DataType.QDMANAGER.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName())!=0) {
-              tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道职能人数", threeNumDf.format(dataMap.get(DataType.QDMANAGER.getName()))  , 1 ));
+            if (dataMap.get(DataType.QDMANAGER.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.QDSHOULDEMPLOYEE.getName()) != 0) {
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道职能人数", threeNumDf.format(dataMap.get(DataType.QDMANAGER.getName())), 1));
             } else {
-              tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道职能人数", "0"  , 1));
-              EmailUtil.warnEveryOne(warnDate +"-" +"渠道职能人数--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("渠道职能人数", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "渠道职能人数--数据为空。");
             }
             fightQdCapacityBean.setFightInfo(tmpFightCapacityOneBeanList);
             if (fightQdCapacityBean.getFightInfo() != null && fightQdCapacityBean.getFightInfo().size() > 0) {
@@ -315,114 +292,89 @@ public class MainController {
             FightCapacityBean fightDxCapacityBean = new FightCapacityBean("营销中心");
             //电销新兵连人数人数
             if (dataMap.get(DataType.DX_RECRUIT_NOT_POSITIVE.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("新兵连人数", threeNumDf.format(dataMap.get(DataType.DX_RECRUIT_NOT_POSITIVE.getName())) , 1 ));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("新兵连人数", threeNumDf.format(dataMap.get(DataType.DX_RECRUIT_NOT_POSITIVE.getName())), 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("新兵连人数", "0" , 1 ));
-                EmailUtil.warnEveryOne(warnDate +"-" +"新兵连人数--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("新兵连人数", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "新兵连人数--数据为空。");
             }
             //电销专员未转正人数
             if (dataMap.get(DataType.DX_ATTACHE_NOT_POSITIVE.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("部门中未转正", threeNumDf.format(dataMap.get(DataType.DX_ATTACHE_NOT_POSITIVE.getName())) , 1 ));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("部门中未转正", threeNumDf.format(dataMap.get(DataType.DX_ATTACHE_NOT_POSITIVE.getName())), 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("部门中未转正", "0" , 1 ));
-                EmailUtil.warnEveryOne(warnDate +"-" +"部门中未转正--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("部门中未转正", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "部门中未转正--数据为空。");
             }
             //转正电销专员数
             if (dataMap.get(DataType.DXCOVENEMPLOYEE.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("部门中已转正", threeNumDf.format(dataMap.get(DataType.DXCOVENEMPLOYEE.getName())) , 1 ));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("部门中已转正", threeNumDf.format(dataMap.get(DataType.DXCOVENEMPLOYEE.getName())), 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("部门中已转正", "0" , 1 ));
-                EmailUtil.warnEveryOne(warnDate +"-" +"部门中已转正--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("部门中已转正", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "部门中已转正--数据为空。");
             }
             //销售专员总数
             if (dataMap.get(DataType.DX_TOTAL_COUNT.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("销售专员总计", threeNumDf.format(dataMap.get(DataType.DX_TOTAL_COUNT.getName())) , 1 ));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("销售专员总计", threeNumDf.format(dataMap.get(DataType.DX_TOTAL_COUNT.getName())), 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("销售专员总计", "0" , 1 ));
-                EmailUtil.warnEveryOne(warnDate +"-" +"销售专员总计--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("销售专员总计", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "销售专员总计--数据为空。");
             }
 
             //电销离职率
-            if (dataMap.get(DataType.DXLEAVEEMPLOYEE.getName()) != null && dataMap.get(DataType.DXSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.DXSHOULDEMPLOYEE.getName())!=0) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("离职率", df.format(dataMap.get(DataType.DXLEAVEEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.DXSHOULDEMPLOYEE.getName())) + "%" ,1) );
+            if (dataMap.get(DataType.DXLEAVEEMPLOYEE.getName()) != null && dataMap.get(DataType.DXSHOULDEMPLOYEE.getName()) != null && dataMap.get(DataType.DXSHOULDEMPLOYEE.getName()) != 0) {
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("离职率", df.format(dataMap.get(DataType.DXLEAVEEMPLOYEE.getName()).doubleValue() * 100 / dataMap.get(DataType.DXSHOULDEMPLOYEE.getName())) + "%", 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("离职率", "0%" ,1) );
-                EmailUtil.warnEveryOne(warnDate +"-" +"电销离职率--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("离职率", "0%", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "电销离职率--数据为空。");
             }
             //电销管理人数
             if (dataMap.get(DataType.DX_MANAGER_COUNT.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("管理层人数", threeNumDf.format(dataMap.get(DataType.DX_MANAGER_COUNT.getName())) , 1 ));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("管理层人数", threeNumDf.format(dataMap.get(DataType.DX_MANAGER_COUNT.getName())), 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("管理层人数", "0" , 1 ));
-                EmailUtil.warnEveryOne(warnDate +"-" +"管理层人数--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("管理层人数", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "管理层人数--数据为空。");
             }
             //电销职能人数
             if (dataMap.get(DataType.DX_OFFICER_COUNT.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("职能人数", threeNumDf.format(dataMap.get(DataType.DX_OFFICER_COUNT.getName())) , 1 ));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("职能人数", threeNumDf.format(dataMap.get(DataType.DX_OFFICER_COUNT.getName())), 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("职能人数", "0" , 1 ));
-                EmailUtil.warnEveryOne(warnDate +"-" +"职能人数--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("职能人数", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "职能人数--数据为空。");
             }
             //电销总人数
             if (dataMap.get(DataType.DX_ALL_COUNT.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("营销中心总人数", threeNumDf.format(dataMap.get(DataType.DX_ALL_COUNT.getName())) , 1 ));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("营销中心总人数", threeNumDf.format(dataMap.get(DataType.DX_ALL_COUNT.getName())), 1));
             } else {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("营销中心总人数", "0" , 1 ));
-                EmailUtil.warnEveryOne(warnDate +"-" +"营销中心总人数--数据为空。");
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("营销中心总人数", "0", 1));
+                EmailUtil.warnEveryOne(warnDate + "-" + "营销中心总人数--数据为空。");
             }
             fightDxCapacityBean.setFightInfo(tmpFightCapacityOneBeanList);
             fightCapacityBeanList.add(fightDxCapacityBean);
         }
-//收费总人数----从天表中获取4001的数作为会员的总数。
-      Map<String,Object> map =new HashMap<String,Object>();
-      List<Integer> feeUserNumList = new ArrayList<Integer>();
-      feeUserNumList.add(DataType.FEEUSERTOTAL.getType());//data_type:7-16
+        map = new HashMap<String, Object>();
+        feeUserNumList = new ArrayList<Integer>();
+        feeUserNumList.add(DataType.DXFEEUSER.getType());
+        feeUserNumList.add(DataType.QDFEEUSER.getType());
+        feeUserNumList.add(DataType.HYFEEUSER.getType());
+        feeUserNumList.add(DataType.SELFFEEUSER.getType());
+        feeUserNumList.add(DataType.JMFEEUSER.getType());
 
-      map.put("list",feeUserNumList);
-      map.put("yesterDay", warnDate);
-      List<RealTimeStaticDay> yeasterDayFeeAllUsers = this.realTimeStaticDayMapper.findRealTimeLastDataYester(map);
-      if(yeasterDayFeeAllUsers!=null && yeasterDayFeeAllUsers.size()> 0){
-        RealTimeStaticDay yeasterDayFeeAllUser = yeasterDayFeeAllUsers.get(0);
-        //数据非空的判断，以防止空指针
-        if(yeasterDayFeeAllUser!=null && yeasterDayFeeAllUser.getDataCount()!=null  && yeasterDayFeeAllUser.getDataCount()!=0){
-          mainBeanList.add(new MainBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount())));
-        }else{
-          mainBeanList.add(new MainBean("付费会员", "0"));
-          EmailUtil.warnEveryOne(warnDate +"-" +"付费会员总数--数据为空。");
-        }
-      }else{ // 数据库中不存在数据的判断。
-        mainBeanList.add(new MainBean("付费会员", "0"));
-        EmailUtil.warnEveryOne(warnDate +"-" +"收费会员总数--数据为空。");
-      }
-
-      map =new HashMap<String,Object>();
-      feeUserNumList = new ArrayList<Integer>();
-      feeUserNumList.add(DataType.DXFEEUSER.getType());
-      feeUserNumList.add(DataType.QDFEEUSER.getType());
-      feeUserNumList.add(DataType.HYFEEUSER.getType());
-      feeUserNumList.add(DataType.SELFFEEUSER.getType());
-      feeUserNumList.add(DataType.JMFEEUSER.getType());
-
-      map.put("list",feeUserNumList);
-      map.put("yesterDay", warnDate);
-      List<RealTimeStaticHour>  _yeasterDayFeeAllUsers = this.realTimeStaticHourMapper.findRealTimeLastDataYester(map);
-      if(_yeasterDayFeeAllUsers!=null && _yeasterDayFeeAllUsers.size()> 0){
-        for (RealTimeStaticHour yeasterDayFeeAllUser : _yeasterDayFeeAllUsers){
-          if(yeasterDayFeeAllUser!=null ){
-            if( yeasterDayFeeAllUser.getDataCount()!=null  && yeasterDayFeeAllUser.getDataCount()!=0){
-              feeuserBeanList.add(new FeeuserBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount().longValue()),0));
-            }else{
-              feeuserBeanList.add( new FeeuserBean(DataType.getName(yeasterDayFeeAllUser.getDataType()),"0", 0) );
-              EmailUtil.warnEveryOne(warnDate +"-" +"付费会员各个类型--数据为空。"+yeasterDayFeeAllUser.getDataType());
+        map.put("list", feeUserNumList);
+        map.put("yesterDay", warnDate);
+        List<RealTimeStaticHour> _yeasterDayFeeAllUsers = this.realTimeStaticHourMapper.findRealTimeLastDataYester(map);
+        if (_yeasterDayFeeAllUsers != null && _yeasterDayFeeAllUsers.size() > 0) {
+            for (RealTimeStaticHour yeasterDayFeeAllUser : _yeasterDayFeeAllUsers) {
+                if (yeasterDayFeeAllUser != null) {
+                    if (yeasterDayFeeAllUser.getDataCount() != null && yeasterDayFeeAllUser.getDataCount() != 0) {
+                        feeuserBeanList.add(new FeeuserBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount().longValue()), 0));
+                    } else {
+                        feeuserBeanList.add(new FeeuserBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), "0", 0));
+                        EmailUtil.warnEveryOne(warnDate + "-" + "付费会员各个类型--数据为空。" + yeasterDayFeeAllUser.getDataType());
+                    }
+                } else {
+                    EmailUtil.warnEveryOne(warnDate + "-" + "付费会员各个类型--数据为空。");
+                }
             }
-          }else{
-            EmailUtil.warnEveryOne(warnDate +"-" +"付费会员各个类型--数据为空。");
-          }
         }
-      }
-
-
-      resultMap.put("main", mainBeanList);//最大的4个颜色图
         resultMap.put("feeuser", feeuserBeanList);//收费会员的4个数据
         resultMap.put("fight", fightCapacityBeanList);//战斗力模块的数据
     }
@@ -455,19 +407,19 @@ public class MainController {
      */
     @RequestMapping(value = "/hourchart",
             method = RequestMethod.GET, produces = {"application/xml", "application/json"})
-    public void findAllByHour(HttpServletRequest request,ChartBean chartBean,HttpServletResponse response) throws Exception {
+    public void findAllByHour(HttpServletRequest request, ChartBean chartBean, HttpServletResponse response) throws Exception {
         response.setContentType("application/json; charset=UTF-8");
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
             if (chartBean != null && ParseUtil.isStr2Num(chartBean.getType())) {
                 Integer otherType = Integer.valueOf(chartBean.getType());
                 resultMap = realTimeStaticHourService.initZLTodayData(otherType);//不含ip&uv的公共查询趋势图{今天&昨天&趋势图}
-            }else{
-                EmailUtil.warnEveryOne("MainController.findAllByHour param is error" + chartBean,request);
+            } else {
+                EmailUtil.warnEveryOne("MainController.findAllByHour param is error" + chartBean, request);
             }
-        }catch (Exception e){
-            EmailUtil.warnEveryOne("MainController.findAllByHour has error，chartBean="+chartBean+"--"  + e.getMessage());
-            logger.error("MainController.findAllByHour has error，chartBean="+chartBean ,e);
+        } catch (Exception e) {
+            EmailUtil.warnEveryOne("MainController.findAllByHour has error，chartBean=" + chartBean + "--" + e.getMessage());
+            logger.error("MainController.findAllByHour has error，chartBean=" + chartBean, e);
         }
         Map _dataMap = new HashMap();
         _dataMap.put("errno", 0);
@@ -482,7 +434,8 @@ public class MainController {
         }
     }
 
-    public static final int SHOWAYNUM =60;//15天--修改为两个月
+    public static final int SHOWAYNUM = 60;//15天--修改为两个月
+
     /**
      * 整体趋势图 ： 60天的数据
      *
@@ -529,9 +482,9 @@ public class MainController {
 
             _dataMap.put("errno", 0);
             _dataMap.put("data", resultMap);
-        }catch (Exception e ){
-            EmailUtil.warnEveryOne("MainController..findAllBy15Day has error，"+ "," + e.getMessage());
-            logger.error("MainController.findRegionData has error，",e);
+        } catch (Exception e) {
+            EmailUtil.warnEveryOne("MainController..findAllBy15Day has error，" + "," + e.getMessage());
+            logger.error("MainController.findRegionData has error，", e);
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -597,15 +550,15 @@ public class MainController {
         DayChartBean tmpDayChartBean = null;
         List<Double> dataList = null;
         for (Integer key : userBehaviorDataMap.keySet()) {
-            if(key<=DataType.UV.getType()){
+            if (key <= DataType.UV.getType()) {
                 tmpDayChartBean = new DayChartBean(DataType.getName(key), "万");
                 dataList = new ArrayList<Double>();
                 for (String time : timeList) {
-                    if(key == DataType.IP.getType()){ //累加上mip站的PV,UV,IP
+                    if (key == DataType.IP.getType()) { //累加上mip站的PV,UV,IP
                         dataList.add(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_IP.getType()).get(time));
-                    }else if(key == DataType.PV.getType()){
+                    } else if (key == DataType.PV.getType()) {
                         dataList.add(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_PV.getType()).get(time));
-                    }else if(key == DataType.UV.getType()){
+                    } else if (key == DataType.UV.getType()) {
                         dataList.add(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_UV.getType()).get(time));
                     }
                 }
@@ -619,14 +572,14 @@ public class MainController {
 
 
     @RequestMapping("index.html")
-    public ModelAndView login(HttpServletRequest request,HttpServletResponse response) {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mv = new ModelAndView("/screen/login");
 
         //判断用户是否处于登录状态
         Cookie[] cookies = request.getCookies();//获取cookie数组
-        if (null!=cookies) {
-            for(Cookie cookie : cookies){
-                if("dataUser".equalsIgnoreCase(cookie.getName())){
+        if (null != cookies) {
+            for (Cookie cookie : cookies) {
+                if ("dataUser".equalsIgnoreCase(cookie.getName())) {
                     cookie.setMaxAge(30 * 60);// 设置为30min
                     cookie.setPath("/");
                     response.addCookie(cookie);
@@ -638,18 +591,18 @@ public class MainController {
 
         String username = request.getParameter("username");
         String pass = request.getParameter("password");
-        if(null != username && null!= pass) {
+        if (null != username && null != pass) {
             try {
                 username = LZString.decompressFromEncodedURIComponent(username);
                 pass = LZString.decompressFromEncodedURIComponent(pass);
 
                 RealtimeUserInfoMapper realtimeUserInfoMapper = SpringContextHolder.getBean("realtimeUserInfoMapper");
                 List<RealtimeUserInfo> userInfoList = realtimeUserInfoMapper.selectByMisName(username);
-                if(userInfoList!=null && userInfoList.size() > 0 ){
+                if (userInfoList != null && userInfoList.size() > 0) {
                     username = URLEncoder.encode(URLEncoder.encode(username, "utf-8"), "utf-8");
                     //发送 POST 请求
-                    String sr = sendPost("http://sso.hc360.com/internallogin", "LoginType=json&callback=callback&username=" + username + "&pass="+pass);
-                    if(sr.indexOf("success:")>0){
+                    String sr = sendPost("http://sso.hc360.com/internallogin", "LoginType=json&callback=callback&username=" + username + "&pass=" + pass);
+                    if (sr.indexOf("success:") > 0) {
                         mv.setViewName("/screen/index");
                         //将用户放进cookie
                         Cookie cookie = new Cookie("dataUser", userInfoList.get(0).getId().toString());
@@ -662,13 +615,13 @@ public class MainController {
                         cookie1.setPath("/");
                         response.addCookie(cookie1);
                     }
-                }else{
+                } else {
                     mv.setViewName("/error/nolimit");
                 }
 
             } catch (Exception e) {
-                EmailUtil.warnEveryOne("login is error" +  e.getMessage());
-               logger.error("login is error",e);
+                EmailUtil.warnEveryOne("login is error" + e.getMessage());
+                logger.error("login is error", e);
             }
         }
 
@@ -676,8 +629,7 @@ public class MainController {
     }
 
 
-
-    private  String sendPost(String url, String param) {
+    private String sendPost(String url, String param) {
         PrintWriter out = null;
         BufferedReader in = null;
         String result = "";
@@ -707,20 +659,19 @@ public class MainController {
                 result += line;
             }
         } catch (Exception e) {
-            EmailUtil.warnEveryOne("sendPost is error" +  e.getMessage());
-            logger.error("sendPost is error",e);
+            EmailUtil.warnEveryOne("sendPost is error" + e.getMessage());
+            logger.error("sendPost is error", e);
         }
         //使用finally块来关闭输出流、输入流
-        finally{
-            try{
-                if(out!=null){
+        finally {
+            try {
+                if (out != null) {
                     out.close();
                 }
-                if(in!=null){
+                if (in != null) {
                     in.close();
                 }
-            }
-            catch(IOException ex){
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
