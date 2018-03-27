@@ -23,6 +23,18 @@ public class ControllerDateUtil {
 
         return yesterDay;
     }
+
+    public static String getWeek(){
+        String todayHour = DateUtil.getNow("HH");
+        String weekDay = null;
+        if("00".equals(todayHour) || "01".equals(todayHour)){
+            weekDay = DateUtil.plusDays("yyyyMMdd", -8);//如果当前时间是凌晨，则取 前天的日期
+        }else{
+            weekDay = DateUtil.plusDays("yyyyMMdd", -7);
+        }
+
+        return weekDay;
+    }
     /*Leads转化率与续签率(凌晨4点之前查询前天的数据)*/
     public static String getLeadsYesterday(){
         String todayHour = DateUtil.getNow("HH");

@@ -11,11 +11,11 @@ class MainBean {
     MainBean(){
         super();
     }
-    MainBean(String name, String num) {
+    MainBean(String name, String num ) {
         this.name = name
         this.num = num
-    }
 
+    }
     @Override
     public String toString() {
         return "MainBean{" +
