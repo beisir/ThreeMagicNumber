@@ -221,6 +221,18 @@ export default {
 		"渠道": {
 			id: 38,
 			desc: "销售预测"
+		},
+        "销售整体": {
+			id: 77,
+			desc: "销售预测"
+		},
+        "电销新签": {
+			id: 78,
+			desc: "销售预测"
+		},
+        "电销增值": {
+			id: 79,
+			desc: "销售预测"
 		}
 	},
 	'/datapanel/member': {

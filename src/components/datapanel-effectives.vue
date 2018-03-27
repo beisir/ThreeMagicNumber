@@ -167,6 +167,24 @@ export default {
                 filters: {
                     timelimit: ['weekly', 'monthly']
                 }
+            },{
+                name: '销售整体',
+                code: '186',
+                filters: {
+                    timelimit: ['weekly', 'monthly']
+                }
+            },{
+                name: '电销新签',
+                code: '187',
+                filters: {
+                    timelimit: ['weekly', 'monthly']
+                }
+            },{
+                name: '电销增值',
+                code: '188',
+                filters: {
+                    timelimit: ['weekly', 'monthly']
+                }
             }],
 
             /**

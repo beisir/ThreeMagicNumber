@@ -68,5 +68,3 @@ module.exports = {
         cssSourceMap: false
     }
 }
-
-

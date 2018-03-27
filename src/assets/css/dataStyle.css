@@ -1554,7 +1554,7 @@ input[type="text"]:focus{border-color:rgba(250,167,34,.8)}
 #top-nav .navbar-collapse .navbar-nav.navbar-right:last-child{margin-right:15px}
 #top-nav .navbar-nav.navbar-right .btn{padding:6px 12px;margin-left:0;min-width:130px}
 .realtime-counter{background-color:transparent}
-.realtime-counter nav{background-color:transparent;border-radius:0;border:none;border-bottom:1px solid #dce0e2;padding:25px 0 0;height:75px;margin:0 -30px 20px -30px!important;    /* background-color: #fff !important; */}
+.realtime-counter nav{background-color:transparent;border-radius:0;border:none;border-bottom:1px solid #dce0e2;padding:25px 0 0;height:75px;margin:0 -30px 0 -30px!important;    /* background-color: #fff !important; */}
 .realtime-counter .navbar .navbar-header{padding-left:15px}
 .realtime-counter .navbar-default .navbar-nav.fields{margin-right:0;border:none}
 .panel-stat{border-radius:2px;position:relative;overflow:hidden;padding:20px 10px 0;margin-bottom:20px;}
@@ -1578,6 +1578,9 @@ span.realtime-value{}
 #app-overview-todayRealtime-table .realtime-line,#app-overview-appRealtime-table .realtime-line{border-bottom:1px solid #edeff0}
 #app-overview-todayRealtime-table .realtime,#app-overview-appRealtime-table .realtime{padding:10px 0}
 .realtime-counter .realtime-predict{height:30px;line-height:30px;overflow:hidden;margin:20px -20px 0;padding:0 20px}
+/* 新增mip站数据 倒数第一个不显示 */
+.realtime-counter .realtime-week{height:30px;line-height:30px;overflow:hidden;margin:0px -20px 0;padding:0 20px;background-color: rgba(0,0,0,.1);border-top: 2px solid white;}
+
 .realtime-counter .bg-one .realtime-predict,.realtime-counter .bg-two .realtime-predict,.realtime-counter .bg-three .realtime-predict,.realtime-counter .bg-four .realtime-predict{background-color:rgba(0,0,0,.1)}
 .realtime-abort .abort-value:hover,.realtime-abort .abort2-value:hover,.realtime-error .error-value:hover,.realtime-error .error2-value:hover{color:#55a4ed}
 .select-dates .dates,.select-date .date{background-color:transparent;color:#9ea4a7;border:none}
@@ -1981,7 +1984,7 @@ div.app-view{display:block;padding:0 20px;}
 .active .icon-tt-chart:before,.icon-tt-chart:hover:before{content:'';background:url(../img/dataIco.png) no-repeat -20px -14px;height:20px;}
 .active .icon-tt-table:before,.icon-tt-table:hover:before{content:'';background:url(../img/dataIco.png) no-repeat -74px -14px;height:20px;}
 .active .icon-tt-export:before,.icon-tt-export:hover:before{content:'';background:url(../img/dataIco.png) no-repeat -128px -13px;height:20px;}
-.tab-contentBox,.tab-contentBox2{overflow:hidden;background:#fff;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;}
+.tab-contentBox,.tab-contentBox2{overflow:hidden;background:#fff;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;margin-top:20px;}
 .tabBotCon{margin:0 0px;}
 .tabBotCon h3{font-size:16px;color:#333;height:40px;line-height:40px;border-bottom:1px solid #dce0e2;font-weight:bold;padding:0 15px;}
 .uxerNumBox{overflow:hidden;padding:15px 5px;}
@@ -2045,7 +2048,7 @@ div.app-view{display:block;padding:0 20px;}
 .userLeft{float:left;margin-left:15px;}
 .userRig{float:right;}
 .userNumList{margin:0 10px 15px;padding:10px 0;border:1px dotted #dce0e2;overflow:hidden;border-radius:4px;background:#f9f9f9;font-size:14px;color:#333;}
-.tab-contentBox2{margin-top:20px;}
+/* .tab-contentBox2{} */
 .tab-contentBox2 ul li,.tab-contentBox2 ul{padding:0;margin:0;list-style:none;}
 .tab-contentBox2 ul li{overflow:hidden;line-height:30px;}
 .tab-contentBox2 h4{line-height:24px;padding-bottom:4px;text-align:left;border-bottom:1px dotted #dce0e2;font-size:14px;font-weight:bold;margin:0 15px 15px;}

@@ -12,9 +12,6 @@
                         </div>
                         <div class="collapse navbar-collapse navbar-right">
                             <ul class="nav navbar-nav fields">
-                                <li class="active">
-                                    <a value="today" class="field" href="javascript:;">今日</a>
-                                </li>
                                 <li class="app-count" style="display: none">
                                     <a value="app" class="field" href="#app-overview-appRealtime-table">累计</a>
                                 </li>
@@ -23,22 +20,48 @@
                     </div>
                 </nav>
                 <!--标题结束-->
-                <div id="app-overview-todayRealtime" class="row">
-                    <div class="col-sm-6 col-md-3" :key="index" v-for="(item,index) in realTimeData.main" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
-                        <div class="panel-stat realtime-source" :class="getClass(index)">
-                            <h5> {{ item.name }} </h5>
-                            <h1 class="realtime-value"> {{ item.num }} </h1>
-                            <span class="realtime-delta" style="display: block">{{ differ(item.num, item.yesterdayNum).num }}</span>
-                            <!--同比-->
-                            <div class="realtime-predict">
-                                <span> 昨日同比:</span>
-                                <span class="value"> {{ item.yesterdayNum}}</span>
-                                <span class="pull-right">
-                                <i
-                                  :class="differ(item.num,item.yesterdayNum).state=='up'?'icon-tt-up':'icon-tt-lower'"></i>
-                                <span class="delta">{{ percentum(item.num, item.yesterdayNum) }}</span></span>
+                <div id="app-overview-todayRealtime">
+                    <div class="tab-contentBox">
+                        <div class="tabBotCon">
+                            <h3 style="margin-bottom:10px;">本网  <span style="float:right;font-weight:200;">{{getNowFormatDate(0)}}</span></h3>
+                            <div class="col-sm-6 col-md-3" :key="index" v-for="(item,index) in realTimeData.main" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
+                                <div class="panel-stat realtime-source" :class="getClass(index)">
+                                    <h5> {{ item.name }} </h5>
+                                    <h1 class="realtime-value"> {{ item.num }} </h1>
+                                    <span class="realtime-delta" style="display: block">{{ differ(item.num, item.yesterdayNum).num }}</span>
+                                    <!--环比-->
+                                    <div class="realtime-predict">
+                                        <span> 昨日环比:</span>
+                                        <span class="value"> {{ item.yesterdayNum}}</span>
+                                        <span class="pull-right">
+                                        <i
+                                          :class="differ(item.num,item.yesterdayNum).state=='up'?'icon-tt-up':'icon-tt-lower'"></i>
+                                        <span class="delta">{{ percentum(item.num, item.yesterdayNum) }}</span></span>
+                                    </div>
+                                    <!--环比结束-->
+                                    <!--周比-->
+                                    <div class="realtime-week">
+                                        <span> 周同比:</span>
+                                        <span class="value"> {{ realTimeData.weekdata[index].num}}</span>
+                                        <span class="pull-right">
+                                        <i
+                                          :class="differ(realTimeData.weekdata[index].num,realTimeData.weekdata[index].today).state=='up'?'icon-tt-up':'icon-tt-lower'"></i>
+                                        <span class="delta">{{ percentum(realTimeData.weekdata[index].num, realTimeData.weekdata[index].today) }}</span></span>
+                                    </div>
+                                    <!--周比结束-->
+                                </div>
                             </div>
-                            <!--同比结束-->
+                        </div>
+                    </div>
+                    <div class="tab-contentBox">
+                        <div class="tabBotCon">
+                            <h3 style="margin-bottom:10px;">MIP站  <span style="float:right;font-weight:200;">{{getNowFormatDate(1)}}</span></h3>
+                            <div class="col-sm-6 col-md-4" :key="index" v-for="(item,index) in realTimeData.mipdata" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
+                                <div class="panel-stat realtime-source" :class="getClass(index)">
+                                    <h5> {{ item.name }} </h5>
+                                    <h1 class="realtime-value" style="padding-bottom:20px;"> {{ item.num }} </h1>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -207,18 +230,21 @@ export default {
                 that.$http.get('/dataweb/abovedata').then((response) => {
                     response = response.body;
                     if (response.errno == 0) {
-                        that.formatData(response.data.todaydata, response.data.yesterdaydata);
+                        that.formatData(response.data.todaydata, response.data.yesterdaydata, response.data.weekdata, response.data.mipdata);
                     }
                 }, (response) => {
                     console.log('获取实时数据的接口数据失败！')
                 })
             },
             /** 重新组装后台返回的数据 */
-            formatData(todaydata, yesterdaydata) {
+            formatData(todaydata, yesterdaydata, weekdata, mipdata) {
                 const that = this;
                 const fightArr = [];
                 that.realTimeData.feeuser = that.processData(todaydata.feeuser, yesterdaydata.feeuser);
                 that.realTimeData.main = that.processData(todaydata.main, yesterdaydata.main);
+                that.realTimeData.weekdata = that.processWeekdata(todaydata.main, weekdata.main);
+                that.realTimeData.mipdata = mipdata.main;
+                // console.log(that.realTimeData);
                 todaydata.fight.forEach(function(item, index) {
                     const yesterdayFightItem = yesterdaydata.fight[index].fightInfo;
                     const resultData = that.processData(item.fightInfo, yesterdayFightItem);
@@ -229,6 +255,31 @@ export default {
                     fightArr.push(fightItem)
                 });
                 fightArr.length > 0 ? that.realTimeData.fight = fightArr : "";
+            },
+            getNowFormatDate(day) {
+                var date = new Date();
+                var seperator1 = "-";
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var strDate = (date.getDate() - day);
+                if (month >= 1 && month <= 9) {
+                    month = "0" + month;
+                }
+                if (strDate >= 0 && strDate <= 9) {
+                    strDate = "0" + strDate;
+                }
+                var currentdate = year + seperator1 + month + seperator1 + strDate;
+                return currentdate;
+            },
+            processWeekdata (todaydata, weekdata){
+                weekdata = weekdata.map((res,index) => {
+                    return {
+                        name: res.name,
+                        num: res.num,
+                        today: todaydata[index].num
+                    };
+                });
+                return weekdata;
             },
             /**
             * 根据后台返回的数据处理成
