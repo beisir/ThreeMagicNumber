@@ -137,8 +137,8 @@ public class MainController {
                     name = "IP";
                 } else if (_mipInfo.getDataType().intValue() == DataType.MIP_PV.getType().intValue()) {
                     name = "PV";
-                } else if (_mipInfo.getDataType().intValue() == DataType.MIP_IP.getType().intValue()) {
-                    name = "IP";
+                } else if (_mipInfo.getDataType().intValue() == DataType.MIP_UV.getType().intValue()) {
+                    name = "UV";
                 }
                 mainBeanList.add(new MainBean(name, threeNumDf.format(_mipInfo.getDataCount().longValue())));
             }
