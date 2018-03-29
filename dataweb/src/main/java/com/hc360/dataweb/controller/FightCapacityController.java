@@ -75,19 +75,39 @@ public class FightCapacityController {
         try {
             if (chartBean != null && ParseUtil.isStr2Num(chartBean.getType())) {
                 Integer dataType = Integer.valueOf(chartBean.getType());
-                if (dataType == DataType.DXTURNOVEYG.getType().intValue()) {//当月周度&当年月度数据实际值与预估值对比图表(电销)
+//                if (dataType == DataType.DXTURNOVEYG.getType().intValue()) {//当月周度&当年月度数据实际值与预估值对比图表(电销)
+//                    if (!"".equals(chartBean.getTime()) && ChartsConstant.WEEK_DATA.equals(chartBean.getTime())) {//周
+//                        dataService.initTurnoverWeek_DX(data);
+//                    } else if (!"".equals(chartBean.getTime()) && ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月
+//                        dataService.initTurnoverMonth_DX(data);
+//                    }
+//                }
+
+              if (dataType == DataType.DXQDSJ.getType().intValue()) {//当月周度&当年月度销售数据实际值与预估值及预估值对比图表(电销渠道整体)
+                if (!"".equals(chartBean.getTime()) && ChartsConstant.WEEK_DATA.equals(chartBean.getTime())) {//周
+                  dataService.initTurnoverWeek(data,3);
+                } else if (!"".equals(chartBean.getTime()) && ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月
+                  dataService.initTurnoverMonth(data,3);
+                }
+              }else if (dataType == DataType.XQDXTURNOVERZL.getType().intValue()) {//当月周度&当年月度数据实际值与预估值对比图表(电销新签)
                     if (!"".equals(chartBean.getTime()) && ChartsConstant.WEEK_DATA.equals(chartBean.getTime())) {//周
-                        dataService.initTurnoverWeek_DX(data);
+                        dataService.initTurnoverWeek(data, 4);
                     } else if (!"".equals(chartBean.getTime()) && ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月
-                        dataService.initTurnoverMonth_DX(data);
+                        dataService.initTurnoverMonth(data, 4);
                     }
-                } else if (dataType == DataType.QDTURNOVERYG.getType().intValue()) {//当月周度&当年月度数据实际值与预估值对比图表(渠道)
-                    if (!"".equals(chartBean.getTime()) && ChartsConstant.WEEK_DATA.equals(chartBean.getTime())) {//周
-                        dataService.initTurnoverWeek(data, 2);
-                    } else if (!"".equals(chartBean.getTime()) && ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月
-                        dataService.initTurnoverMonth(data, 2);
-                    }
-                } else if (dataType == DataType.DXTURNOVERZL.getType().intValue() || dataType == DataType.QDTURNOVERZL.getType().intValue()) {//实际值最近三十天的折线图(电销&渠道)
+              }else if (dataType == DataType.ZQDXTURNOVERZL.getType().intValue()) {//当月周度&当年月度数据实际值与预估值对比图表(电销增值)
+                if (!"".equals(chartBean.getTime()) && ChartsConstant.WEEK_DATA.equals(chartBean.getTime())) {//周
+                  dataService.initTurnoverWeek(data, 5);
+                } else if (!"".equals(chartBean.getTime()) && ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月
+                  dataService.initTurnoverMonth(data, 5);
+                }
+              }else if (dataType == DataType.QDTURNOVERYG.getType().intValue()) {//当月周度&当年月度数据实际值与预估值对比图表(渠道)
+                if (!"".equals(chartBean.getTime()) && ChartsConstant.WEEK_DATA.equals(chartBean.getTime())) {//周
+                  dataService.initTurnoverWeek(data, 2);
+                } else if (!"".equals(chartBean.getTime()) && ChartsConstant.MONTH_DATA.equals(chartBean.getTime())) {//月
+                  dataService.initTurnoverMonth(data, 2);
+                }
+              }else if (dataType == DataType.DXTURNOVERZL.getType().intValue() || dataType == DataType.QDTURNOVERZL.getType().intValue()) {//实际值最近三十天的折线图(电销&渠道)
                     dataService.initTurnoverDay(data, dataType);
                 } else {//其他趋势图
                     dataService.initFightChartData(data, chartBean);
