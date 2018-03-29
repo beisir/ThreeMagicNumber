@@ -179,6 +179,12 @@ export default {
                 filters: {
                     timelimit: ['weekly', 'monthly']
                 }
+            },{
+                name: '渠道',
+                code: '184',
+                filters: {
+                    timelimit: ['weekly', 'monthly']
+                }
             }],
 
             /**
