@@ -155,33 +155,27 @@ export default {
              * [navigation_monthly 月度数据]
              * @type {Array}
              */
-            navigation_monthly: [{
+            navigation_monthly: [/*{
                 name: '电销',
                 code: '180',
                 filters: {
                     timelimit: ['weekly', 'monthly']
                 }
-            }, {
-                name: '渠道',
-                code: '184',
-                filters: {
-                    timelimit: ['weekly', 'monthly']
-                }
-            },{
+            }, */{
                 name: '销售整体',
-                code: '186',
+                code: '345',
                 filters: {
                     timelimit: ['weekly', 'monthly']
                 }
             },{
                 name: '电销新签',
-                code: '187',
+                code: '332',
                 filters: {
                     timelimit: ['weekly', 'monthly']
                 }
             },{
                 name: '电销增值',
-                code: '188',
+                code: '333',
                 filters: {
                     timelimit: ['weekly', 'monthly']
                 }
