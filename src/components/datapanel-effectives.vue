@@ -694,17 +694,30 @@ export default {
                                         '<tspan style="font-weight:bold">' + _t.points[i].y + ' 元</tspan><br/>'
                                     ]);
 
-                                    /**
-                                     * [获取总量]
-                                     */
-                                    if ((!_total) && (_t.points[i].series.name === ('实际值'))) {
+                                    // /**
+                                    //  * [获取总量]
+                                    //  */
+                                    // if ((!_total) && (_t.points[i].series.name === ('实际值'))) {
+                                    //     _total = _t.points[i].total;
+                                    // }
+                                    //
+                                    // /**
+                                    //  * [获取预估值]
+                                    //  */
+                                    // if ((!_predicted) && (_t.points[i].series.name === ('预估值'))) {
+                                    //     _predicted = _t.points[i].total;
+                                    // }
+
+                                    // [******* 2018-03-29修改规则 因为name值不一样 修改判断规则 *******]
+
+                                    if ((!_total) && (_t.points[i].series.name.includes('实际值'))) {
                                         _total = _t.points[i].total;
                                     }
 
                                     /**
                                      * [获取预估值]
                                      */
-                                    if ((!_predicted) && (_t.points[i].series.name === ('预估值'))) {
+                                    if ((!_predicted) && (_t.points[i].series.name.includes('预估值'))) {
                                         _predicted = _t.points[i].total;
                                     }
                                 }
