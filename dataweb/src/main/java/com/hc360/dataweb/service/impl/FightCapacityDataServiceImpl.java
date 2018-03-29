@@ -77,6 +77,16 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
             practicalType = DataType.QDTURNOVERLJ.getType();//渠道当天实际值(累计)
             estimateType = DataType.QDTURNOVERYG.getType();//渠道当周预估值
         }
+        else if (flag == 3) {//电销渠道整体
+          practicalType = DataType.DXQDSJ.getType();//电销渠道整体当天实际值(累计)
+          estimateType = DataType.DXQDYG.getType();//电销渠道整体当周预估值
+        }else if (flag == 4) {//电销新签
+          practicalType = DataType.XQDXTURNOVERZL.getType();//电销新签当天实际值(累计)
+          estimateType = DataType.XQDXTURNOVEYG.getType();//电销新签当周预估值
+        }else if (flag == 5) {//电销增值
+          practicalType = DataType.ZQDXTURNOVERZL.getType();//电销增值当天实际值(累计)
+          estimateType = DataType.ZQDXTURNOVEYG.getType();//电销增值当周预估值
+        }
         String day = DateUtil.getNow("yyyy-MM-dd");
         //实际值:查询周表最后六条数据
         List<String> times = getWeeks( day,ChartsConstant.WEEKNUMS);
@@ -317,6 +327,12 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
             initMonthData(DataType.DXTURNOVELJ.getType(), practical, weekTimes);//电销当月实际值
         } else if (flag == 2) {
             initMonthData(DataType.QDTURNOVERLJ.getType(), practical, weekTimes);//渠道当月实际值
+        }else if (flag == 3) {
+          initStartMonthData(DataType.DXQDSJ.getType(), practical, weekTimes,"201801");//电销渠道整体当月实际值
+        }else if (flag == 4) {
+          initStartMonthData(DataType.XQDXTURNOVERZL.getType(), practical, weekTimes,"201801");//电销新签当月实际值
+        }else if (flag == 5) {
+          initStartMonthData(DataType.ZQDXTURNOVERZL.getType(), practical, weekTimes,"201801");//电销增值当月实际值
         }
         if (flag == 1) {//电销
             dataTypes.add(DataType.DXTURNOVERYS.getType());//电销当月预算
@@ -324,6 +340,15 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         } else if (flag == 2) {//渠道
             dataTypes.add(DataType.QDTURNOVERYS.getType());//渠道当月预算
             dataTypes.add(DataType.QDTURNOVERYG.getType());//渠道当月预估值
+        }else if (flag == 3) {//电销渠道整体
+          dataTypes.add(DataType.DXQDYS.getType());//电销渠道整体当月预算
+          dataTypes.add(DataType.DXQDYG.getType());//电销渠道整体当月预估值
+        }else if (flag == 4) {//电销新签
+          dataTypes.add(DataType.DXXQYS.getType());//电销新签当月预算
+          dataTypes.add(DataType.XQDXTURNOVEYG.getType());//电销新签当月预估值
+        }else if (flag == 5) {//电销增值
+          dataTypes.add(DataType.DXZZYS.getType());//电销增值当月预算
+          dataTypes.add(DataType.ZQDXTURNOVEYG.getType());//电销增值当月预估值
         }
         for (Integer type : dataTypes) {
             bean = new HourChartBean();
@@ -1011,6 +1036,25 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
         bean.setName(CommonUtil.initName(dataType));
         bean.setUnit(CommonUtil.initUnit(dataType));
         bean.setData(dataCount);
+    }
+    /*月度数据获取 有开始月份*/
+    private void initStartMonthData(Integer dataType, HourChartBean bean, List<String> weekTimes,String startmonth) throws Exception {
+      Map<String, Object> param = new HashMap<String, Object>();
+      param.put("type", dataType);
+      param.put("months", 12); //月份的个数
+      param.put("startmonth", startmonth); //月份的个数
+      List<RealtimeStaticMonth> monthData = realtimeStaticMonthMapper.fingYearStartMonthData(param);
+      if (weekTimes == null || weekTimes.size() == 0) {
+        for (RealtimeStaticMonth realtimeStaticMonth : monthData) {
+          weekTimes.add(realtimeStaticMonth.getIrslDate());
+        }
+
+
+      }
+      List<Object> dataCount = monthConvert(monthData, dataType, weekTimes);
+      bean.setName(CommonUtil.initName(dataType));
+      bean.setUnit(CommonUtil.initUnit(dataType));
+      bean.setData(dataCount);
     }
 
     private List<Object> monthConvert(List<RealtimeStaticMonth> monthDatas, Integer dataType, List<String> times) {
