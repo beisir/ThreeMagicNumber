@@ -42,10 +42,17 @@ public interface FightCapacityDataService {
     /**
      * 初始化电销&渠道流水(当年月度数据实际与预估与预算值对比图)
      * @param data
-     * @param flag 1:电销  2:渠道
+     * @param flag 1:电销  2:渠道 3:电销渠道整体  4:电销新签  5:电销增值
      */
     void initTurnoverMonth(Map<String, Object> data, int flag) throws Exception;
 
     void initTurnoverWeek_DX(Map<String, Object> data) throws Exception;
     void initTurnoverMonth_DX(Map<String, Object> data) throws Exception;
+    /**
+     * 初始化电销&渠道整体流水(当年月度数据实际与预估与预算值对比图)
+     * @param data
+     *
+     */
+//    void initTurnoverWeek_DXQD(Map<String, Object> data) throws Exception;
+//    void initTurnoverMonth_DXQD(Map<String, Object> data) throws Exception;
 }
