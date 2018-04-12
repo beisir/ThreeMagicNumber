@@ -175,6 +175,10 @@ export default {
 		"P4P竞价词": {
 			id: 58,
 			desc: "趋势图1"
+		},
+        "消耗拆分": {
+			id: 80,
+			desc: "趋势图1"
 		}
 	},
 	'/datapanel/effectives': {

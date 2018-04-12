@@ -11,19 +11,19 @@
                                 </div>
                             </div>
                         </nav>
-                        <div class="panel-body tab-content mTop20">                            
+                        <div class="panel-body tab-content mTop20">
                             <div class="data2Box">
                               <pieChart />
-                            </div>                         
+                            </div>
                            <chartTendency :navigation="operationChart" ref="operationChart" :timermillisec="timerMillisec" :service="service"></chartTendency>
-                        
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        
+
     </div>
 </template>
 <script>
@@ -33,7 +33,7 @@ import pieChart from "./pieChart.vue";
 //import pieChart from "./pieChart-tt.vue";
 export default {
   data() {
-    return {     
+    return {
       dataList: [], //P4P数据列表
 
       /**
@@ -47,6 +47,13 @@ export default {
        * @type {Number}
        */
       operationChart: [
+        {
+            name: "消耗拆分",
+            code: "4601",
+            filters: {
+              timelimit: ["today", "lastsevensays", "lastmonth", "all"]
+            }
+        },
         {
           name: "P4P消耗",
           code: "323",
@@ -161,7 +168,7 @@ export default {
             enabled: true
           },
           tooltip: {
-            useHTML: true            
+            useHTML: true
           }
       }
     };
@@ -192,7 +199,7 @@ export default {
     /****
      * 监听图表一重绘事件之前
      */
-    _that.$refs.operationChart.$on("beforeRedraw", function(chartEntity) {      
+    _that.$refs.operationChart.$on("beforeRedraw", function(chartEntity) {
       /****
        * p4p竞价词改变图表类型
        */
@@ -226,7 +233,7 @@ export default {
             * 通过共享（shared） 属性来将多个数据列的信息展示在同一个提示框里
             在共享的提示框里，数据点对象可以 this.points 来获取，该对象是个数组
             非共享的提示框中，数据点对象是通过 this.point 来获取 当前数据点对象
-            */            
+            */
             shared: true,
             formatter: function() {
               var _t = this,
@@ -255,7 +262,7 @@ export default {
     changeBubbleOption(chartEntity,that){
       chartEntity.update(
           {
-            tooltip: {               
+            tooltip: {
               formatter: function() {
                   var _t = this;
                   return [
@@ -265,7 +272,7 @@ export default {
                     "<tspan> 金额: </tspan>",
                     '<tspan style="font-weight:bold">' + _t.x.toFixed(2) +"元</tspan>"
                   ].join("");
-                
+
               }
             }
           },
