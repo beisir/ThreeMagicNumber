@@ -39,15 +39,26 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
 
          List<Integer> types = new ArrayList<Integer>();
          //纯P4P消耗不显IP UV
-         if(! DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType)){
-           times.add(yesterday);
-           times.add(weekday);
-           types.add(DataType.IP.getType());
-           types.add(DataType.UV.getType());
-         } else {
-           types.add(DataType.P4P_QWDT_HOUR.getType());
-         }
+//         if(! DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType)){
+//           times.add(yesterday);
+//           times.add(weekday);
+//           types.add(DataType.IP.getType());
+//           types.add(DataType.UV.getType());
+//         } else {
+//           types.add(DataType.P4P_QWDT_HOUR.getType());
+//         }
+       if(DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType)){
+         types.add(DataType.P4P_QWDT_HOUR.getType());
+       } else if(DataType.P4PCONSUMPTION_CASH.getType().equals(otherType)){
 
+         types.add(DataType.P4PCONSUMPTION_VIRTUAL.getType());
+       }
+       else{
+         times.add(yesterday);
+         times.add(weekday);
+         types.add(DataType.IP.getType());
+         types.add(DataType.UV.getType());
+       }
          types.add(otherType);
 
          HourChartBean bean = null;
@@ -109,7 +120,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
             bean.setName(CommonUtil.initName(type));
         }else{
 
-          if(DataType.P4P_CONSUMPTION_HOUR.getType().equals(type) || DataType.P4P_QWDT_HOUR.getType().equals(type)){
+          if(DataType.P4P_CONSUMPTION_HOUR.getType().equals(type) || DataType.P4P_QWDT_HOUR.getType().equals(type) || DataType.P4PCONSUMPTION_CASH.getType().equals(type) || DataType.P4PCONSUMPTION_VIRTUAL.getType().equals(type)){
             bean.setName(CommonUtil.initName(type));
           } else {
             bean.setName("今天");
@@ -213,7 +224,7 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
        }*/
         List<Integer> types = new ArrayList<Integer>();
         if(!(DataType.P4PCONSUMPTION.getType()==otherType && ChartsConstant.TOTAL.equals(timeFlag))
-                && !DataType.BAIDU_LM_DAY.getType().equals(otherType) && ! DataType.P4P_QWDT_TOTAL.getType().equals(otherType) && ! DataType.P4P_KEY_SUM.getType().equals(otherType)  && ! DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType)){
+                && !DataType.BAIDU_LM_DAY.getType().equals(otherType) && ! DataType.P4P_QWDT_TOTAL.getType().equals(otherType) && ! DataType.P4P_KEY_SUM.getType().equals(otherType)  && ! DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType) && ! DataType.P4PCONSUMPTION_CASH.getType().equals(otherType)){
             types.add(DataType.IP.getType());
             types.add(DataType.UV.getType());
         }
@@ -229,7 +240,15 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
           types.add(DataType.P4P_CONSUMPTION_TOTAL.getType());
           types.add(DataType.P4P_QWDT_TOTAL.getType());
         }
-        if(!DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType)){
+        //P4P消耗拆分
+        if(DataType.P4PCONSUMPTION_CASH.getType().equals(otherType)  && (!ChartsConstant.TOTAL.equals(timeFlag))){
+          types.add(DataType.P4PCONSUMPTION_VIRTUAL.getType());
+          types.add(DataType.P4PCONSUMPTION_CASH.getType());
+        } else if (DataType.P4PCONSUMPTION_CASH.getType().equals(otherType)  && ChartsConstant.TOTAL.equals(timeFlag)){
+          types.add(DataType.P4PCONSUMPTION_VIRTUAL_TOTAL.getType());
+          types.add(DataType.P4PCONSUMPTION_CASH_TOTAL.getType());
+        }
+        if(!DataType.P4P_CONSUMPTION_HOUR.getType().equals(otherType) && !DataType.P4PCONSUMPTION_CASH.getType().equals(otherType)){
           types.add(otherType);
         }
         List<DayChartBean> beans = new ArrayList<DayChartBean>();
