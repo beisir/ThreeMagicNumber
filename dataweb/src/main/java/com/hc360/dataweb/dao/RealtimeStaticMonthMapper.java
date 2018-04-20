@@ -31,6 +31,7 @@ public interface RealtimeStaticMonthMapper {
      */
     List<RealtimeStaticMonth> fingYearMonthData(Map<String, Object> param)throws Exception;
     List<RealtimeStaticMonth> fingYearMonthDatanew(Map<String, Object> param)throws Exception;
+    List<RealtimeStaticMonth> fingYearStartMonthData(Map<String, Object> param)throws Exception;
     /**
      * 根据最新数据时间获取数据
      * @param param
