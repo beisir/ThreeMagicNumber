@@ -71,6 +71,12 @@ public enum DataType {
     FANSCOUNT("粉丝数量", 545),
     /*P4P消耗金额*/
     P4PCONSUMPTION("P4P消耗", 46),
+    P4PCONSUMPTION_CASH("现金消耗", 4601),
+    P4PCONSUMPTION_VIRTUAL("虚拟消耗", 4602),
+
+    P4PCONSUMPTION_CASH_TOTAL("累计现金消耗", 4603),
+
+    P4PCONSUMPTION_VIRTUAL_TOTAL("累计虚拟消耗", 4604),
     /*历史累计P4P现金消耗(累计)*/
     P4PCONSUMPTIONTOTAL("P4P消耗", 4605),
     /*人均在线时长*/
