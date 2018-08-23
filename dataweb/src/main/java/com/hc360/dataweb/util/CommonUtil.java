@@ -37,7 +37,11 @@ public class CommonUtil {
                 || otherType==DataType.P4P_CONSUMPTION_TOTAL.getType().intValue() || otherType==DataType.P4P_QWDT_HOUR.getType().intValue()
                 || otherType==DataType.XQDXTURNOVEYG.getType().intValue() || otherType==DataType.ZQDXTURNOVEYG.getType().intValue()
                 || otherType==DataType.XQDXTURNOVERZL.getType().intValue() || otherType==DataType.ZQDXTURNOVERZL.getType().intValue()
-                || otherType==DataType.P4P_QWDT_DAY.getType().intValue()){
+                || otherType==DataType.DXQDSJ.getType().intValue() || otherType==DataType.DXQDYG.getType().intValue()
+                || otherType==DataType.DXQDYS.getType().intValue() || otherType==DataType.DXXQYS.getType().intValue()
+                || otherType==DataType.DXZZYS.getType().intValue() || otherType==DataType.P4P_QWDT_DAY.getType().intValue()
+                || otherType==DataType.P4PCONSUMPTION_CASH.getType().intValue() || otherType==DataType.P4PCONSUMPTION_VIRTUAL.getType().intValue()
+                || otherType==DataType.P4PCONSUMPTION_CASH_TOTAL.getType().intValue() || otherType==DataType.P4PCONSUMPTION_VIRTUAL_TOTAL.getType().intValue()){
             unit = "元";
         } else if(otherType == DataType.VARIOUS_FAMILIES_ARTICLE.getType().intValue() || otherType == DataType.EVERYDAY_NEW.getType().intValue() || otherType == DataType.EXTERNALSENDDRAFT.getType().intValue()){
             unit = "篇";
