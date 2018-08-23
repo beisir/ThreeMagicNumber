@@ -556,11 +556,44 @@ public class MainController {
                 dataList = new ArrayList<Double>();
                 for (String time : timeList) {
                     if (key == DataType.IP.getType()) { //累加上mip站的PV,UV,IP
-                        dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_IP.getType()).get(time))));
+                        if (userBehaviorDataMap.containsKey(DataType.MIP_IP.getType())) {
+                          if (userBehaviorDataMap.get(DataType.MIP_IP.getType()).containsKey(time)) {
+                            dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_IP.getType()).get(time))));
+                          }
+                          else{
+                            dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time))));
+                          }
+                        }
+                        else{
+                          dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time))));
+                        }
                     } else if (key == DataType.PV.getType()) {
-                        dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_PV.getType()).get(time))));
+                      if (userBehaviorDataMap.containsKey(DataType.MIP_PV.getType())) {
+                        if (userBehaviorDataMap.get(DataType.MIP_PV.getType()).containsKey(time)) {
+                          dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_PV.getType()).get(time))));
+                        }
+                        else{
+                          dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) )));
+                        }
+                      }
+                      else{
+                        dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) )));
+                      }
+
                     } else if (key == DataType.UV.getType()) {
-                        dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_UV.getType()).get(time))));
+
+                      if (userBehaviorDataMap.containsKey(DataType.MIP_UV.getType())) {
+                        if (userBehaviorDataMap.get(DataType.MIP_UV.getType()).containsKey(time)) {
+                          dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time) + userBehaviorDataMap.get(DataType.MIP_UV.getType()).get(time))));
+                        }
+                        else{
+                          dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time))));
+                        }
+                      }
+                      else{
+                        dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time))));
+                      }
+
                     }
                 }
                 tmpDayChartBean.setData(dataList);
