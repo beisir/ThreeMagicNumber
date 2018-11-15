@@ -53,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-contentBox">
+                    <!-- <div class="tab-contentBox">
                         <div class="tabBotCon">
                             <h3 style="margin-bottom:10px;">MIP站  <span style="float:right;font-weight:200;">{{getNowFormatDate(-1)}}</span></h3>
                             <div class="col-sm-6 col-md-4" :key="index" v-for="(item,index) in realTimeData.mipdata" v-on:click="redirect(item)" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
@@ -63,20 +63,109 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <!--付费会员-->
                 <div class="tab-contentBox">
                     <div class="tabBotCon">
                         <h3>付费会员</h3>
                         <div class="uxerNumBox">
-                            <div class="userNumCon" :key="index" v-for="(item,index) in realTimeData.feeuser" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
+                            <div class="jgBox">
+                            	<div class="jgCon">
+                                    <div class="jgTop">
+                                        <dl>
+                                            <dt>友客会员<span>100000</span></dt>
+                                            <dd>昨日环比：<span class="rigDown2">0.001%</span></dd>
+                                        </dl>
+                                    </div>
+                                    <div class="jgRigBox">
+                                    	<div class="jgRig dxCon">
+                                            <dl>
+                                                <dt>电销<span>100000</span></dt>
+                                                <dd><span class="rigUp2">0.001%</span></dd>
+                                            </dl>
+                                        </div>
+                                    	<div class="jgRig qdCon">
+                                            <dl>
+                                                <dt>渠道<span>100000</span></dt>
+                                                <dd><span class="rigDown2">0.001%</span></dd>
+                                            </dl>
+                                        </div>
+                                    	<div class="jgRig hyCon">
+                                            <dl>
+                                                <dt>行业<span>100000</span></dt>
+                                                <dd><span class="rigDown2">0.001%</span></dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="jgCon">
+                                    <div class="jgTop">
+                                        <dl>
+                                            <dt>P4P会员<span>100000</span></dt>
+                                            <dd>昨日环比：<span class="rigUp2">0.001%</span></dd>
+                                        </dl>
+                                    </div>
+                                    <div class="jgRigBox">
+                                    	<div class="jgRig dxCon">
+                                            <dl>
+                                                <dt>电销<span>100000</span></dt>
+                                                <dd><span class="rigUp2">0.001%</span></dd>
+                                            </dl>
+                                        </div>
+                                    	<div class="jgRig qdCon">
+                                            <dl>
+                                                <dt>渠道<span>100000</span></dt>
+                                                <dd><span class="rigDown2">0.001%</span></dd>
+                                            </dl>
+                                        </div>
+                                    	<div class="jgRig hyCon">
+                                            <dl>
+                                                <dt>行业<span>100000</span></dt>
+                                                <dd><span class="rigDown2">0.001%</span></dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            	<div class="jgCon">
+                                    <div class="jgTop">
+                                        <dl>
+                                            <dt>MMT会员<span>100000</span></dt>
+                                            <dd>昨日环比：<span class="rigDown2">0.001%</span></dd>
+                                        </dl>
+                                    </div>
+                                    <div class="jgRigBox">
+                                    	<div class="jgRig dxCon">
+                                            <dl>
+                                                <dt>电销<span>100000</span></dt>
+                                                <dd><span class="rigUp2">0.001%</span></dd>
+                                            </dl>
+                                        </div>
+                                    	<div class="jgRig qdCon">
+                                            <dl>
+                                                <dt>渠道<span>100000</span></dt>
+                                                <dd><span class="rigDown2">0.001%</span></dd>
+                                            </dl>
+                                        </div>
+                                    	<div class="jgRig hyCon">
+                                            <dl>
+                                                <dt>行业<span>100000</span></dt>
+                                                <dd><span class="rigDown2">0.001%</span></dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="userNumCon" :key="index" v-for="(item,index) in realTimeData.feeuser" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
                                 <div class="userNumList">
                                     <span class="userLeft">{{item.name}}</span>
                                     <span class="userRig" :class="differ(item.num,item.yesterdayNum).state=='up'?'rigUp':'rigDown'">{{ percentum(item.num, item.yesterdayNum)}}</span>
                                     <span class="userRig">{{item.num}}</span>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -241,9 +330,10 @@ export default {
                 const that = this;
                 const fightArr = [];
                 that.realTimeData.feeuser = that.processData(todaydata.feeuser, yesterdaydata.feeuser);
+                console.log(that.realTimeData.feeuser);
                 that.realTimeData.main = that.processData(todaydata.main, yesterdaydata.main);
                 that.realTimeData.weekdata = that.processWeekdata(todaydata.main, weekdata.main);
-                that.realTimeData.mipdata = mipdata.main;
+                // that.realTimeData.mipdata = mipdata.main;
                 // console.log(that.realTimeData);
                 todaydata.fight.forEach(function(item, index) {
                     const yesterdayFightItem = yesterdaydata.fight[index].fightInfo;
@@ -331,6 +421,7 @@ export default {
             }
         },
         created() {
+            console.log(this.$privileges)
             this.getRealDate();
         },
         mounted() {

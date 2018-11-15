@@ -12,7 +12,7 @@ export default {
 			id: 55,
 			desc: '实时数据'
 		},
-		'付费会员': {
+		'询盘数量': {
 			id: 47,
 			desc: '实时数据'
 		},
@@ -349,6 +349,12 @@ export default {
 		"ID": {
 			id: 74,
 			desc: '上传文件权限管理编号'
+		}
+	},
+	'/datapanel/operatedata': {
+		"ID": {
+			id: 81,
+			desc: '运营数据'
 		}
 	}
 };

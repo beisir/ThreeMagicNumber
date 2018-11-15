@@ -246,7 +246,7 @@ export default {
                      * [_res description]
                      * @type {Object}
                      */
-                   
+
                     _privileges = {
 
                         /**
