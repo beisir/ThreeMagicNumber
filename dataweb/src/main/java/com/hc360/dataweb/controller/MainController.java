@@ -91,7 +91,7 @@ public class MainController {
             initAboveData(resultMap, day, null,false);
             initAboveData(resultYesterdayMap, day, yesterDay,false);
             initAboveData(resultWeekMap,day,weekDay,true);
-            this.mipData(mipDataMap, yesterDay);
+//            this.mipData(mipDataMap, yesterDay);
         } catch (Exception e) {
             EmailUtil.warnEveryOne("MainController.findAllByDay has error，" + e.getMessage());
             logger.error("MainController.findAllByDay has error，", e);
@@ -100,7 +100,7 @@ public class MainController {
         Map _dataMap = new HashMap();
         _dataMap.put("errno", 0);
         Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("mipdata", mipDataMap);
+//        dataMap.put("mipdata", mipDataMap);
         dataMap.put("todaydata", resultMap);
         dataMap.put("weekdata", resultWeekMap);
         dataMap.put("yesterdaydata", resultYesterdayMap);
@@ -179,22 +179,22 @@ public class MainController {
         List<Integer> feeUserNumList = new ArrayList<Integer>();
         feeUserNumList.add(DataType.FEEUSERTOTAL.getType());//data_type:7-16
 
-        map.put("list", feeUserNumList);
-        map.put("yesterDay", warnDate);
-        List<RealTimeStaticDay> yeasterDayFeeAllUsers = this.realTimeStaticDayMapper.findRealTimeLastDataYester(map);
-        if (yeasterDayFeeAllUsers != null && yeasterDayFeeAllUsers.size() > 0) {
-            RealTimeStaticDay yeasterDayFeeAllUser = yeasterDayFeeAllUsers.get(0);
-            //数据非空的判断，以防止空指针
-            if (yeasterDayFeeAllUser != null && yeasterDayFeeAllUser.getDataCount() != null && yeasterDayFeeAllUser.getDataCount() != 0) {
-                mainBeanList.add(new MainBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount())));
-            } else {
-                mainBeanList.add(new MainBean("付费会员", "0"));
-                EmailUtil.warnEveryOne(warnDate + "-" + "付费会员总数--数据为空。");
-            }
-        } else { // 数据库中不存在数据的判断。
-            mainBeanList.add(new MainBean("付费会员", "0"));
-            EmailUtil.warnEveryOne(warnDate + "-" + "收费会员总数--数据为空。");
-        }
+//        map.put("list", feeUserNumList);
+//        map.put("yesterDay", warnDate);
+//        List<RealTimeStaticDay> yeasterDayFeeAllUsers = this.realTimeStaticDayMapper.findRealTimeLastDataYester(map);
+//        if (yeasterDayFeeAllUsers != null && yeasterDayFeeAllUsers.size() > 0) {
+//            RealTimeStaticDay yeasterDayFeeAllUser = yeasterDayFeeAllUsers.get(0);
+//            //数据非空的判断，以防止空指针
+//            if (yeasterDayFeeAllUser != null && yeasterDayFeeAllUser.getDataCount() != null && yeasterDayFeeAllUser.getDataCount() != 0) {
+//                mainBeanList.add(new MainBean(DataType.getName(yeasterDayFeeAllUser.getDataType()), threeNumDf.format(yeasterDayFeeAllUser.getDataCount())));
+//            } else {
+//                mainBeanList.add(new MainBean("付费会员", "0"));
+//                EmailUtil.warnEveryOne(warnDate + "-" + "付费会员总数--数据为空。");
+//            }
+//        } else { // 数据库中不存在数据的判断。
+//            mainBeanList.add(new MainBean("付费会员", "0"));
+//            EmailUtil.warnEveryOne(warnDate + "-" + "收费会员总数--数据为空。");
+//        }
 
         resultMap.put("main", mainBeanList);//最大的4个颜色图
         if(isWeekData){return;}
