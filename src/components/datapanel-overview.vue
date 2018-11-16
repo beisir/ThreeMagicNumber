@@ -160,21 +160,28 @@
                         </div>
                     </div>
                 </div>
-                <!--&lt;!&ndash;战斗力&ndash;&gt;-->
-                <div class="tab-contentBox2" v-show="realTimeData.fight.length>0">
-                    <div class="tabBotCon">
-                        <h3>战斗力</h3>
-                        <div class="uxerNumBox">
-                            <div class="userNumCon znBoxList" :key="index" v-for="(item,index) in realTimeData.fight">
-                                <div class="borderNone">
-                                    <h4>{{ item.name }}</h4>
-                                    <div class="uxerNumBox">
-                                        <div class="userNumCon"  :key="i" v-for="(data,i) in item.fightInfo" v-if="$privileges.user[($privileges.mapping[item.name+'-'+data.name]||{}).id]">
-                                            <div class="userNumList">
-                                                <span class="userLeft">{{data.name}}</span>
-                                                <span class="userRig" :class="differ(data.num,data.yesterdayNum).state=='up'?'rigUp':'rigDown'">{{ differ(data.num, data.yesterdayNum, true).num}}</span>
-                                                <span class="userRig">{{data.num}}</span>
-                                            </div>
+
+            </div>
+            <!--今日趋势结构开始-->
+            <chartTendency :navigation="todayOverChart" ref="todayChartElement" :timermillisec="timerMillisec" :service="todayService" chartTitle="今日趋势"></chartTendency>
+            <!--今日趋势结构END-->
+            <!--整体趋势结构开始-->
+            <chartTendency :timermillisec="timerMillisec" :service="overallService" ref="overallChartElement" chartTitle="整体趋势" isShow="true"></chartTendency>
+            <!--整体趋势结构END-->
+            <!--&lt;!&ndash;战斗力&ndash;&gt;-->
+            <div class="tab-contentBox2" v-show="realTimeData.fight.length>0">
+                <div class="tabBotCon">
+                    <h3>战斗力</h3>
+                    <div class="uxerNumBox">
+                        <div class="userNumCon znBoxList" :key="index" v-for="(item,index) in realTimeData.fight">
+                            <div class="borderNone">
+                                <h4>{{ item.name }}</h4>
+                                <div class="uxerNumBox">
+                                    <div class="userNumCon"  :key="i" v-for="(data,i) in item.fightInfo" v-if="$privileges.user[($privileges.mapping[item.name+'-'+data.name]||{}).id]">
+                                        <div class="userNumList">
+                                            <span class="userLeft">{{data.name}}</span>
+                                            <span class="userRig" :class="differ(data.num,data.yesterdayNum).state=='up'?'rigUp':'rigDown'">{{ differ(data.num, data.yesterdayNum, true).num}}</span>
+                                            <span class="userRig">{{data.num}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -183,12 +190,6 @@
                     </div>
                 </div>
             </div>
-            <!--今日趋势结构开始-->
-            <chartTendency :navigation="todayOverChart" ref="todayChartElement" :timermillisec="timerMillisec" :service="todayService" chartTitle="今日趋势"></chartTendency>
-            <!--今日趋势结构END-->
-            <!--整体趋势结构开始-->
-            <chartTendency :timermillisec="timerMillisec" :service="overallService" ref="overallChartElement" chartTitle="整体趋势" isShow="true"></chartTendency>
-            <!--整体趋势结构END-->
         </div>
     </div>
 </template>
@@ -403,10 +404,10 @@ export default {
                  * @type {Object}
                  */
                 const redirectMapping = {
-                        'IP': '/datapanel/operation',
-                        'PV': '/datapanel/operation',
-                        'UV': '/datapanel/operation',
-                        '付费会员': '/datapanel/member'
+                        'IP': '/datapanel/map',
+                        'PV': '/datapanel/map',
+                        'UV': '/datapanel/map',
+                        '询盘数量': '/datapanel/map'
                     },
 
                     /**

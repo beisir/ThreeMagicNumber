@@ -17,7 +17,7 @@
                 <div class="dataBoxTop">
                   <div class="dataBoxTopCon">
                     <dl>
-                      <dd :key="index" v-for="(item,index) in dataTotal" v-show="dataTotal.length>0" v-on:click="redirect(item)">
+                      <dd :key="index" v-for="(item,index) in dataTotal" v-show="dataTotal.length>0">
                         <span class="l-01">{{ item.name }}</span>
                         <span class="l-02"><template v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">{{ item.num }}</template></span>
                         <span class="l-03" :class="differ(item.num,item.yesterdayNum)=='up' ? 'icon-tt-up' : 'l-03 icon-tt-lower' "><template v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">{{ percentum(item.num, item.yesterdayNum)
@@ -42,7 +42,7 @@
                             </dd>
                           </dl>
                           </div >
-                          <div  v-else> 
+                          <div  v-else>
                             <dl>
                               <a href="javascript:;" title="点击查看更多信息">
                               <dt>{{ item.name }}</dt>
@@ -60,7 +60,7 @@
                   </div>
                 </div>
               </div>
-              <chartTendency :navigation="operationChart" ref="operationChart" :timermillisec="timerMillisec" :service="service"></chartTendency>             
+              <chartTendency :navigation="operationChart" ref="operationChart" :timermillisec="timerMillisec" :service="service"></chartTendency>
             </div>
           </div>
           <!--近30天的变化趋势-->
@@ -95,13 +95,13 @@ export default {
   data() {
     return {
       // 产品运营数据ip和uv汇总数据
-      dataTotal: [], 
+      dataTotal: [],
 
       //产品运营数据列表
-      dataList: [], 
+      dataList: [],
 
       /**
-       * @description 
+       * @description
        * 遮罩的P4P数据
        * */
       P4PData:{},
@@ -152,7 +152,7 @@ export default {
           filters: {
             timelimit: ['today', 'lastsevensays', 'lastmonth', 'all']
           }
-        }       
+        }
       ],
 
       /**
@@ -161,7 +161,7 @@ export default {
        */
       service: {
         url: '/dataweb/chartdata'
-      }      
+      }
     }
   },
   components: {
@@ -261,10 +261,10 @@ export default {
        * @type {Object}
        */
       const redirectMapping = {
-          'IP': '/datapanel/map',
-          'PV': '/datapanel/map',
-          'UV': '/datapanel/map',
-          '询盘数量': '/datapanel/map',
+          // 'IP': '/datapanel/map',
+          // 'PV': '/datapanel/map',
+          // 'UV': '/datapanel/map',
+          // '询盘数量': '/datapanel/map',
           'P4P消耗':'/datapanel/p4pConsumption'
         },
 
@@ -280,19 +280,19 @@ export default {
     }
   },
   created() {
-    this.getPlatformData();    
+    this.getPlatformData();
 
   },
   mounted() {
 
-     /** 禁止页面滚动 */ 
+     /** 禁止页面滚动 */
      // document.body.setAttribute('class','noSroll');
      /*** 1.5秒后关闭弹窗 */
     //  setTimeout(()=>{
     //     this.closeMask();
     //  },2000)
-     
-     const _that = this;    
+
+     const _that = this;
     /****
      * 图表一创建之前
      */
@@ -350,11 +350,11 @@ export default {
                   total += item
                 });
                this.chartEntity.setTitle(null, { text: '总收入：' + total.toFixed(2) + '元', align: 'right', x: -10 })
-          }        
+          }
       }else {
         this.chartEntity.setTitle(null, { text: null })
       }
-      
+
     });
 
     /****
@@ -417,7 +417,7 @@ export default {
         })
         this.P4PData=p4pDataArr.length>0?p4pDataArr[0]:{};
     }
-  }  
+  }
 }
 
 </script>
@@ -427,4 +427,3 @@ export default {
    overflow-y: hidden
  }
 </style>
-
