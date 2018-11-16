@@ -174,7 +174,7 @@ public class CommonUtil {
     /*初始化name*/
     public static String initName(Integer dataType){
         if(dataType == DataType.DXCOVENEMPLOYEE.getType().intValue()){
-            return "电销转正人数";
+            return "直销转正人数";
         }else if(dataType == DataType.QDCOVENEMPLOYEE.getType().intValue()){
             return "代理商战斗力";
         }else if(dataType == DataType.ZNONGUARDEMPLOYEE.getType().intValue()){
