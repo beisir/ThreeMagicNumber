@@ -231,8 +231,8 @@ export default {
                     name: 'UV',
                     code: '3'
                 }, {
-                    name: '付费会员',
-                    code: '4001'
+                    name: '询盘数量',
+                    code: '22'
                 }],
                 /**
                  * [service 整体趋势数据服务配置]
