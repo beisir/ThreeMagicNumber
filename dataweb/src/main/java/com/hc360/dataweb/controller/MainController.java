@@ -301,24 +301,18 @@ public class MainController {
             fightCapacityBeanList.add(fightDxCapacityBean);
         }
         map = new HashMap<String, Object>();
-        List<Integer> feeUserNumList = new ArrayList<Integer>();
-        feeUserNumList.add(DataType.FEEUSERTOTAL.getType());//data_type:7-16
-        feeUserNumList.add(DataType.DXFEEUSER.getType());
-        feeUserNumList.add(DataType.QDFEEUSER.getType());
-        feeUserNumList.add(DataType.HYFEEUSER.getType());
-
-        map.put("list", feeUserNumList);
         map.put("yesterDay", warnDate);
+        List<Integer>  feeUserNumList = new ArrayList<Integer>();
+
+        feeUserNumList.add(DataType.P4PUSER.getType());
+        feeUserNumList.add(DataType.P4PDXUSER.getType());
+        feeUserNumList.add(DataType.P4PQDUSER.getType());
+        feeUserNumList.add(DataType.P4PHYUSER.getType());
         map.put("orderType","asc");
-        List<FeeuserBean> userBeanList = this.initUserInfos(map,warnDate);
-        List<FeeuserBean> _userBeanList =new ArrayList<FeeuserBean>();
-        if(userBeanList!=null && userBeanList.size()>0){
-            _userBeanList.add(userBeanList.get(userBeanList.size()-1));
-            for(int i =0 ;i<userBeanList.size()-1;i++){
-                _userBeanList.add(userBeanList.get(i));
-            }
-        }
-        resultMap.put("mmt", _userBeanList);//mmt会员的4个数据
+        map.put("list", feeUserNumList);
+        List<FeeuserBean>  userBeanList = this.initUserInfos(map,warnDate);
+
+        resultMap.put("p4p", userBeanList);//p4p会员的4个数据
 
         feeUserNumList = new ArrayList<Integer>();
         feeUserNumList.add(DataType.YKUSER.getType());
@@ -331,15 +325,22 @@ public class MainController {
 
         resultMap.put("youke", userBeanList);//友客会员的4个数据
         feeUserNumList = new ArrayList<Integer>();
-        feeUserNumList.add(DataType.P4PUSER.getType());
-        feeUserNumList.add(DataType.P4PDXUSER.getType());
-        feeUserNumList.add(DataType.P4PQDUSER.getType());
-        feeUserNumList.add(DataType.P4PHYUSER.getType());
-        map.put("orderType","asc");
-        map.put("list", feeUserNumList);
-        userBeanList = this.initUserInfos(map,warnDate);
+        feeUserNumList.add(DataType.FEEUSERTOTAL.getType());//data_type:7-16
+        feeUserNumList.add(DataType.DXFEEUSER.getType());
+        feeUserNumList.add(DataType.QDFEEUSER.getType());
+        feeUserNumList.add(DataType.HYFEEUSER.getType());
 
-        resultMap.put("p4p", userBeanList);//p4p会员的4个数据
+        map.put("list", feeUserNumList);
+        map.put("orderType","asc");
+        userBeanList = this.initUserInfos(map,warnDate);
+        List<FeeuserBean> _userBeanList =new ArrayList<FeeuserBean>();
+        if(userBeanList!=null && userBeanList.size()>0){
+            _userBeanList.add(userBeanList.get(userBeanList.size()-1));
+            for(int i =0 ;i<userBeanList.size()-1;i++){
+                _userBeanList.add(userBeanList.get(i));
+            }
+        }
+        resultMap.put("mmt", _userBeanList);//mmt会员的4个数据
 //        resultMap.put("feeuser", userBeanList);
         resultMap.put("fight", fightCapacityBeanList);//战斗力模块的数据
     }
