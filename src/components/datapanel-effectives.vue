@@ -75,7 +75,7 @@ export default {
                 ratioNum: 0,
                 ratioTrend: null
             }, {
-                name: '电销转正人数',
+                name: '直销转正人数',
                 code: '7',
                 filters: {
                     timelimit: ['all']
@@ -168,13 +168,13 @@ export default {
                     timelimit: ['weekly', 'monthly']
                 }
             },{
-                name: '电销新签',
+                name: '直销猎鹰',
                 code: '332',
                 filters: {
                     timelimit: ['weekly', 'monthly']
                 }
             },{
-                name: '电销增值',
+                name: '直销大白鲨',
                 code: '333',
                 filters: {
                     timelimit: ['weekly', 'monthly']
@@ -192,7 +192,7 @@ export default {
              * @type {Array}
              */
             navigation_yearly: [{
-                name: '电销',
+                name: '直销',
                 code: '178'
             }, {
                 name: '渠道',
