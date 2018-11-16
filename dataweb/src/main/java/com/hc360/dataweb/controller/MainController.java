@@ -308,7 +308,6 @@ public class MainController {
         feeUserNumList.add(DataType.P4PDXUSER.getType());
         feeUserNumList.add(DataType.P4PQDUSER.getType());
         feeUserNumList.add(DataType.P4PHYUSER.getType());
-        map.put("orderType","asc");
         map.put("list", feeUserNumList);
         List<FeeuserBean>  userBeanList = this.initUserInfos(map,warnDate);
 
@@ -319,7 +318,6 @@ public class MainController {
         feeUserNumList.add(DataType.YKDXUSER.getType());
         feeUserNumList.add(DataType.YKQDUSER.getType());
         feeUserNumList.add(DataType.YKHYUSER.getType());
-        map.put("orderType","asc");
         map.put("list", feeUserNumList);
         userBeanList = this.initUserInfos(map,warnDate);
 
@@ -331,7 +329,6 @@ public class MainController {
         feeUserNumList.add(DataType.HYFEEUSER.getType());
 
         map.put("list", feeUserNumList);
-        map.put("orderType","asc");
         userBeanList = this.initUserInfos(map,warnDate);
         List<FeeuserBean> _userBeanList =new ArrayList<FeeuserBean>();
         if(userBeanList!=null && userBeanList.size()>0){
