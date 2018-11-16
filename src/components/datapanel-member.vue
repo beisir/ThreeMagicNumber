@@ -223,7 +223,7 @@ export default {
              */
             extend: {
                 '增值产品': [{
-                    name: '电销',
+                    name: '直销',
                     todayNum: 0,
                     yesterdayNum: 0,
                     ratioNum: 0,
@@ -248,7 +248,7 @@ export default {
                     ratioTrend: null
                 }],
                 '基本产品': [{
-                    name: '电销',
+                    name: '直销',
                     todayNum: 0,
                     yesterdayNum: 0,
                     ratioNum: 0,
