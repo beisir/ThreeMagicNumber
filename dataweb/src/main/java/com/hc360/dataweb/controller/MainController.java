@@ -339,7 +339,7 @@ public class MainController {
         map.put("list", feeUserNumList);
         userBeanList = this.initUserInfos(map,warnDate);
 
-        resultMap.put("p4p", userBeanList);//友客会员的4个数据
+        resultMap.put("p4p", userBeanList);//p4p会员的4个数据
 //        resultMap.put("feeuser", userBeanList);
         resultMap.put("fight", fightCapacityBeanList);//战斗力模块的数据
     }
