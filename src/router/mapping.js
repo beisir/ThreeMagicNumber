@@ -86,15 +86,17 @@ const routeConfig = [{
                 resolve(require('components/datapanel-authority.vue'));
             });
         }
-    }, {
-        name: '运营数据',
-        path: '/datapanel/operatedata',
-        component: resolve => {
-            require.ensure(['components/datapanel-operatedata.vue'], () => {
-                resolve(require('components/datapanel-operatedata.vue'));
-            });
-        }
-    }]
+    }
+    // , {
+    //     name: '运营数据',
+    //     path: '/datapanel/operatedata',
+    //     component: resolve => {
+    //         require.ensure(['components/datapanel-operatedata.vue'], () => {
+    //             resolve(require('components/datapanel-operatedata.vue'));
+    //         });
+    //     }
+    // }
+    ]
 }];
 
 export default routeConfig;

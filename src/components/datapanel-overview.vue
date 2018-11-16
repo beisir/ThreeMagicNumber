@@ -71,21 +71,24 @@
                         <h3>付费会员</h3>
                         <div class="uxerNumBox">
                             <div class="jgBox">
-                            	<div class="jgCon">
-                                    <div class="jgTop">
+                            	<div class="jgCon"
+                                    v-for="(item,index) in realTimeData.p4pykmmt"
+                                    :key="index"
+                                    v-if="$privileges.user[($privileges.mapping[index]||{}).id]">
+                                    <div class="jgTop" >
                                         <dl>
-                                            <dt>友客会员<span>100000</span></dt>
-                                            <dd>昨日环比：<span class="rigDown2">0.001%</span></dd>
+                                            <dt>{{item[0].name}}<span>{{item[0].yesterdayNum}}</span></dt>
+                                            <dd>昨日环比：<span :class="differ(item[0].num,item[0].yesterdayNum).state=='up'?'rigUp2':'rigDown2'">{{percentum(item[0].num, item[0].yesterdayNum)}}</span></dd>
                                         </dl>
                                     </div>
                                     <div class="jgRigBox">
-                                    	<div class="jgRig dxCon">
+                                    	<div :key="childIndex" v-for="(childItem, childIndex) in item" :class="['jgRig', p4pykmmtCls[childIndex-1]]" v-if="childIndex !== 0">
                                             <dl>
-                                                <dt>电销<span>100000</span></dt>
-                                                <dd><span class="rigUp2">0.001%</span></dd>
+                                                <dt>{{childItem.name}}<span>{{childItem.yesterdayNum}}</span></dt>
+                                                <dd><span :class="differ(childItem.num,childItem.yesterdayNum).state=='up'?'rigUp2':'rigDown2'">{{percentum(childItem.num, childItem.yesterdayNum)}}</span></dd>
                                             </dl>
                                         </div>
-                                    	<div class="jgRig qdCon">
+                                    	<!-- <div class="jgRig qdCon">
                                             <dl>
                                                 <dt>渠道<span>100000</span></dt>
                                                 <dd><span class="rigDown2">0.001%</span></dd>
@@ -96,11 +99,11 @@
                                                 <dt>行业<span>100000</span></dt>
                                                 <dd><span class="rigDown2">0.001%</span></dd>
                                             </dl>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
 
-                                <div class="jgCon">
+                                <!-- <div class="jgCon">
                                     <div class="jgTop">
                                         <dl>
                                             <dt>P4P会员<span>100000</span></dt>
@@ -156,7 +159,7 @@
                                             </dl>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             <!-- <div class="userNumCon" :key="index" v-for="(item,index) in realTimeData.feeuser" v-if="$privileges.user[($privileges.mapping[item.name]||{}).id]">
@@ -206,6 +209,11 @@ import chartTendency from './chart-tendency.vue'
 export default {
     data() {
             return {
+                /**
+                 * [p4pykmmtCls 新增收费会员的class样式]
+                 * @type {Number}
+                 */
+                p4pykmmtCls: ['dxCon', 'qdCon', 'hyCon'],
                 /**
                  * [timerMillisec 数据定时更新时间间隔毫秒数]
                  * @type {Number}
@@ -329,12 +337,16 @@ export default {
             formatData(todaydata, yesterdaydata, weekdata, mipdata) {
                 const that = this;
                 const fightArr = [];
-                that.realTimeData.feeuser = that.processData(todaydata.feeuser, yesterdaydata.feeuser);
-                console.log(that.realTimeData.feeuser);
+                // that.realTimeData.feeuser = that.processData(todaydata.feeuser, yesterdaydata.feeuser);
                 that.realTimeData.main = that.processData(todaydata.main, yesterdaydata.main);
                 that.realTimeData.weekdata = that.processWeekdata(todaydata.main, weekdata.main);
                 // that.realTimeData.mipdata = mipdata.main;
-                // console.log(that.realTimeData);
+                that.realTimeData.p4pykmmt = {
+                    '友客会员' :that.processData(todaydata.youke, yesterdaydata.youke),
+                    'P4P会员': that.processData(todaydata.p4p, yesterdaydata.p4p),
+                    'MMT会员' :that.processData(todaydata.mmt, yesterdaydata.mmt)
+                };
+
                 todaydata.fight.forEach(function(item, index) {
                     const yesterdayFightItem = yesterdaydata.fight[index].fightInfo;
                     const resultData = that.processData(item.fightInfo, yesterdayFightItem);
@@ -421,7 +433,6 @@ export default {
             }
         },
         created() {
-            console.log(this.$privileges)
             this.getRealDate();
         },
         mounted() {
