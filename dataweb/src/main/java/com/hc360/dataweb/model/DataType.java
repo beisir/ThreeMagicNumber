@@ -5,8 +5,8 @@ package com.hc360.dataweb.model;
  */
 public enum DataType {
     IP("IP", 1), PV("PV", 2), UV("UV", 3),
-    /*电销收费会员*/
-    DXFEEUSER("电销", 4),
+    /*直销收费会员*/
+    DXFEEUSER("直销", 4),
     /*渠道收费会员**/
     QDFEEUSER("渠道", 5),
     /*行业收费会员*/
@@ -19,21 +19,21 @@ public enum DataType {
     FEEUSERTOTAL("MMT会员",4001),
 /**友客的会员**/
     YKUSER("友客会员", 350),
-    YKDXUSER("电销", 351),
+    YKDXUSER("直销", 351),
     YKQDUSER("渠道", 352),
     YKHYUSER("行业", 353),
 
     /*互通宝的会员***/
     P4PUSER("P4P会员",346),
-    P4PDXUSER("电销",347),
+    P4PDXUSER("直销",347),
     P4PQDUSER("渠道",348),
     P4PHYUSER("行业",349),
 
-    /*电销转正人数**/
+    /*直销转正人数**/
     DXCOVENEMPLOYEE("dxcovenemployee", 7),
-    /*电销应在职人数（离职+在职）**/
+    /*直销应在职人数（离职+在职）**/
     DXSHOULDEMPLOYEE("dxshouldemployee", 8),
-    /*电销离职人数*/
+    /*直销离职人数*/
     DXLEAVEEMPLOYEE("dxleaveemployee", 9),
 
     /*渠道转正人数**/
@@ -55,17 +55,17 @@ public enum DataType {
     /*职能人员编制人数*/
     ZNOBUILDEMPLOYEE("znbuildemployee", 14),
 
-    /*电销新兵连人数*/
+    /*直销新兵连人数*/
     DX_RECRUIT_NOT_POSITIVE("dxRecruitNotPositive",291),
-    /*电销专员未转正人数*/
+    /*直销专员未转正人数*/
     DX_ATTACHE_NOT_POSITIVE("dxAttacheNotPositive",292),
-    /*电销专员总人数*/
+    /*直销专员总人数*/
     DX_TOTAL_COUNT("dxTotalCount",293),
-    /*电销管理层人数*/
+    /*直销管理层人数*/
     DX_MANAGER_COUNT("dxManagerCount",294),
-    /*电销职能人数*/
+    /*直销职能人数*/
     DX_OFFICER_COUNT("dxOfficerCount",313),
-    /*电销总人数*/
+    /*直销总人数*/
     DX_ALL_COUNT("dxAllCount",314),
 
     /*有效买家*/
@@ -93,11 +93,11 @@ public enum DataType {
     /*人均在线时长*/
     PERCAPITAONLINETIME("人均在线时长",49),
 
-    /*电销新签人均在线时长*/
-    XQPERCAPITAONLINETIME("新签人均在线时长",328),
+    /*直销新签人均在线时长*/
+    XQPERCAPITAONLINETIME("猎鹰人均在线时长",328),
 
-    /*电销增值人均在线时长*/
-    ZQPERCAPITAONLINETIME("增值人均在线时长",329),
+    /*直销增值人均在线时长*/
+    ZQPERCAPITAONLINETIME("大白鲨人均在线时长",329),
 
     /*渠道拜访量*/
     CHANNELVISITCOUNT("渠道拜访量",54),
@@ -122,32 +122,32 @@ public enum DataType {
     WEMEDIALINK("自媒体发稿链接",80),
     /*有效通话次数*/
     VALIDCALLNUMBER("全部销售",74),
-    /*电销有效通话次数*/
-    DXVALIDCALLNUMBER("电销销售",50),
+    /*直销有效通话次数*/
+    DXVALIDCALLNUMBER("直销销售",50),
     /*渠道有效通话次数*/
     QDVALIDCALLNUMBER("渠道销售",52),
-/*电销新签人均有效通话次数 **/
-    XQDXVALIDCALLNUMBER("新签电销销售",330),
-    /*电销增值人均有效通话次数  **/
-    ZQDXVALIDCALLNUMBER("增值电销销售",331),
+/*直销新签人均有效通话次数 **/
+    XQDXVALIDCALLNUMBER("猎鹰直销销售",330),
+    /*直销增值人均有效通话次数  **/
+    ZQDXVALIDCALLNUMBER("大白鲨直销销售",331),
     /*LEADS转化率*/
     LEADSTRANSFORM("Leads转化率",98),
 
     /*3类客户数*/
     /*3类客户数每天/每小时的量*/
     USER3CLASS("3类客户数",62),
-    /*当天累积到统计时间电销三类客户数*/
-    DXUSER3CLASS("电销",59),
+    /*当天累积到统计时间直销三类客户数*/
+    DXUSER3CLASS("直销",59),
     /*当天累积到统计时间渠道三类客户数*/
     QDUSER3CLASS("渠道",60),
     /*3类客户数从开始累积到现在的总量*/
     USER3CLASSTOTAL("3类客户数",205),
-    /*从开始累积到现在电销三类客户数*/
-    DXUSER3CLASSTOTAL("电销",203),
-    DXXQWADDUSER3CLASSTOTAL("电销新签",57),
-    DXXXWADDUSER3CLASSTOTAL("电销续签",58),
-    DXNEWUSER3CLASSTOTAL("电销新签",295),
-    DXXQUSER3CLASSTOTAL("电销续签",296),
+    /*从开始累积到现在直销三类客户数*/
+    DXUSER3CLASSTOTAL("直销",203),
+    DXXQWADDUSER3CLASSTOTAL("直销猎鹰",57),
+    DXXXWADDUSER3CLASSTOTAL("直销续签",58),
+    DXNEWUSER3CLASSTOTAL("直销猎鹰",295),
+    DXXQUSER3CLASSTOTAL("直销续签",296),
     /*从开始累积到现在渠道三类客户数*/
     QDUSER3CLASSTOTAL("渠道",204),
 
@@ -155,29 +155,29 @@ public enum DataType {
     FEEUSERTRANSACTION("交易付费会员数",172),
     /*标王续签率-行业*/
     CHAMPIONHY("行业",63),
-    /*标王续签率-电销*/
-    CHAMPIONDX("电销",64),
+    /*标王续签率-直销*/
+    CHAMPIONDX("直销",64),
     /*标王续签率-渠道*/
     CHAMPIONQD("渠道",65),
     /*标王续签率-电商*/
     CHAMPIONDS("电商",66),
     /*买卖通续签率-行业*/
     MMTHY("行业",67),
-    /*买卖通续签率-电销*/
-    MMTDX("电销",68),
+    /*买卖通续签率-直销*/
+    MMTDX("直销",68),
     /*买卖通续签率-渠道*/
     MMTQD("渠道",69),
     /*买卖通续签率-电商*/
     MMTDS("电商",70),
 
-    /*电销-A类客户数*/
-    DXACLASS("电销-A类客户数",82),
-    /*电销-B类客户数*/
-    DXBCLASS("电销-B类客户数",83),
-    /*电销-C类客户数*/
-    DXCCLASS("电销-C类客户数",84),
-    /*电销-D类客户数*/
-    DXDCLASS("电销-D类客户数",85),
+    /*直销-A类客户数*/
+    DXACLASS("直销-A类客户数",82),
+    /*直销-B类客户数*/
+    DXBCLASS("直销-B类客户数",83),
+    /*直销-C类客户数*/
+    DXCCLASS("直销-C类客户数",84),
+    /*直销-D类客户数*/
+    DXDCLASS("直销-D类客户数",85),
     /*渠道-A类客户数*/
     QDACLASS("渠道-A类客户数",86),
     /*渠道-B类客户数*/
@@ -265,24 +265,24 @@ public enum DataType {
     /*产品用户贡献*/
 
     /*销售业绩*/
-    /*电销销售业绩实际值*/
-    DXTURNOVERZL("电销销售业绩实际值增量",178),
-/*电销新签销售业绩实际值**/
-    XQDXTURNOVERZL("电销新签实际值",332),
-    /*电销增值销售业绩实际值**/
-    ZQDXTURNOVERZL("电销增值实际值",333),
+    /*直销销售业绩实际值*/
+    DXTURNOVERZL("直销销售业绩实际值增量",178),
+/*直销新签销售业绩实际值**/
+    XQDXTURNOVERZL("直销猎鹰实际值",332),
+    /*直销增值销售业绩实际值**/
+    ZQDXTURNOVERZL("直销大白鲨实际值",333),
 
-    /*电销销售业绩实际值*/
-    DXTURNOVELJ("电销整体实际值",179),
-    /*电销销售业绩预估值*/
-    DXTURNOVEYG("电销整体预估值",180),
-/*电销新签销售业绩预估值***/
-    XQDXTURNOVEYG("电销新签预估值",334),
-    /*电销增值销售业绩预估值**/
-    ZQDXTURNOVEYG("电销增值预估值",335),
+    /*直销销售业绩实际值*/
+    DXTURNOVELJ("直销整体实际值",179),
+    /*直销销售业绩预估值*/
+    DXTURNOVEYG("直销整体预估值",180),
+/*直销新签销售业绩预估值***/
+    XQDXTURNOVEYG("直销猎鹰预估值",334),
+    /*直销增值销售业绩预估值**/
+    ZQDXTURNOVEYG("直销大白鲨预估值",335),
 
-    /*电销销售业绩完成率*/
-    DXTURNOVERWC("电销销售业绩完成率",181),
+    /*直销销售业绩完成率*/
+    DXTURNOVERWC("直销销售业绩完成率",181),
     /*渠道销售业绩实际值*/
     QDTURNOVERZL("渠道销售业绩实际值增量",182),
     /*渠道销售业绩实际值*/
@@ -291,21 +291,21 @@ public enum DataType {
     QDTURNOVERYG("预估值",184),
     /*渠道销售业绩完成率*/
     QDTURNOVERWC("渠道销售业绩完成率",185),
-    /*电销月销售业绩预算值*/
-    DXTURNOVERYS("电销整体预算值",206),
+    /*直销月销售业绩预算值*/
+    DXTURNOVERYS("直销整体预算值",206),
     /*渠道月销售业绩预算值*/
     QDTURNOVERYS("预算值",207),
 
-    /*电销渠道整体销售实际值*/
+    /*直销渠道整体销售实际值*/
     DXQDSJ("销售整体实际值",345),
-    /*电销渠道整体销售预算值*/
+    /*直销渠道整体销售预算值*/
     DXQDYS("销售整体预算值",343),
-    /*电销渠道整体销售预估值*/
+    /*直销渠道整体销售预估值*/
     DXQDYG("销售整体预估值",344),
-    /*电销新签销售预算值*/
-    DXXQYS("电销新签预算值",341),
-    /*电销渠道整体销售预估值*/
-    DXZZYS("电销增值预算值",342),
+    /*直销新签销售预算值*/
+    DXXQYS("直销猎鹰预算值",341),
+    /*直销渠道整体销售预估值*/
+    DXZZYS("直销大白鲨预算值",342),
 
     /*销售业绩*/
 
