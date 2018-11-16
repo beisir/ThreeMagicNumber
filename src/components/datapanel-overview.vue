@@ -342,8 +342,8 @@ export default {
                 that.realTimeData.weekdata = that.processWeekdata(todaydata.main, weekdata.main);
                 // that.realTimeData.mipdata = mipdata.main;
                 that.realTimeData.p4pykmmt = {
-                    '友客会员' :that.processData(todaydata.youke, yesterdaydata.youke),
                     'P4P会员': that.processData(todaydata.p4p, yesterdaydata.p4p),
+                    '友客会员' :that.processData(todaydata.youke, yesterdaydata.youke),
                     'MMT会员' :that.processData(todaydata.mmt, yesterdaydata.mmt)
                 };
 
