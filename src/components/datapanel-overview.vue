@@ -74,8 +74,8 @@
                             	<div class="jgCon"
                                     v-for="(item,index) in realTimeData.p4pykmmt"
                                     :key="index"
-                                    v-if="$privileges.user[($privileges.mapping[index]||{}).id]">
-                                    <div class="jgTop" >
+                                    v-if="$privileges.user[($privileges.mapping[index]||{}).id] && item.length">
+                                    <div class="jgTop" v-if="item.length">
                                         <dl>
                                             <dt>{{item[0].name}}<span>{{item[0].yesterdayNum}}</span></dt>
                                             <dd>昨日环比：<span :class="differ(item[0].num,item[0].yesterdayNum).state=='up'?'rigUp2':'rigDown2'">{{percentum(item[0].num, item[0].yesterdayNum)}}</span></dd>
@@ -88,18 +88,6 @@
                                                 <dd><span :class="differ(childItem.num,childItem.yesterdayNum).state=='up'?'rigUp2':'rigDown2'">{{percentum(childItem.num, childItem.yesterdayNum)}}</span></dd>
                                             </dl>
                                         </div>
-                                    	<!-- <div class="jgRig qdCon">
-                                            <dl>
-                                                <dt>渠道<span>100000</span></dt>
-                                                <dd><span class="rigDown2">0.001%</span></dd>
-                                            </dl>
-                                        </div>
-                                    	<div class="jgRig hyCon">
-                                            <dl>
-                                                <dt>行业<span>100000</span></dt>
-                                                <dd><span class="rigDown2">0.001%</span></dd>
-                                            </dl>
-                                        </div> -->
                                     </div>
                                 </div>
 
