@@ -16,7 +16,18 @@ public enum DataType {
     /*加盟商收费会员 : 慧聪控股的公司，主要是产业带在使用*/
     JMFEEUSER("加盟商", 173),
     /*总收费会员数*/
-    FEEUSERTOTAL("付费会员",4001),
+    FEEUSERTOTAL("MMT会员",4001),
+/**友客的会员**/
+    YKUSER("友客会员", 350),
+    YKDXUSER("电销", 351),
+    YKQDUSER("渠道", 352),
+    YKHYUSER("行业", 353),
+
+    /*互通宝的会员***/
+    P4PUSER("P4P会员",346),
+    P4PDXUSER("电销",347),
+    P4PQDUSER("渠道",348),
+    P4PHYUSER("行业",349),
 
     /*电销转正人数**/
     DXCOVENEMPLOYEE("dxcovenemployee", 7),

@@ -189,6 +189,9 @@
         ) t
         where t.rn = 1
         order by DATA_TYPE
+        <if test="orderType !=null">
+        ${orderType}
+        </if>
 
     </select>
 
