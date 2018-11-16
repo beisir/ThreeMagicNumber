@@ -358,7 +358,7 @@ public class FeeUserServiceImpl implements FeeUserService {
                 calculateOrderDX(bean, dataItem);//计算
             }
         }
-        bean.setName("电销");
+        bean.setName("直销");
         bean.setUnit("元");
         return bean;
     }
@@ -569,7 +569,7 @@ public class FeeUserServiceImpl implements FeeUserService {
         }
         String name = "";
         if (flag == 1) {
-            name = "电销";
+            name = "直销";
         } else if (flag == 2) {
             name = "行业";
         } else if (flag == 3) {
