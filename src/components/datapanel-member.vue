@@ -17,9 +17,13 @@
                                     <div class="data2BoxTopCon">
                                         <dl>
                                             <dd>
-                                                <span class="l-01">{{headerCircle.name}}</span>
+                                                <span class="l-01">&nbsp;</span>
+                                                <span class="l-02">{{headerCircle.name}}</span>
+                                                <span class="l-03">&nbsp;</span>
+                                                <!-- 付彦鹏 2018-11-19 删除以下代码 -->
+                                                <!-- <span class="l-01">{{headerCircle.name}}</span>
                                                 <span class="l-02"><template v-if="$privileges.user[($privileges.mapping[headerCircle.name]||{}).id]">{{headerCircle.todayNum}}</template></span>
-                                                <span class="l-03" v-bind:class="{'icon-tt-up':headerCircle.ratioTrend,'icon-tt-lower':headerCircle.ratioTrend===false}"><template v-if="$privileges.user[($privileges.mapping[headerCircle.name]||{}).id]">{{headerCircle.ratioNum}}</template></span>
+                                                <span class="l-03" v-bind:class="{'icon-tt-up':headerCircle.ratioTrend,'icon-tt-lower':headerCircle.ratioTrend===false}"><template v-if="$privileges.user[($privileges.mapping[headerCircle.name]||{}).id]">{{headerCircle.ratioNum}}</template></span> -->
                                             </dd>
                                         </dl>
                                     </div>
