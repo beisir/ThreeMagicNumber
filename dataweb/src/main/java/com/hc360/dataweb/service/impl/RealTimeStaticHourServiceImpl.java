@@ -171,13 +171,13 @@ public class RealTimeStaticHourServiceImpl implements RealTimeStaticHourService 
         param.put("day",time);
         List<Integer> typeList = new ArrayList<>();
         typeList.add(type);
-        if(type == DataType.IP.getType()){
-            typeList.add(DataType.MIP_IP.getType());
-        }else if(type == DataType.PV.getType()){
-            typeList.add(DataType.MIP_PV.getType());
-        }else if(type == DataType.UV.getType()){
-            typeList.add(DataType.MIP_UV.getType());
-        }
+//        if(type == DataType.IP.getType()){
+//            typeList.add(DataType.MIP_IP.getType());
+//        }else if(type == DataType.PV.getType()){
+//            typeList.add(DataType.MIP_PV.getType());
+//        }else if(type == DataType.UV.getType()){
+//            typeList.add(DataType.MIP_UV.getType());
+//        }
         param.put("list",typeList);
         param.put("dataType",type);
         List<RealTimeStaticDoubleHour> hourData = realTimeStaticHourMapper.findDoubleTodayDataMip(param);

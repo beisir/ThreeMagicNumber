@@ -80,7 +80,7 @@
     row_number() over(partition by DATA_TYPE,IRSL_DATE order by OP_DATE desc) as rn
     from SJPT_REALTIME_STATIC_DAY
     where IRSL_DATE between #{startDay} and #{endDay}
-      <![CDATA[ and DATA_TYPE in(1,2,3)  ]]>
+      <![CDATA[ and DATA_TYPE in(1,2,3,22)  ]]>
     ) t
     where t.rn = 1
   </select>

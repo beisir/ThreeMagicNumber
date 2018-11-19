@@ -448,13 +448,13 @@ public class MainController {
 
 
             //收费会员的60天的数据整理
-            List<RealTimeStaticHour> feeUseBy15Days = this.realTimeStaticHourMapper.findFeeUseBy60Day(pre60Day, day);
-            if (feeUseBy15Days != null && feeUseBy15Days.size() > 0) {
-                tmpDayChartBean = new DayChartBean("付费会员", "万");
-                tmpDayChartBean.setData(dataAsTimeFeeUser(timeList, feeUseBy15Days));
-                tmpDayChartBean.setIsShow(true);
-                dataList.add(tmpDayChartBean);
-            }
+//            List<RealTimeStaticHour> feeUseBy15Days = this.realTimeStaticHourMapper.findFeeUseBy60Day(pre60Day, day);
+//            if (feeUseBy15Days != null && feeUseBy15Days.size() > 0) {
+//                tmpDayChartBean = new DayChartBean("付费会员", "万");
+//                tmpDayChartBean.setData(dataAsTimeFeeUser(timeList, feeUseBy15Days));
+//                tmpDayChartBean.setIsShow(true);
+//                dataList.add(tmpDayChartBean);
+//            }
             //用户行为相关的数据 ip ,pv , uv
             List<RealTimeStaticDay> userBehaviorList = realTimeStaticDayMapper.findUserBehaviorBy60Day(pre60Day, day);
             if (userBehaviorList != null && userBehaviorList.size() > 0) {
@@ -535,7 +535,7 @@ public class MainController {
         DayChartBean tmpDayChartBean = null;
         List<Double> dataList = null;
         for (Integer key : userBehaviorDataMap.keySet()) {
-            if (key <= DataType.UV.getType()) {
+//            if (key <= DataType.UV.getType()) {
                 tmpDayChartBean = new DayChartBean(DataType.getName(key), "万");
                 dataList = new ArrayList<Double>();
                 for (String time : timeList) {
@@ -578,13 +578,15 @@ public class MainController {
                         dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time))));
                       }
 
+                    }else{
+                        dataList.add(Double.valueOf(df.format(userBehaviorDataMap.get(key).get(time))));
                     }
                 }
                 tmpDayChartBean.setData(dataList);
                 tmpDayChartBean.setIsShow(true);
                 dataChartList.add(tmpDayChartBean);
             }
-        }
+//        }
 
     }
 
