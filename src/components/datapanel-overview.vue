@@ -460,7 +460,7 @@ export default {
                  * 整体趋势：PV UV IP 一个y轴  付费会员一个y轴
                  */
                 chartEntity.series.forEach((series, index) => {
-                    var yIndex = (series.name == 'PV' || series.name == 'IP' || series.name == 'UV') ? 1 : 0;
+                    var yIndex = (series.name == 'PV' || series.name == 'IP' || series.name == 'UV') ? 0 : 3;
                     series.update({
                         yAxis: yIndex
                     }, false);
