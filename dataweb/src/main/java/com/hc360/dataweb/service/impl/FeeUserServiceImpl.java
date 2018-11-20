@@ -795,7 +795,7 @@ public class FeeUserServiceImpl implements FeeUserService {
     private List<Integer> initMainTypes() {
         List<Integer> dataTypes = new ArrayList<Integer>();
         dataTypes.add(DataType.LEADS.getType());
-        dataTypes.add(DataType.FEEUSERTOTAL.getType());
+//        dataTypes.add(DataType.FEEUSERTOTAL.getType());
         dataTypes.add(DataType.USER3CLASS.getType());
         //dataTypes.add(DataType.DAUTYPE.getType());
         return dataTypes;
