@@ -77,14 +77,14 @@
                                     v-if="$privileges.user[($privileges.mapping[index]||{}).id] && item.length">
                                     <div class="jgTop" v-if="item.length">
                                         <dl>
-                                            <dt>{{item[0].name}}<span>{{item[0].yesterdayNum}}</span></dt>
+                                            <dt>{{item[0].name}}<span>{{item[0].num}}</span></dt>
                                             <dd>昨日环比：<span :class="differ(item[0].num,item[0].yesterdayNum).state=='up'?'rigUp2':'rigDown2'">{{percentum(item[0].num, item[0].yesterdayNum)}}</span></dd>
                                         </dl>
                                     </div>
                                     <div class="jgRigBox">
                                     	<div :key="childIndex" v-for="(childItem, childIndex) in item" :class="['jgRig', p4pykmmtCls[childIndex-1]]" v-if="childIndex !== 0">
                                             <dl>
-                                                <dt>{{childItem.name}}<span>{{childItem.yesterdayNum}}</span></dt>
+                                                <dt>{{childItem.name}}<span>{{childItem.num}}</span></dt>
                                                 <dd><span :class="differ(childItem.num,childItem.yesterdayNum).state=='up'?'rigUp2':'rigDown2'">{{percentum(childItem.num, childItem.yesterdayNum)}}</span></dd>
                                             </dl>
                                         </div>
