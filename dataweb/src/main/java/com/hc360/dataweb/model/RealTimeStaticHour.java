@@ -7,7 +7,7 @@ public class RealTimeStaticHour {
 
     private Integer dataType;
 
-    private Integer dataCount;
+    private Long dataCount;
 
     private String irslDateH;
 
@@ -51,11 +51,11 @@ public class RealTimeStaticHour {
         this.dataType = dataType;
     }
 
-    public Integer getDataCount() {
+    public Long getDataCount() {
         return dataCount;
     }
 
-    public void setDataCount(Integer dataCount) {
+    public void setDataCount(Long dataCount) {
         this.dataCount = dataCount;
     }
 

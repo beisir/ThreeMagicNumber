@@ -117,7 +117,7 @@ public class MainController {
     }
 
     private void initAboveData(Map<String, Object> resultMap, String day, String yesterday, boolean isWeekData) throws Exception {
-        Map<String, Integer> dataMap = new HashMap<String, Integer>();
+        Map<String, Long> dataMap = new HashMap<String, Long>();
         DecimalFormat df = new DecimalFormat("0.00");
         DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
         List<MainBean> mainBeanList = new ArrayList<MainBean>(); //最大的4个颜色图
