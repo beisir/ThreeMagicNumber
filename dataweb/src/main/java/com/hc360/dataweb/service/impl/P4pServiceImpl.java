@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,61 +26,100 @@ public class P4pServiceImpl implements P4pService {
     @Autowired
     private RealTimeStatic3DataMapper realTimeStatic3DataMapper;
 
-    public Map<String,Object> p4pFormula(List<Integer> typeList){
-        Map<String,Object> resultMap = new HashMap<>();
-        Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("list",typeList);
+    public Map<String, Object> p4pFormula(List<Integer> typeList) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("list", typeList);
         paramMap.put("day", ControllerDateUtil.getToday());
         List<RealTimeStaticHour> resultList = realTimeStaticHourMapper.findAllByDay(paramMap);
-        if(resultList!=null && resultList.size()>0){
+        if (resultList != null && resultList.size() > 0) {
             List<MainBean> list = new ArrayList<>();
             MainBean mainBean = null;
-            for(RealTimeStaticHour hour : resultList){
+            for (RealTimeStaticHour hour : resultList) {
 
-                if(hour.getDataType().intValue()== DataType.P4PPRICE.getType()){
-                    mainBean = new MainBean("客单价",hour.getDataCount()+"");
+                if (hour.getDataType().intValue() == DataType.P4PPRICE.getType()) {
+                    mainBean = new MainBean("客单价", hour.getDataCount() + "");
                     list.add(mainBean);
-                }else if (hour.getDataType().intValue()== DataType.P4PUSER.getType()){
-                    mainBean = new MainBean("会员数",hour.getDataCount()+"");
+                } else if (hour.getDataType().intValue() == DataType.P4PUSER.getType()) {
+                    mainBean = new MainBean("会员数", hour.getDataCount() + "");
                     list.add(mainBean);
-                }else if (hour.getDataType().intValue()== DataType.P4PXIANJINCHARGETOTAL.getType()){
-                    mainBean = new MainBean("销售额",hour.getDataCount()+"");
+                } else if (hour.getDataType().intValue() == DataType.P4PXIANJINCHARGETOTAL.getType()) {
+                    mainBean = new MainBean("销售额", hour.getDataCount() + "");
                     list.add(mainBean);
-                }else if (hour.getDataType().intValue()== DataType.P4PALLEXPENDTOTAL.getType()){
-                    mainBean = new MainBean("消耗",hour.getDataCount()+"");
+                } else if (hour.getDataType().intValue() == DataType.P4PALLEXPENDTOTAL.getType()) {
+                    mainBean = new MainBean("消耗", hour.getDataCount() + "");
                     list.add(mainBean);
-                }else if (hour.getDataType().intValue()== DataType.P4PALLBALANCE.getType()){
-                    mainBean = new MainBean("余额",hour.getDataCount()+"");
+                } else if (hour.getDataType().intValue() == DataType.P4PALLBALANCE.getType()) {
+                    mainBean = new MainBean("余额", hour.getDataCount() + "");
                     list.add(mainBean);
-                }else if (hour.getDataType().intValue()== DataType.P4PALLCHARGETOTAL.getType()){
-                    mainBean = new MainBean("充值",hour.getDataCount()+"");
+                } else if (hour.getDataType().intValue() == DataType.P4PALLCHARGETOTAL.getType()) {
+                    mainBean = new MainBean("充值", hour.getDataCount() + "");
                     list.add(mainBean);
                 }
             }
-            resultMap.put("formula",list);
+            resultMap.put("formula", list);
         }
 
         return resultMap;
     }
 
 
-    public Map<String,Object> priceDist(int type,String day){
-        Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("dataType",type);
-        paramMap.put("day",day);
-        Map<String,Object> resultMap = new HashMap<>();
+    public Map<String, Object> priceDist(int type, String day) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dataType", type);
+        paramMap.put("day", day);
+        Map<String, Object> resultMap = new HashMap<>();
 
         List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
         List<CircleBean> list = new ArrayList<>();
-        if(resultList!=null && resultList.size()>0){
+        if (resultList != null && resultList.size() > 0) {
             CircleBean circleBean = null;
-            for(RealTimeStatic3Data _realTimeStatic3Data : resultList){
-                circleBean = new CircleBean(_realTimeStatic3Data.getElement(),_realTimeStatic3Data.getDataCount()*100,_realTimeStatic3Data.getDataCount());
+            for (RealTimeStatic3Data _realTimeStatic3Data : resultList) {
+                circleBean = new CircleBean(_realTimeStatic3Data.getElement(), _realTimeStatic3Data.getDataCount() * 100, _realTimeStatic3Data.getDataCount());
                 list.add(circleBean);
             }
         }
-        resultMap.put("data",list);
+        resultMap.put("data", list);
 
         return resultMap;
+    }
+
+    public Map<String, Object> twoCircle(List<Integer> typeList, String day) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
+
+        paramMap.put("list", typeList);
+        paramMap.put("day", day);
+        paramMap.put("preday",day);
+        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
+        List<TwoCircleBean> twoCircleBeans = new ArrayList<>();
+        TwoCircleBean twoCircleBean = null;
+        DrillDownBean drillDownBean = null;
+        if (resultList != null && resultList.size() > 0) {
+            Map<Integer, Double> selectResult = new HashMap<>();
+            for (RealTimeStaticDoubleHour hour : resultList) {
+                selectResult.put(hour.getDataType(), hour.getDataCount());
+            }
+            Double all = selectResult.get(DataType.P4PALLEXPENDTOTAL.getType())+selectResult.get(DataType.P4PALLBALANCE.getType());
+            drillDownBean = new DrillDownBean("消耗", new String[]{"现金", "返点金", "虚拟"},
+                    new Object[]{formartData(selectResult.get(DataType.P4PXIANJINEXPENDTOTAL.getType()), all) ,
+                            formartData(selectResult.get(DataType.P4PFANDIANJINEXPENDTOTAL.getType()), all),
+                            formartData(selectResult.get(DataType.P4PXUNIEXPENDTOTAL.getType()), all)} );
+            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PALLEXPENDTOTAL.getType()), all), 1, drillDownBean);
+            twoCircleBeans.add(twoCircleBean);
+            drillDownBean = new DrillDownBean("余额", new String[]{"现金", "返点金", "虚拟"},
+                    new Object[]{ formartData(selectResult.get(DataType.P4PXIANJINBALANCE.getType()),all),
+                            formartData(selectResult.get(DataType.P4PFANDIANJINBALANCE.getType()),all),
+                            formartData(selectResult.get(DataType.P4PXUNIBALANCE.getType()),all) });
+            twoCircleBean = new TwoCircleBean( formartData(selectResult.get(DataType.P4PALLBALANCE.getType()),all), 2, drillDownBean);
+            twoCircleBeans.add(twoCircleBean);
+        }
+        resultMap.put("data", twoCircleBeans);
+        return resultMap;
+    }
+
+    private String formartData(Double d ,double all){
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df .format(d * 100 / all);
     }
 }
