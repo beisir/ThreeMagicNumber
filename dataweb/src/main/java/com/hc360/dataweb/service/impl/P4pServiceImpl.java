@@ -1,9 +1,8 @@
 package com.hc360.dataweb.service.impl;
 
+import com.hc360.dataweb.dao.RealTimeStatic3DataMapper;
 import com.hc360.dataweb.dao.RealTimeStaticHourMapper;
-import com.hc360.dataweb.model.DataType;
-import com.hc360.dataweb.model.MainBean;
-import com.hc360.dataweb.model.RealTimeStaticHour;
+import com.hc360.dataweb.model.*;
 import com.hc360.dataweb.service.P4pService;
 import com.hc360.dataweb.util.ControllerDateUtil;
 import org.apache.log4j.Logger;
@@ -23,6 +22,8 @@ public class P4pServiceImpl implements P4pService {
     private Logger logger = Logger.getLogger(P4pServiceImpl.class);
     @Autowired
     private RealTimeStaticHourMapper realTimeStaticHourMapper;
+    @Autowired
+    private RealTimeStatic3DataMapper realTimeStatic3DataMapper;
 
     public Map<String,Object> p4pFormula(List<Integer> typeList){
         Map<String,Object> resultMap = new HashMap<>();
@@ -57,6 +58,27 @@ public class P4pServiceImpl implements P4pService {
             }
             resultMap.put("formula",list);
         }
+
+        return resultMap;
+    }
+
+
+    public Map<String,Object> priceDist(int type,String day){
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("dataType",type);
+        paramMap.put("day",day);
+        Map<String,Object> resultMap = new HashMap<>();
+
+        List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
+        List<CircleBean> list = new ArrayList<>();
+        if(resultList!=null && resultList.size()>0){
+            CircleBean circleBean = null;
+            for(RealTimeStatic3Data _realTimeStatic3Data : resultList){
+                circleBean = new CircleBean(_realTimeStatic3Data.getElement(),_realTimeStatic3Data.getDataCount()*100,_realTimeStatic3Data.getDataCount());
+                list.add(circleBean);
+            }
+        }
+        resultMap.put("data",list);
 
         return resultMap;
     }
