@@ -21,7 +21,7 @@ const routeConfig = [{
             });
         }
     }, {
-        name: '产品运营数据',
+        name: '运营数据',
         path: '/datapanel/operation',
         component: resolve => {
             require.ensure(['components/datapanel-operation.vue'], () => {
@@ -29,7 +29,7 @@ const routeConfig = [{
             });
         }
     },  {
-        name: 'P4P运营数据',
+        name: 'P4P运营数据1',
         path: '/datapanel/p4pConsumption',
         component: resolve => {
             require.ensure(['components/datapanel-p4pConsumption.vue'], () => {
@@ -54,6 +54,24 @@ const routeConfig = [{
             });
         }
     }, {
+        name: 'P4P运营数据',
+        path: '/datapanel/p4pOperatedata',
+        component: resolve => {
+            require.ensure(['components/datapanel-p4pOperatedata.vue'], () => {
+                resolve(require('components/datapanel-p4pOperatedata.vue'))
+            })
+        }
+    },
+
+    /*{
+        name: '运营数据',
+        path: '/datapanel/operatedata',
+        component: resolve => {
+            require.ensure(['components/datapanel-operatedata.vue'], () => {
+                resolve(require('components/datapanel-operatedata.vue'));
+            });
+        }
+    }, */{
         name: '流量分布',
         path: '/datapanel/map',
         component: resolve => {
@@ -87,15 +105,6 @@ const routeConfig = [{
             });
         }
     }
-    // , {
-    //     name: '运营数据',
-    //     path: '/datapanel/operatedata',
-    //     component: resolve => {
-    //         require.ensure(['components/datapanel-operatedata.vue'], () => {
-    //             resolve(require('components/datapanel-operatedata.vue'));
-    //         });
-    //     }
-    // }
     ]
 }];
 

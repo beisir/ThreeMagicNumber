@@ -1,6 +1,6 @@
 <template>
     <div class="panel panel-default hour-trend" v-show="Navigation.length>0||isShow">
-        <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5; margin-top:30px; margin-bottom:10px;">
+        <nav v-if="chartFlag" class="navbar navbar-default" role="navigation" style="background:#f5f5f5; margin-top:30px; margin-bottom:10px;">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <span class="navbar-brand" style="font-size:16px;">
@@ -30,7 +30,11 @@
 export default {
     name: 'chart-tendency',
     props: {
-
+        chartFlag: {
+            default: function() {
+                return true;
+            }
+        },
         /**
          * [chartTitle 图表标题]
          * @type {String}
