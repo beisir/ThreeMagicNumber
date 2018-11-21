@@ -5,6 +5,7 @@ import com.hc360.dataweb.dao.RealTimeStaticHourMapper;
 import com.hc360.dataweb.model.*;
 import com.hc360.dataweb.service.P4pService;
 import com.hc360.dataweb.util.ControllerDateUtil;
+import com.hc360.dataweb.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,7 +91,7 @@ public class P4pServiceImpl implements P4pService {
 
         paramMap.put("list", typeList);
         paramMap.put("day", day);
-        paramMap.put("preday",day);
+        paramMap.put("preday", day);
         List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
         List<TwoCircleBean> twoCircleBeans = new ArrayList<>();
         TwoCircleBean twoCircleBean = null;
@@ -100,26 +101,82 @@ public class P4pServiceImpl implements P4pService {
             for (RealTimeStaticDoubleHour hour : resultList) {
                 selectResult.put(hour.getDataType(), hour.getDataCount());
             }
-            Double all = selectResult.get(DataType.P4PALLEXPENDTOTAL.getType())+selectResult.get(DataType.P4PALLBALANCE.getType());
+            Double all = selectResult.get(DataType.P4PALLEXPENDTOTAL.getType()) + selectResult.get(DataType.P4PALLBALANCE.getType());
             drillDownBean = new DrillDownBean("消耗", new String[]{"现金", "返点金", "虚拟"},
-                    new Object[]{formartData(selectResult.get(DataType.P4PXIANJINEXPENDTOTAL.getType()), all) ,
+                    new Object[]{formartData(selectResult.get(DataType.P4PXIANJINEXPENDTOTAL.getType()), all),
                             formartData(selectResult.get(DataType.P4PFANDIANJINEXPENDTOTAL.getType()), all),
-                            formartData(selectResult.get(DataType.P4PXUNIEXPENDTOTAL.getType()), all)} );
+                            formartData(selectResult.get(DataType.P4PXUNIEXPENDTOTAL.getType()), all)});
             twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PALLEXPENDTOTAL.getType()), all), 1, drillDownBean);
             twoCircleBeans.add(twoCircleBean);
             drillDownBean = new DrillDownBean("余额", new String[]{"现金", "返点金", "虚拟"},
-                    new Object[]{ formartData(selectResult.get(DataType.P4PXIANJINBALANCE.getType()),all),
-                            formartData(selectResult.get(DataType.P4PFANDIANJINBALANCE.getType()),all),
-                            formartData(selectResult.get(DataType.P4PXUNIBALANCE.getType()),all) });
-            twoCircleBean = new TwoCircleBean( formartData(selectResult.get(DataType.P4PALLBALANCE.getType()),all), 2, drillDownBean);
+                    new Object[]{formartData(selectResult.get(DataType.P4PXIANJINBALANCE.getType()), all),
+                            formartData(selectResult.get(DataType.P4PFANDIANJINBALANCE.getType()), all),
+                            formartData(selectResult.get(DataType.P4PXUNIBALANCE.getType()), all)});
+            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PALLBALANCE.getType()), all), 2, drillDownBean);
             twoCircleBeans.add(twoCircleBean);
         }
         resultMap.put("data", twoCircleBeans);
         return resultMap;
     }
 
-    private String formartData(Double d ,double all){
+    private Double formartData(Double d, double all) {
         DecimalFormat df = new DecimalFormat("0.00");
-        return df .format(d * 100 / all);
+        return Double.parseDouble(df.format(d * 100 / all));
+    }
+
+    public Map<String, Object> columd3D(List<Integer> typeList, int dayBeyond) {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<String> timeList = this.getTimeList(dayBeyond);//时间轴
+        resultMap.put("time",timeList) ;
+        List<ColumnBean> dataList = new ArrayList<>();
+        for (Integer type :typeList){
+            List<Integer> types = new ArrayList<>();
+            types.add(type);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("list",types);
+            paramMap.put("day", ControllerDateUtil.getToday());
+            paramMap.put("preday", ControllerDateUtil.getPreNDay(-dayBeyond));
+            List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
+
+
+            List<Double> resultDatas = this.checkData(timeList, resultList);//结果数据
+            ColumnBean columnBean = new ColumnBean(DataType.getName(type) , resultDatas);
+            dataList.add(columnBean);
+        }
+        resultMap.put("data",dataList);
+        return resultMap;
+    }
+
+    private List<Double> checkData(List<String> timeList, List<RealTimeStaticDoubleHour> dataList) {
+        Map<String, Double> dataMap = new HashMap<>();
+        if (timeList != null && timeList.size() > 0) {
+            for (String time : timeList) {
+                dataMap.put(time, 0d);
+            }
+        }
+
+        if (dataList != null && dataList.size() > 0) {
+            for (RealTimeStaticDoubleHour hour : dataList) {
+                dataMap.put(hour.getIrslDateH().substring(0,8), hour.getDataCount());
+            }
+        }
+        List<Double> resultDataList = new ArrayList<>();
+        if (timeList != null && timeList.size() > 0) {
+            for (String time : timeList) {
+                resultDataList.add(dataMap.get(time));
+            }
+        }
+        return resultDataList;
+    }
+
+    private List<String> getTimeList(int dayBeyond) {
+        List<String> timeList = new ArrayList<String>();//横坐标，时间轴
+        for (int i = -dayBeyond; i <= 0; i++) {
+            if (timeList.size() == dayBeyond+1) {
+                break;
+            }
+            timeList.add(DateUtil.plusDays("yyyyMMdd", i)); //时间横坐标
+        }
+        return timeList;
     }
 }

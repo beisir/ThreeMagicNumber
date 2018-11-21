@@ -124,4 +124,42 @@ public class P4pOutcomeController {
         }
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @param flag  expend==>累计消耗信息  charge =>累计充值信息
+     * @throws Exception
+     */
+    @RequestMapping(value = "/column3d", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
+    public void column3D(HttpServletRequest request, HttpServletResponse response,@RequestParam String flag) throws Exception{
+        response.setContentType("application/json; charset=UTF-8");
+        Map<String,Object> _dataMap  = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            List<Integer> dataTypeList = new ArrayList<>();
+            if("expend".equals(flag)){
+                dataTypeList.add(DataType.P4PXIANJINEXPENDTOTAL.getType()); //现金消耗
+                dataTypeList.add(DataType.P4PFANDIANJINEXPENDTOTAL.getType()); //返点金
+                dataTypeList.add(DataType.P4PXUNIEXPENDTOTAL.getType());// 虚拟
+            }
+            if("charge".equals(flag)){
+                dataTypeList.add(DataType.P4PXIANJINCHARGETOTAL.getType());// 现金余额
+                dataTypeList.add(DataType.P4PFANDIANJINCHARGETOTAL.getType());// 返点金余额
+                dataTypeList.add(DataType.P4PXUNICHARGETOTAL.getType());// 虚拟余额
+            }
+            _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
+            _dataMap.put("errno",0);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (Exception e) {
+            _dataMap.put("errno",1);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+            logger.error("column3D,flag="+flag, e);
+        }
+    }
+
 }

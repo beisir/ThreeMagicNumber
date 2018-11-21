@@ -10,4 +10,5 @@ public interface P4pService {
     Map<String,Object> p4pFormula(List<Integer> typeList);
     Map<String,Object> priceDist(int type,String day);
     Map<String,Object> twoCircle(List<Integer> typeList,String day);
+    Map<String, Object> columd3D(List<Integer> typeList, int dayBeyond);
 }
