@@ -139,14 +139,14 @@ public class P4pOutcomeController {
         try {
             List<Integer> dataTypeList = new ArrayList<>();
             if("expend".equals(flag)){
-                dataTypeList.add(DataType.P4PXIANJINEXPENDTOTAL.getType()); //现金消耗
                 dataTypeList.add(DataType.P4PFANDIANJINEXPENDTOTAL.getType()); //返点金
                 dataTypeList.add(DataType.P4PXUNIEXPENDTOTAL.getType());// 虚拟
+                dataTypeList.add(DataType.P4PXIANJINEXPENDTOTAL.getType()); //现金消耗
             }
             if("charge".equals(flag)){
-                dataTypeList.add(DataType.P4PXIANJINCHARGETOTAL.getType());// 现金余额
                 dataTypeList.add(DataType.P4PFANDIANJINCHARGETOTAL.getType());// 返点金余额
                 dataTypeList.add(DataType.P4PXUNICHARGETOTAL.getType());// 虚拟余额
+                dataTypeList.add(DataType.P4PXIANJINCHARGETOTAL.getType());// 现金余额
             }
             _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
             _dataMap.put("errno",0);
