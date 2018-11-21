@@ -24,7 +24,7 @@ public enum DataType {
     YKHYUSER("行业", 353),
 
     /*互通宝的会员***/
-    P4PUSER("P4P会员",346),
+    P4PBALANCEUSER("P4P有余额会员",346),
     P4PDXUSER("直销",347),
     P4PQDUSER("渠道",348),
     P4PHYUSER("行业",349),
@@ -422,6 +422,40 @@ public enum DataType {
     P4P_CONSUMPTION_TOTAL("纯P4P消耗", 325),
     P4P_QWDT_HOUR("全网定投消耗",326),
     P4P_QWDT_DAY("全网定投消耗",327),
+/**互通宝**/
+    P4PXIANJINCHARGETOTAL("累计现金充值金额",354),
+    P4PFANDIANJINCHARGETOTAL("累计返点金充值金额",355),
+    P4PXUNICHARGETOTAL("累计虚拟充值金额",356),
+    P4PALLCHARGETOTAL("累计充值金额",357),
+
+
+    P4PXIANJINEXPENDTOTAL("累计现金消耗金额",358),
+    P4PFANDIANJINEXPENDTOTAL("累计返点金消耗金额",359),
+    P4PXUNIEXPENDTOTAL("累计虚拟消耗金额",360),
+    P4PALLEXPENDTOTAL("累计消耗金额",361),
+
+    P4PXIANJINBALANCE("现金余额",362),
+    P4PFANDIANJINBALANCE("返点金余额",363),
+    P4PXUNIBALANCE("虚拟余额",364),
+    P4PALLBALANCE("余额",365),
+
+    P4PUSER("会员数",366),
+    P4PNOBALANCEUSERS("无余额会员数",367),
+
+    P4PXIANJINBALANCEUSERS("仅现金余额会员数",368),
+    P4PFANDIANJINBALANCEUSERS("仅返点金余额会员数",369),
+    P4PXUNIBALANCEUSERS("仅虚拟余额会员数",370),
+    P4PBALANCEKEYUSERS("有余额开启关键词用户数",371),
+    P4PBALANCENOKEYUSERS("有余额未开启关键词用户数",372),
+
+
+    P4PBALANCEKEY("有余额开启关键词数",373),
+    P4PBALANCENOKEY("有余额未开启关键词数",374),
+    P4PAVGKEYS("互均开启关键数",375),
+    P4PTOP50KEY("top50消耗关键",376),  //单独存到一个表格里面
+
+    P4PPRICE("客单价",377),
+    P4PPRICEPERCENT("客单价分布指标",378),
 
     /*MIP站流量的信息，这些数据是从百度统计抓取过来的**/
     MIP_IP("MIP站IP",338),
