@@ -42,7 +42,7 @@
                             </div>
                         </div>
 
-                        <div class="panel-body tab-content mTop20">
+                        <!-- <div class="panel-body tab-content mTop20"> -->
                             <!-- <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5;">
                                 <div class="container-fluid">
                                     <div class="navbar-header">
@@ -57,6 +57,12 @@
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart1" :timermillisec="0" :service="service.chart3d" chartTitle="对比图"></chart-tendency>
                             </div> -->
 
+                        <!-- </div> -->
+
+                        <div class="panel-body tab-content mTop20">
+                            <div class="" style="width: 50%;float:left;">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pDailyChart" :timermillisec="0" :service="service.double"></chart-tendency>
+                            </div>
                         </div>
 
                     </div>
@@ -79,10 +85,7 @@ export default {
              */
             service: {
                 double: {
-                    url: '/dataweb/dist',
-                    params: {
-                        type: 378
-                    }
+                    url: '/dataweb/dist'
                 },
                 operate: {
                     url: '/dataweb/twocircle'
@@ -96,6 +99,30 @@ export default {
                 "客单价": "",
                 "消耗": "",
                 "销售额": ""
+            },
+
+            semicircleConfig: {
+                chart: {
+                    type: 'variablepie'
+                },
+                colors: ['#19c6Ed', '#FF7C4D', '#2BCC6B', '#C275DF','#aa4643', '#B5CA92', '#A47D7C'],
+                title: {
+                    text: '客单价分布占比'
+                },
+                plotOptions: {
+                    variablepie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                tooltip: {
+                    headerFormat: '',
+                    pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/><br/>占比: <b>{point.z}%</b>'
+                },
             }
         };
     },
@@ -131,29 +158,7 @@ export default {
          * @return {[type]}              [description]
          */
         _this.$refs.p4pWidenedChart.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions, {
-                chart: {
-                    type: 'variablepie'
-                },
-                colors: ['#19c6Ed', '#FF7C4D', '#2BCC6B', '#C275DF','#aa4643', '#B5CA92', '#A47D7C'],
-                title: {
-                    text: '客单价分布占比'
-                },
-                plotOptions: {
-            		variablepie: {
-            			allowPointSelect: true,
-            			cursor: 'pointer',
-            			dataLabels: {
-            				enabled: false
-            			},
-            			showInLegend: true
-            		}
-            	},
-                tooltip: {
-                    headerFormat: '',
-                    pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/><br/>占比: <b>{point.z}%</b>'
-                },
-            });
+            Object.assign(chartOptions, _this.semicircleConfig);
         });
         /**
          * [概况图->客单价分布占比]
@@ -197,13 +202,11 @@ export default {
         		data: _t.data
             }, false);
         });
-
-
-
-
+        /*-------------------------------------------------------------------------*/
 
         /**
          * [同心圆： 充值=余额+消耗 开始]
+         * [beforeRender    默认数据充值 = 消耗 + 余额]
          * @param  {[type]} chartOptions [description]
          * @return {[type]}              [description]
          */
@@ -227,23 +230,23 @@ export default {
             });
         });
         /**
-         * [监听图表组件 dataReady 事件]
+         * [同心圆： 缓存数据]
+         * [beforeRender    默认数据充值 = 消耗 + 余额]
+         * @param  {[type]} chartOptions [description]
+         * @return {[type]}              [description]
          */
         _this.$refs.p4pOperatedChart.$on('dataReady', function(data) {
             var _t = this;
-
-            /**
-             * [缓存数据]
-             */
             _t.data = data || {};
         });
-
         /**
-         * [监听图表组件 beforeRedraw 事件]
+         * [同心圆： 充值=余额+消耗 结束]
+         * [beforeRedraw    组装最后的数据]
+         * @param  {[type]} chartOptions [description]
+         * @return {[type]}              [description]
          */
         _this.$refs.p4pOperatedChart.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
-
             /**
              * [_data 获取缓存数据]
              */
@@ -252,7 +255,6 @@ export default {
              * [添加图表序列数据]
              */
             chartEntity.addSeries({
-        		name: '第一比例',
         		data: browserData,
         		size: '60%',
         		dataLabels: {
@@ -264,7 +266,6 @@ export default {
         		}
             }, false);
             chartEntity.addSeries({
-        		name: '第二比例',
         		data: versionsData,
         		size: '80%',
         		innerSize: '60%',
@@ -279,6 +280,7 @@ export default {
             }, false);
         });
 
+        /*-------------------------------------------------------------------------*/
 
         //
         //
@@ -371,6 +373,39 @@ export default {
         //
         // });
 
+
+
+        _this.$refs.p4pDailyChart.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.semicircleConfig, {
+                title: {
+                    text: '日均消耗分布占比'
+                }
+            });
+        });
+        _this.$refs.p4pDailyChart.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    type: 379
+                }
+            });
+        });
+        _this.$refs.p4pDailyChart.$on('dataReady', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        _this.$refs.p4pDailyChart.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.addSeries({
+                minPointSize: 10,
+        		innerSize: '20%',
+        		zMin: 0,
+        		name: 'countries',
+        		data: _t.data
+            }, false);
+        });
 
     },
 

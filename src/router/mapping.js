@@ -21,6 +21,14 @@ const routeConfig = [{
             });
         }
     }, {
+        name: '产品线数据',
+        path: '/datapanel/p4pOperatedata',
+        component: resolve => {
+            require.ensure(['components/datapanel-p4pOperatedata.vue'], () => {
+                resolve(require('components/datapanel-p4pOperatedata.vue'))
+            })
+        }
+    }, {
         name: '运营数据',
         path: '/datapanel/operation',
         component: resolve => {
@@ -52,14 +60,6 @@ const routeConfig = [{
             require.ensure(['components/datapanel-member.vue'], () => {
                 resolve(require('components/datapanel-member.vue'));
             });
-        }
-    }, {
-        name: 'P4P运营数据',
-        path: '/datapanel/p4pOperatedata',
-        component: resolve => {
-            require.ensure(['components/datapanel-p4pOperatedata.vue'], () => {
-                resolve(require('components/datapanel-p4pOperatedata.vue'))
-            })
         }
     },
 
