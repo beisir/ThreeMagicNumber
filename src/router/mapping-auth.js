@@ -351,10 +351,16 @@ export default {
 			desc: '上传文件权限管理编号'
 		}
 	},
-	'/datapanel/operatedata': {
-		"ID": {
+	// '/datapanel/operatedata': {
+	// 	"ID": {
+	// 		id: 81,
+	// 		desc: '运营数据'
+	// 	}
+	// },
+    '/datapanel/p4pOperatedata': {
+        "ID": {
 			id: 81,
-			desc: '运营数据'
+			desc: '产品线数据'
 		}
-	}
+    }
 };
