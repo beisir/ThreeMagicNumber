@@ -304,7 +304,7 @@ public class MainController {
         map.put("yesterDay", warnDate);
         List<Integer>  feeUserNumList = new ArrayList<Integer>();
 
-        feeUserNumList.add(DataType.P4PUSER.getType());
+        feeUserNumList.add(DataType.P4PBALANCEUSER.getType());
         feeUserNumList.add(DataType.P4PDXUSER.getType());
         feeUserNumList.add(DataType.P4PQDUSER.getType());
         feeUserNumList.add(DataType.P4PHYUSER.getType());
