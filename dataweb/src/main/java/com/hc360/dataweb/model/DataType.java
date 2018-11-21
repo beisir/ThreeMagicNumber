@@ -455,6 +455,7 @@ public enum DataType {
     P4PTOP50KEY("top50消耗关键",376),  //单独存到一个表格里面
 
     P4PPRICE("客单价",377),
+    P4PPRICEPERCENT("客单价分布指标",378),
 
     /*MIP站流量的信息，这些数据是从百度统计抓取过来的**/
     MIP_IP("MIP站IP",338),
