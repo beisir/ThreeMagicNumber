@@ -110,7 +110,7 @@ public class P4pServiceImpl implements P4pService {
             drillDownBean = new DrillDownBean("无余额",new String[]{"无余额"} ,new Object[]{
                     formartData(selectResult.get(DataType.P4PNOBALANCEUSERS.getType()), all)
             });
-            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PNOBALANCEUSERS.getType()), all), 1, drillDownBean);
+            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PNOBALANCEUSERS.getType()), all), 2, drillDownBean);
             twoCircleBeans.add(twoCircleBean);
         }
         resultMap.put("circleData", twoCircleBeans);
