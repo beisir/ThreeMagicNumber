@@ -11,4 +11,5 @@ public interface P4pService {
     Map<String,Object> priceDist(int type,String day);
     Map<String,Object> twoCircle(List<Integer> typeList,String day);
     Map<String, Object> columd3D(List<Integer> typeList, int dayBeyond);
+    void  twoCircleUsers(List<Integer> typeList, String day , Map<String, Object> resultMap);
 }

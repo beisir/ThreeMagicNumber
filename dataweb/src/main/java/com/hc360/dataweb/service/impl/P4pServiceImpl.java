@@ -85,6 +85,37 @@ public class P4pServiceImpl implements P4pService {
         return resultMap;
     }
 
+    public void  twoCircleUsers(List<Integer> typeList, String day , Map<String, Object> resultMap) {
+        Map<String, Object> paramMap = new HashMap<>();
+
+        paramMap.put("list", typeList);
+        paramMap.put("day", day);
+        paramMap.put("preday", day);
+        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
+        List<TwoCircleBean> twoCircleBeans = new ArrayList<>();
+        TwoCircleBean twoCircleBean = null;
+        DrillDownBean drillDownBean = null;
+        if(resultList!=null && resultList.size()>0){
+            Map<Integer, Double> selectResult = new HashMap<>();
+            for (RealTimeStaticDoubleHour hour : resultList) {
+                selectResult.put(hour.getDataType(), hour.getDataCount());
+            }
+            Double all = selectResult.get(DataType.P4PBALANCEUSER.getType()) + selectResult.get(DataType.P4PNOBALANCEUSERS.getType());
+            drillDownBean = new DrillDownBean("有余额",new String[]{"开启关键词","未开启关键词"} ,new Object[]{
+                    formartData(selectResult.get(DataType.P4PBALANCEKEYUSERS.getType()), all),
+                    formartData(selectResult.get(DataType.P4PBALANCENOKEYUSERS.getType()), all)
+            });
+            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PBALANCEUSER.getType()), all), 1, drillDownBean);
+            twoCircleBeans.add(twoCircleBean);
+            drillDownBean = new DrillDownBean("无余额",new String[]{"无余额"} ,new Object[]{
+                    formartData(selectResult.get(DataType.P4PNOBALANCEUSERS.getType()), all)
+            });
+            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PNOBALANCEUSERS.getType()), all), 1, drillDownBean);
+            twoCircleBeans.add(twoCircleBean);
+        }
+        resultMap.put("circleData", twoCircleBeans);
+    }
+
     public Map<String, Object> twoCircle(List<Integer> typeList, String day) {
         Map<String, Object> resultMap = new HashMap<>();
         Map<String, Object> paramMap = new HashMap<>();

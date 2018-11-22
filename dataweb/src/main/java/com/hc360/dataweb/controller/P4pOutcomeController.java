@@ -199,4 +199,45 @@ public class P4pOutcomeController {
             logger.error("column3D,flag="+flag, e);
         }
     }
+
+    /**
+     * 会员情况，混合图
+     * @param request
+     * @param response
+     * @param flag
+     * @throws Exception
+     */
+    @RequestMapping(value = "/p4pcombine", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
+    public void combine(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setContentType("application/json; charset=UTF-8");
+        Map<String,Object> _dataMap  = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            List<Integer> dataTypeList = new ArrayList<>();
+            dataTypeList.add(DataType.P4PXIANJINBALANCEUSERS.getType()); //仅现金
+            dataTypeList.add(DataType.P4PFANDIANJINBALANCEUSERS.getType());// 仅返点金
+            dataTypeList.add(DataType.P4PXUNIBALANCEUSERS.getType());// 仅虚拟
+            dataTypeList.add(DataType.P4PBALANCEUSER.getType());// 都有
+
+            _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
+//同心圆
+            dataTypeList = new ArrayList<>();
+            dataTypeList.add(DataType.P4PBALANCEUSER.getType());//有余额
+            dataTypeList.add(DataType.P4PNOBALANCEUSERS.getType()); //无余额
+            dataTypeList.add(DataType.P4PBALANCEKEYUSERS.getType()); //有余额且开启关键词
+            dataTypeList.add(DataType.P4PBALANCENOKEYUSERS.getType());// 有余额且未开启关键词
+             p4pServiceImpl.twoCircleUsers(dataTypeList, ControllerDateUtil.getToday(), _dataMap);
+
+            _dataMap.put("errno",0);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (Exception e) {
+            _dataMap.put("errno",1);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+            logger.error("combine，", e);
+        }
+    }
 }
