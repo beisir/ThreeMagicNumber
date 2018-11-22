@@ -42,8 +42,8 @@
                             </div>
                         </div>
 
-                        <!-- <div class="panel-body tab-content mTop20"> -->
-                            <!-- <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5;">
+                        <div class="panel-body tab-content mTop20">
+                            <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5;">
                                 <div class="container-fluid">
                                     <div class="navbar-header">
                                         <span class="navbar-brand" style="font-size:16px;">充值情况</span>
@@ -52,12 +52,36 @@
                             </nav>
                             <div class="" style="width: 50%;float:left;border-right:solid #ccc 1px;">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pColumn3Dchart" :timermillisec="0" :service="service.chart3d" :resetYAxisBeforeRedraw="false" chartTitle=""></chart-tendency>
-                            </div> -->
-                            <!-- <div class="" style="width: 50%;float:left;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart1" :timermillisec="0" :service="service.chart3d" chartTitle="对比图"></chart-tendency>
-                            </div> -->
+                            </div>
+                            <div class="" style="width: 50%;float:left;">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart1" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
+                            </div>
+                        </div>
 
-                        <!-- </div> -->
+
+                        <div class="panel-body tab-content mTop20">
+                            <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5;">
+                                <div class="container-fluid">
+                                    <div class="navbar-header">
+                                        <span class="navbar-brand" style="font-size:16px;">消耗情况</span>
+                                    </div>
+                                </div>
+                            </nav>
+                            <div class="" style="width: 50%;float:left;border-right:solid #ccc 1px;">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pColumn3Dchart2" :timermillisec="0" :service="service.chart3d" :resetYAxisBeforeRedraw="false" chartTitle=""></chart-tendency>
+                            </div>
+                            <div class="" style="width: 50%;float:left;height: 450px;">
+                                <!-- <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart1" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency> -->
+                            </div>
+
+                            <div class="" style="width: 50%;float:left;">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart2" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
+                            </div>
+
+                        </div>
+
+
+
 
                         <div class="panel-body tab-content mTop20">
                             <div class="" style="width: 50%;float:left;">
@@ -75,6 +99,7 @@
 <script>
 require('highcharts/highcharts-3d')(Highcharts);
 require('highcharts/modules/variable-pie')(Highcharts);
+require('highcharts/modules/series-label')(Highcharts);
 import chartTendency from './chart-tendency.vue'
 export default {
     data () {
@@ -89,6 +114,12 @@ export default {
                 },
                 operate: {
                     url: '/dataweb/twocircle'
+                },
+                chart3d: {
+                    url: '/dataweb/column3d'
+                },
+                p4pline: {
+                    url: '/dataweb/p4pline'
                 }
             },
             // 顶层p4p运营数据
@@ -123,6 +154,60 @@ export default {
                     headerFormat: '',
                     pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/><br/>占比: <b>{point.z}%</b>'
                 },
+            },
+            column3Dconfig: {
+                chart: {
+                    type: 'column',
+                    options3d: {
+                        enabled: true,
+                        alpha: 15,
+                        beta: 15,
+                        viewDistance: 25,
+                        depth: 40
+                    },
+                    marginTop: 40,
+                    marginRight: 0,
+                    marginLeft: 40
+                },
+                title: {
+                    text: '累计充值情况'
+                },
+                colors: ['#7cb5ec', '#434348', '#90ed7d', '#f7a35c'],
+                yAxis: {
+
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        text: '金额',
+                        x: -40
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.key}</b><br>',
+                    pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: {point.y} 元'
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        depth: 40
+                    }
+                },
+                series: []
+            },
+            p4pLineConifg: {
+                title: {
+            		text: '销售额趋势'
+            	},
+            	yAxis: {
+            		title: {
+            			text: '客单均价'
+            		}
+            	},
+            	legend: {
+            		layout: 'vertical',
+            		align: 'right',
+            		verticalAlign: 'middle'
+            	}
             }
         };
     },
@@ -282,98 +367,161 @@ export default {
 
         /*-------------------------------------------------------------------------*/
 
-        //
-        //
-        // _this.$refs.p4pColumn3Dchart.$on('beforeRender', function(chartOptions) {
-        //     Object.assign(chartOptions, {
-        //         chart: {
-        //     		type: 'column',
-        //     		options3d: {
-        //     			enabled: true,
-        //     			alpha: 15,
-        //     			beta: 15,
-        //     			viewDistance: 25,
-        //     			depth: 40
-        //     		},
-        //     		marginTop: 80,
-        //     		marginRight: 40
-        //     	},
-        //     	title: {
-        //     		text: '以性别划分的水果消费总量'
-        //     	},
-        //     	xAxis: {
-        //     		categories: ['苹果', '橘子', '梨', '葡萄']
-        //     	},
-        //     	yAxis: {
-        //     		allowDecimals: false,
-        //     		min: 0,
-        //     		title: {
-        //     			text: '水果数量'
-        //     		}
-        //     	},
-        //     	tooltip: {
-        //     		headerFormat: '<b>{point.key}</b><br>',
-        //     		pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: {point.y} / {point.stackTotal}'
-        //     	},
-        //     	plotOptions: {
-        //     		column: {
-        //     			stacking: 'normal',
-        //     			depth: 40
-        //     		}
-        //     	},
-        //         series: []
-        //     });
-        // });
-        //
-        // _this.$refs.p4pColumn3Dchart.$on('dataReady', function(data) {
-        //     var _t = this;
-        //
-        //     /**
-        //      * [缓存数据]
-        //      */
-        //     _t.data = data || {};
-        // });
-        //
-        // _this.$refs.p4pColumn3Dchart.$on('beforeRedraw', function(chartEntity) {
-        //     var _t = this;
-        //     /**
-        //      * [_data 获取缓存数据]
-        //      */
-        //     // // var _data = _this.resolveData(_t.data || {});
-        //     // let {browserData, versionsData} = _this.filterDoubleData();
-        //     // /**
-        //     //  * [添加图表序列数据]
-        //     //  */
-        //     // console.log(chartEntity.series);
-        //     chartEntity.addSeries({
-        //         name: '小男',
-        //         data: [5, 3, 4, 7, 2],
-        //         stack: 'males'
-        //     });
-        //     //
-        //     //
-        //     chartEntity.addSeries({
-        //         name: '小王',
-        //         data: [3, 4, 4, 2, 5],
-        //         stack: 'male'
-        //     });
-        //
-        //     chartEntity.addSeries({
-        //         name: '小彭',
-        //         data: [2, 5, 6, 2, 1],
-        //         stack: 'female'
-        //     });
-        //     chartEntity.addSeries({
-        //         name: '小潘',
-        //         data: [3, 0, 4, 4, 3],
-        //         stack: 'female'
-        //     });
-        //
-        //
-        //
-        // });
 
 
+        _this.$refs.p4pColumn3Dchart.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.column3Dconfig);
+        });
+        _this.$refs.p4pColumn3Dchart.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    flag: 'charge'
+                }
+            });
+        });
+        _this.$refs.p4pColumn3Dchart.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        _this.$refs.p4pColumn3Dchart.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            /**
+             * [_data 获取缓存数据]
+             */
+            chartEntity.xAxis[0].update({
+                categories: _t.data.time
+            }, false);
+            _t.data.data.forEach((columnItem, columnIndex) => {
+                chartEntity.addSeries({
+                    name: columnItem.name,
+                    data: columnItem.data,
+                    stack: 'female'
+                });
+            })
+        });
+        /*-------------------------------------------------------------------------*/
+
+        _this.$refs.p4pLineChart1.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.p4pLineConifg);
+        });
+        _this.$refs.p4pLineChart1.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    flag: 'sale'
+                }
+            });
+        });
+        _this.$refs.p4pLineChart1.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        _this.$refs.p4pLineChart1.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.xAxis[0].update({
+                categories: _t.data.time
+            }, false);
+            _t.data.data.forEach((lineItem, lineIndex) => {
+                chartEntity.addSeries({
+            		name: lineItem.name,
+            		data: lineItem.data
+                }, false);
+            });
+        });
+
+        _this.$refs.p4pColumn3Dchart2.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.column3Dconfig);
+        });
+        _this.$refs.p4pColumn3Dchart2.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    flag: 'expend'
+                }
+            });
+        });
+        _this.$refs.p4pColumn3Dchart2.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        _this.$refs.p4pColumn3Dchart2.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            /**
+             * [_data 获取缓存数据]
+             */
+            chartEntity.xAxis[0].update({
+                categories: _t.data.time
+            }, false);
+            _t.data.data.forEach((columnItem, columnIndex) => {
+                chartEntity.addSeries({
+                    name: columnItem.name,
+                    data: columnItem.data,
+                    stack: 'female'
+                });
+            })
+        });
+        /*-------------------------------------------------------------------------*/
+
+
+
+        _this.$refs.p4pLineChart2.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.p4pLineConifg, {
+                title: {
+            		text: null
+            	},
+                yAxis: {
+            		title: {
+            			text: '关键词数'
+            		}
+            	}
+            });
+        });
+        _this.$refs.p4pLineChart2.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    flag: 'sale'
+                }
+            });
+        });
+        _this.$refs.p4pLineChart2.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        _this.$refs.p4pLineChart2.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.xAxis[0].update({
+                categories: _t.data.time
+            }, false);
+            _t.data.data.forEach((lineItem, lineIndex) => {
+                chartEntity.addSeries({
+            		name: lineItem.name,
+            		data: lineItem.data
+                }, false);
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+        /*-------------------------------------------------------------------------*/
 
         _this.$refs.p4pDailyChart.$on('beforeRender', function(chartOptions) {
             Object.assign(chartOptions, _this.semicircleConfig, {
@@ -406,7 +554,7 @@ export default {
         		data: _t.data
             }, false);
         });
-
+        /*-------------------------------------------------------------------------*/
     },
 
     methods: {
