@@ -139,14 +139,14 @@ public class P4pOutcomeController {
         try {
             List<Integer> dataTypeList = new ArrayList<>();
             if("expend".equals(flag)){
-                dataTypeList.add(DataType.P4PXIANJINEXPENDTOTAL.getType()); //现金消耗
                 dataTypeList.add(DataType.P4PFANDIANJINEXPENDTOTAL.getType()); //返点金
                 dataTypeList.add(DataType.P4PXUNIEXPENDTOTAL.getType());// 虚拟
+                dataTypeList.add(DataType.P4PXIANJINEXPENDTOTAL.getType()); //现金消耗
             }
             if("charge".equals(flag)){
-                dataTypeList.add(DataType.P4PXIANJINCHARGETOTAL.getType());// 现金余额
                 dataTypeList.add(DataType.P4PFANDIANJINCHARGETOTAL.getType());// 返点金余额
                 dataTypeList.add(DataType.P4PXUNICHARGETOTAL.getType());// 虚拟余额
+                dataTypeList.add(DataType.P4PXIANJINCHARGETOTAL.getType());// 现金余额
             }
             _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
             _dataMap.put("errno",0);
@@ -162,4 +162,33 @@ public class P4pOutcomeController {
         }
     }
 
+    @RequestMapping(value = "/p4pline", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
+    public void line(HttpServletRequest request, HttpServletResponse response,@RequestParam String flag) throws Exception{
+        response.setContentType("application/json; charset=UTF-8");
+        Map<String,Object> _dataMap  = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            List<Integer> dataTypeList = new ArrayList<>();
+            if("sale".equals(flag)){
+                dataTypeList.add(DataType.P4PPRICE.getType()); //客单价
+                dataTypeList.add(DataType.P4PUSER.getType());// 会员数
+            }
+            if("key".equals(flag)){
+                dataTypeList.add(DataType.P4PAVGKEYS.getType());// 人均关键词数
+                dataTypeList.add(DataType.P4PBALANCEKEY.getType());// 总关键词数
+                dataTypeList.add(DataType.P4PBALANCENOKEY.getType());// 无效关键词数
+            }
+            _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
+            _dataMap.put("errno",0);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (Exception e) {
+            _dataMap.put("errno",1);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+            logger.error("column3D,flag="+flag, e);
+        }
+    }
 }
