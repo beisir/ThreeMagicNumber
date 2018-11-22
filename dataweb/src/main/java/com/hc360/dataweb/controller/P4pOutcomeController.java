@@ -63,6 +63,7 @@ public class P4pOutcomeController {
     /**
      * 客单价分布 378
      * 日消耗 379
+     * 关键词云  376
      * @param request
      * @param response
      * @throws Exception
@@ -139,13 +140,13 @@ public class P4pOutcomeController {
         try {
             List<Integer> dataTypeList = new ArrayList<>();
             if("expend".equals(flag)){
-                dataTypeList.add(DataType.P4PFANDIANJINEXPENDTOTAL.getType()); //返点金
                 dataTypeList.add(DataType.P4PXUNIEXPENDTOTAL.getType());// 虚拟
+                dataTypeList.add(DataType.P4PFANDIANJINEXPENDTOTAL.getType()); //返点金
                 dataTypeList.add(DataType.P4PXIANJINEXPENDTOTAL.getType()); //现金消耗
             }
             if("charge".equals(flag)){
-                dataTypeList.add(DataType.P4PFANDIANJINCHARGETOTAL.getType());// 返点金余额
                 dataTypeList.add(DataType.P4PXUNICHARGETOTAL.getType());// 虚拟余额
+                dataTypeList.add(DataType.P4PFANDIANJINCHARGETOTAL.getType());// 返点金余额
                 dataTypeList.add(DataType.P4PXIANJINCHARGETOTAL.getType());// 现金余额
             }
             _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
@@ -162,6 +163,13 @@ public class P4pOutcomeController {
         }
     }
 
+    /**
+     * 折线图
+     * @param request
+     * @param response
+     * @param flag sale是销售额折线图， key是关键词折线图
+     * @throws Exception
+     */
     @RequestMapping(value = "/p4pline", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
     public void line(HttpServletRequest request, HttpServletResponse response,@RequestParam String flag) throws Exception{
         response.setContentType("application/json; charset=UTF-8");
