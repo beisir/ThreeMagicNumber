@@ -32,29 +32,31 @@ public class P4pServiceImpl implements P4pService {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("list", typeList);
         paramMap.put("day", ControllerDateUtil.getToday());
-        List<RealTimeStaticHour> resultList = realTimeStaticHourMapper.findAllByDay(paramMap);
+        paramMap.put("preday", ControllerDateUtil.getToday());
+        DecimalFormat threeNumDf = new DecimalFormat(",###.00");//每三位分隔一下
+        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
         if (resultList != null && resultList.size() > 0) {
             List<MainBean> list = new ArrayList<>();
             MainBean mainBean = null;
-            for (RealTimeStaticHour hour : resultList) {
+            for (RealTimeStaticDoubleHour hour : resultList) {
 
                 if (hour.getDataType().intValue() == DataType.P4PPRICE.getType()) {
-                    mainBean = new MainBean("客单价", hour.getDataCount() + "");
+                    mainBean = new MainBean("客单价", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PUSER.getType()) {
-                    mainBean = new MainBean("会员数", hour.getDataCount() + "");
+                    mainBean = new MainBean("会员数", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PXIANJINCHARGETOTAL.getType()) {
-                    mainBean = new MainBean("销售额", hour.getDataCount() + "");
+                    mainBean = new MainBean("销售额", threeNumDf.format(hour.getDataCount() ));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PALLEXPENDTOTAL.getType()) {
-                    mainBean = new MainBean("消耗", hour.getDataCount() + "");
+                    mainBean = new MainBean("消耗",threeNumDf.format( hour.getDataCount() ));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PALLBALANCE.getType()) {
-                    mainBean = new MainBean("余额", hour.getDataCount() + "");
+                    mainBean = new MainBean("余额", threeNumDf.format(hour.getDataCount() ));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PALLCHARGETOTAL.getType()) {
-                    mainBean = new MainBean("充值", hour.getDataCount() + "");
+                    mainBean = new MainBean("充值", threeNumDf.format(hour.getDataCount() ));
                     list.add(mainBean);
                 }
             }
@@ -83,6 +85,37 @@ public class P4pServiceImpl implements P4pService {
         resultMap.put("data", list);
 
         return resultMap;
+    }
+
+    public void  twoCircleUsers(List<Integer> typeList, String day , Map<String, Object> resultMap) {
+        Map<String, Object> paramMap = new HashMap<>();
+
+        paramMap.put("list", typeList);
+        paramMap.put("day", day);
+        paramMap.put("preday", day);
+        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
+        List<TwoCircleBean> twoCircleBeans = new ArrayList<>();
+        TwoCircleBean twoCircleBean = null;
+        DrillDownBean drillDownBean = null;
+        if(resultList!=null && resultList.size()>0){
+            Map<Integer, Double> selectResult = new HashMap<>();
+            for (RealTimeStaticDoubleHour hour : resultList) {
+                selectResult.put(hour.getDataType(), hour.getDataCount());
+            }
+            Double all = selectResult.get(DataType.P4PBALANCEUSER.getType()) + selectResult.get(DataType.P4PNOBALANCEUSERS.getType());
+            drillDownBean = new DrillDownBean("有余额",new String[]{"开启关键词","未开启关键词"} ,new Object[]{
+                    formartData(selectResult.get(DataType.P4PBALANCEKEYUSERS.getType()), all),
+                    formartData(selectResult.get(DataType.P4PBALANCENOKEYUSERS.getType()), all)
+            });
+            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PBALANCEUSER.getType()), all), 1, drillDownBean);
+            twoCircleBeans.add(twoCircleBean);
+            drillDownBean = new DrillDownBean("无余额",new String[]{"无余额"} ,new Object[]{
+                    formartData(selectResult.get(DataType.P4PNOBALANCEUSERS.getType()), all)
+            });
+            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PNOBALANCEUSERS.getType()), all), 2, drillDownBean);
+            twoCircleBeans.add(twoCircleBean);
+        }
+        resultMap.put("circleData", twoCircleBeans);
     }
 
     public Map<String, Object> twoCircle(List<Integer> typeList, String day) {

@@ -239,7 +239,7 @@ public class MainController {
             }
 
             tmpFightCapacityOneBeanList = new ArrayList<FightCapacityOneBean>();
-            FightCapacityBean fightDxCapacityBean = new FightCapacityBean("营销中心");
+            FightCapacityBean fightDxCapacityBean = new FightCapacityBean("直销");
             //电销新兵连人数人数
             if (dataMap.get(DataType.DX_RECRUIT_NOT_POSITIVE.getName()) != null) {
                 tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("新兵连人数", threeNumDf.format(dataMap.get(DataType.DX_RECRUIT_NOT_POSITIVE.getName())), 1));
@@ -292,7 +292,7 @@ public class MainController {
             }
             //电销总人数
             if (dataMap.get(DataType.DX_ALL_COUNT.getName()) != null) {
-                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("营销中心总人数", threeNumDf.format(dataMap.get(DataType.DX_ALL_COUNT.getName())), 1));
+                tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("直销总人数", threeNumDf.format(dataMap.get(DataType.DX_ALL_COUNT.getName())), 1));
             } else {
                 tmpFightCapacityOneBeanList.add(new FightCapacityOneBean("营销中心总人数", "0", 1));
                 EmailUtil.warnEveryOne(warnDate + "-" + "营销中心总人数--数据为空。");
