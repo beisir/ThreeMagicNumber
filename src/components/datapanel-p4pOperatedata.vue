@@ -157,7 +157,7 @@ export default {
                         cursor: 'pointer',
                         dataLabels: {
             				enabled: true,
-            				distance: -50,
+            				distance: 20,
                             formatter: function () {
             					return (this.y / 100) + '%';
             				},
