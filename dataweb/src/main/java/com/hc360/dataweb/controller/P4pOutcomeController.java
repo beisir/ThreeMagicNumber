@@ -129,7 +129,7 @@ public class P4pOutcomeController {
      *
      * @param request
      * @param response
-     * @param flag  expend==>累计消耗信息  charge =>累计充值信息
+     * @param flag  expend==>累计消耗信息  charge =>累计充值信息 balance=>余额情况
      * @throws Exception
      */
     @RequestMapping(value = "/column3d", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
@@ -145,9 +145,14 @@ public class P4pOutcomeController {
                 dataTypeList.add(DataType.P4PXIANJINEXPENDTOTAL.getType()); //现金消耗
             }
             if("charge".equals(flag)){
-                dataTypeList.add(DataType.P4PXUNICHARGETOTAL.getType());// 虚拟余额
-                dataTypeList.add(DataType.P4PFANDIANJINCHARGETOTAL.getType());// 返点金余额
-                dataTypeList.add(DataType.P4PXIANJINCHARGETOTAL.getType());// 现金余额
+                dataTypeList.add(DataType.P4PXUNICHARGETOTAL.getType());// 虚拟充值
+                dataTypeList.add(DataType.P4PFANDIANJINCHARGETOTAL.getType());// 返点金充值
+                dataTypeList.add(DataType.P4PXIANJINCHARGETOTAL.getType());// 现金充值
+            }
+            if("balance".equals(flag)){
+                dataTypeList.add(DataType.P4PXUNIBALANCE.getType());// 虚拟余额
+                dataTypeList.add(DataType.P4PFANDIANJINBALANCE.getType());// 返点金余额
+                dataTypeList.add(DataType.P4PXIANJINBALANCE.getType());// 现金余额
             }
             _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
             _dataMap.put("errno",0);
@@ -213,11 +218,10 @@ public class P4pOutcomeController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             List<Integer> dataTypeList = new ArrayList<>();
+            dataTypeList.add(DataType.P4PBALANCEUSER.getType());// 都有
             dataTypeList.add(DataType.P4PXIANJINBALANCEUSERS.getType()); //仅现金
             dataTypeList.add(DataType.P4PFANDIANJINBALANCEUSERS.getType());// 仅返点金
             dataTypeList.add(DataType.P4PXUNIBALANCEUSERS.getType());// 仅虚拟
-            dataTypeList.add(DataType.P4PBALANCEUSER.getType());// 都有
-
             _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
 //同心圆
             dataTypeList = new ArrayList<>();
