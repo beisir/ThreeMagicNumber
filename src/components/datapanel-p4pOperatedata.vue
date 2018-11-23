@@ -18,9 +18,9 @@
                                 <div class="salesVolume"><span>销售额：</span><p>{{formulaData["销售额"]}}万</p></div>
                             </div>
                             <div class="countCon countCon2">
-                                <div class="unitPrice"><span>充值：</span><p>{{formulaData["充值"]}}元</p></div>
+                                <div class="unitPrice"><span>余额：</span><p>{{formulaData["余额"]}}元</p></div>
                                 <div class="memberNum"><span><em class="jiaIco"></em>消耗：</span><p>{{formulaData["消耗"]}}元</p></div>
-                                <div class="salesVolume"><span>余额：</span><p>{{formulaData["余额"]}}元</p></div>
+                                <div class="salesVolume"><span>充值：</span><p>{{formulaData["充值"]}}元</p></div>
                             </div>
                         </div>
 
@@ -70,12 +70,16 @@
                             <div class="" style="width: 50%;float:left;border-right:solid #ccc 1px;">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pColumn3Dchart2" :timermillisec="0" :service="service.chart3d" :resetYAxisBeforeRedraw="false" chartTitle=""></chart-tendency>
                             </div>
-                            <div class="" style="width: 50%;float:left;height: 450px;">
-                                <!-- <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart1" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency> -->
+                            <div class="" style="width: 50%;float:left;">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pcombineChart" :timermillisec="0" :service="service.p4pcombine" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
+                            </div>
+
+                            <div class="" style="width: 50%;float:left;border-right:solid #ccc 1px;">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart2" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
                             </div>
 
                             <div class="" style="width: 50%;float:left;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart2" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart" :timermillisec="0" :service="service.double" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
                             </div>
 
                         </div>
@@ -100,6 +104,8 @@
 require('highcharts/highcharts-3d')(Highcharts);
 require('highcharts/modules/variable-pie')(Highcharts);
 require('highcharts/modules/series-label')(Highcharts);
+require('highcharts/modules/oldie')(Highcharts);
+require('highcharts/modules/wordcloud')(Highcharts);
 import chartTendency from './chart-tendency.vue'
 export default {
     data () {
@@ -120,6 +126,9 @@ export default {
                 },
                 p4pline: {
                     url: '/dataweb/p4pline'
+                },
+                p4pcombine: {
+                    url: '/dataweb/p4pcombine'
                 }
             },
             // 顶层p4p运营数据
@@ -301,12 +310,17 @@ export default {
             		type: 'pie'
             	},
             	title: {  // 主标题
-            		text: '充值 = 消耗 + 余额'
+            		text: '余额 + 消耗 = 充值'
             	},
             	plotOptions: {
             		pie: {
             			shadow: false,
-            			center: ['50%', '50%']
+            			center: ['50%', '50%'],
+                        allowPointSelect: true,
+            			cursor: 'pointer',
+            			dataLabels: {
+            				enabled: true
+            			}
             		}
             	},
             	tooltip: {
@@ -342,6 +356,7 @@ export default {
             chartEntity.addSeries({
         		data: browserData,
         		size: '60%',
+                name: '占比',
         		dataLabels: {
         			formatter: function () {
         				return this.y > 5 ? this.point.name : null;
@@ -353,10 +368,10 @@ export default {
             chartEntity.addSeries({
         		data: versionsData,
         		size: '80%',
+                name: '占比',
         		innerSize: '60%',
         		dataLabels: {
         			formatter: function () {
-        				// display only if larger than 1
         				return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
         					this.y : null;
         			}
@@ -471,6 +486,99 @@ export default {
 
 
 
+        /*混合图*/
+        _this.$refs.p4pcombineChart.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, {
+                title: {
+            		text: ''
+            	},
+                yAxis: {
+            		title: {
+            			text: '会员数'
+            		}
+            	},
+                plotOptions: {
+            		series: {
+            			stacking: 'normal'
+            		},
+            		pie: {
+            			allowPointSelect: true,
+            			cursor: 'pointer',
+            			dataLabels: {
+            				enabled: false
+            			}
+            		}
+            	}
+            });
+        });
+
+        _this.$refs.p4pcombineChart.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+
+        _this.$refs.p4pcombineChart.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.xAxis[0].categories = _t.data.time;
+            _t.data.data.forEach((combineItem, combineIndex) => {
+                chartEntity.addSeries({
+                    type: 'spline',
+                    name: combineItem.name,
+                    data: combineItem.data
+                })
+            })
+
+            let {browserData, versionsData} = _this.filterDoubleData(_t.data.circleData);
+            console.log(browserData)
+            /**
+             * [添加图表序列数据]
+             */
+            chartEntity.addSeries({
+        		type: 'pie',
+        		name: '有余额',
+        		data: browserData,
+        		center: [80, 60],
+                dataLabels: {
+        			formatter: function () {
+        				return this.y > 5 ? this.point.name : null;
+        			},
+        			color: '#ffffff',
+        			distance: -30
+        		},
+        		size: '30%'
+            }, false);
+            chartEntity.addSeries({
+                type: 'pie',
+         		name: '无余额',
+         		data: versionsData,
+         		center: [80, 60],
+                dataLabels: {
+        			formatter: function () {
+        				return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+        					this.y : null;
+        			}
+        		},
+        		id: 'versions',
+         		size: '30%',
+         		innerSize: '50%'
+            }, false);
+
+        });
+
+
+
+
+
+
+
+        /**
+         * [第二个折线图]
+         * @param  {[type]} chartOptions [description]
+         * @return {[type]}              [description]
+         */
         _this.$refs.p4pLineChart2.$on('beforeRender', function(chartOptions) {
             Object.assign(chartOptions, _this.p4pLineConifg, {
                 title: {
@@ -486,7 +594,7 @@ export default {
         _this.$refs.p4pLineChart2.$on('beforeGetData', function(params) {
             Object.assign(params, {
                 params: {
-                    flag: 'sale'
+                    flag: 'key'
                 }
             });
         });
@@ -511,14 +619,42 @@ export default {
         });
 
 
+        /**
+         * [top50消耗词图 词图云]
+         * @param  {[type]} chartOptions [description]
+         * @return {[type]}              [description]
+         */
+        _this.$refs.wordCloudChart.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.p4pLineConifg, {
+            	title: {
+            		text: 'top50消耗词图'
+            	}
+            });
+        });
+        _this.$refs.wordCloudChart.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    type: '376'
+                }
+            });
+        });
+        _this.$refs.wordCloudChart.$on('afterGetData', function(data) {
 
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        _this.$refs.wordCloudChart.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            var resultData = _this.filterWordCloudData(_t.data.data)
 
-
-
-
-
-
-
+            chartEntity.addSeries({
+                type: 'wordcloud',
+                data: resultData
+            }, false);
+        });
 
 
         /*-------------------------------------------------------------------------*/
@@ -564,6 +700,30 @@ export default {
          */
         p4pWidenedChartConstructor: function() {
             return Highcharts.Map;
+        },
+
+        /**
+         * [filterWordCloudData 过滤关键词云的数据]
+         * @param  {[type]} data [description]
+         * @return {[type]}      [description]
+         */
+        filterWordCloudData (data) {
+            return data.split(/[,\. ]+/g)
+            .reduce(function (arr, word) {
+            	var obj = arr.find(function (obj) {
+            		return obj.name === word;
+            	});
+            	if (obj) {
+            		obj.weight += 1;
+            	} else {
+            		obj = {
+            			name: word,
+            			weight: 1
+            		};
+            		arr.push(obj);
+            	}
+            	return arr;
+            }, []);
         },
 
 

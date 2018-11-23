@@ -8,7 +8,7 @@
             <nav class="navbar navbar-default" role="navigation">
               <div class="container-fluid">
                 <div class="navbar-header">
-                  <span class="navbar-brand">产品运营数据</span>
+                  <span class="navbar-brand">运营数据</span>
                 </div>
               </div>
             </nav>
