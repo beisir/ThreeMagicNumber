@@ -142,13 +142,31 @@ export default {
                 title: {
                     text: '客单价分布占比'
                 },
+                legend: {
+            		align: 'left',
+            		verticalAlign: 'top',
+            		y: 65,
+            		layout: 'vertical',
+                    itemMarginTop: 20
+
+            	},
                 plotOptions: {
                     variablepie: {
+                        stacking: 'normal',
                         allowPointSelect: true,
                         cursor: 'pointer',
                         dataLabels: {
-                            enabled: false
-                        },
+            				enabled: true,
+            				distance: -50,
+                            formatter: function () {
+            					return (this.y / 100) + '%';
+            				},
+            				style: {
+            					fontWeight: 'bold',
+            					color: 'white',
+            					textShadow: '0px 1px 2px black'
+            				}
+            			},
                         showInLegend: true
                     }
                 },
@@ -174,7 +192,7 @@ export default {
                 title: {
                     text: '累计充值情况'
                 },
-                colors: ['#7cb5ec', '#434348', '#90ed7d', '#f7a35c'],
+                colors: ['rgba(124,181,236,0.5)', '#434348', '#90ed7d', '#f7a35c'],
                 yAxis: {
 
                     allowDecimals: false,
@@ -285,7 +303,6 @@ export default {
                 minPointSize: 10,
         		innerSize: '20%',
         		zMin: 0,
-        		name: 'countries',
         		data: _t.data
             }, false);
         });
@@ -312,7 +329,11 @@ export default {
                         allowPointSelect: true,
             			cursor: 'pointer',
             			dataLabels: {
-            				enabled: true
+            				enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+            				style: {
+            					color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+            				}
             			}
             		}
             	},
@@ -524,7 +545,7 @@ export default {
                 chartEntity.addSeries({
                     type: 'spline',
                     tooltip: {
-                		valueSuffix: ' 元'	// 滑动状态时数值之后的单位
+                		valueSuffix: ' 个'	// 滑动状态时数值之后的单位
                 	},
                     name: combineItem.name,
                     data: combineItem.data,
