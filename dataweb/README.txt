@@ -13,6 +13,8 @@ http://data.360jz.com/dataweb/twocircle
 http://data.360jz.com/dataweb/column3d?flag=charge
 累计消耗
 http://data.360jz.com/dataweb/column3d?flag=expend
+余额情况
+http://data.360jz.com/dataweb/column3d?flag=balance
 
 销售额
 http://data.360jz.com/dataweb/p4pline?flag=sale
