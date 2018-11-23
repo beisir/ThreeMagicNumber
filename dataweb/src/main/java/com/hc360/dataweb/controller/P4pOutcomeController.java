@@ -43,9 +43,9 @@ public class P4pOutcomeController {
             typeList.add(DataType.P4PPRICE.getType()); // 客单价
             typeList.add(DataType.P4PUSER.getType()); //会员数
             typeList.add(DataType.P4PXIANJINCHARGETOTAL.getType()); //销售额
-            typeList.add(DataType.P4PALLEXPENDTOTAL.getType()); //会员数
-            typeList.add(DataType.P4PALLBALANCE.getType()); //会员数
-            typeList.add(DataType.P4PALLCHARGETOTAL.getType()); //会员数
+            typeList.add(DataType.P4PALLBALANCE.getType()); //余额
+            typeList.add(DataType.P4PALLEXPENDTOTAL.getType()); //消耗
+            typeList.add(DataType.P4PALLCHARGETOTAL.getType()); //充值
             _dataMap  = p4pServiceImpl.p4pFormula(typeList);
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
