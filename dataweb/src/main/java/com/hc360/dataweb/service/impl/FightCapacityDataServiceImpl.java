@@ -708,9 +708,9 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                 }
             }
             if (times != null && times.size() > 0) {
-                Integer data = null;
+                Long data = null;
                 for (String time : times) {
-                    if (Integer.valueOf(time) <= Integer.valueOf((String) tempMap.get("temp"))) {//有数据的最大时间之前数据为空进行补零
+                    if (time.equals(tempMap.get("temp"))) {//有数据的最大时间之前数据为空进行补零
                         if ("".equals(initMap.get(time))) {
                             dataList.add(0);
                         } else {
@@ -718,7 +718,7 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                                     || dataType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
                                     ||  dataType ==DataType.ZQPERCAPITAONLINETIME.getType().intValue()) {
                                 if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
-                                    data = ((Integer) initMap.get(time)) * 1000;
+                                    data = ((Long) initMap.get(time)) * 1000;
                                     dataList.add(data);
                                 } else {
                                     dataList.add(initMap.get(time));
