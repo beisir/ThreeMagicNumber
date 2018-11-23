@@ -204,7 +204,6 @@ public class P4pOutcomeController {
      * 会员情况，混合图
      * @param request
      * @param response
-     * @param flag
      * @throws Exception
      */
     @RequestMapping(value = "/p4pcombine", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
