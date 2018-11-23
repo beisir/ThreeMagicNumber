@@ -97,7 +97,6 @@
 <script>
 require('highcharts/highcharts-3d')(Highcharts);
 require('highcharts/modules/variable-pie')(Highcharts);
-require('highcharts/modules/series-label')(Highcharts);
 require('highcharts/modules/oldie')(Highcharts);
 require('highcharts/modules/wordcloud')(Highcharts);
 import chartTendency from './chart-tendency.vue'

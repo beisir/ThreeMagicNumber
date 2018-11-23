@@ -195,14 +195,227 @@
                             </div>
                         </div>
                     </div>
-                    <!--近30天的变化趋势-->
-                    <!--产品运营数据-->
+                    <!--产品线数据-->
+					<div class="panel panel-default hour-trend">
+                        <nav class="navbar navbar-default" role="navigation">
+                            <div class="container-fluid">
+                                <div class="navbar-header">
+                                    <span class="navbar-brand">
+                                                    产品线数据
+                                                </span>
+                                </div>
+                            </div>
+                        </nav>
+                        <div class="panel-body tab-content mTop20">
+                            <div class="explainBox">
+                                <ul>
+									<li>
+										<div class="titleBox">
+											<h2>产品线数据</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
+										<dl>
+											<dt>客单价</dt>
+											<dd>
+												定义：用户平均花费现金金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;客单价 = 累计现金充值金额/有过现金充值记录的用户数
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;由于计算为结果为四舍五入，所以 会员数*客单价 ≈ 销售额，不能完全相等。
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>会员数</dt>
+											<dd>
+												定义：有过现金充值的用户数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;有过现金充值记录的用户
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>销售额</dt>
+											<dd>
+												定义：累计现金充值金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;累计现金充值金额
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;由于客单价结果为四舍五入，所以 会员数*客单价 ≈ 累计现金充值金额，不能完全相等。
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>金额</dt>
+											<dd>
+												定义：累计充值金额，包括现金、返点金、虚拟
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;用户累计充值金额；金额 = 累计现金+累计返点金+累计虚拟
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>消耗</dt>
+											<dd>
+												定义：累计消耗，包括现金、返点金、虚拟
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;用户累计消耗金额；消耗 = 累计现金消耗+累计返点金消耗+累计虚拟消耗
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>余额</dt>
+											<dd>
+												定义：运行时刻的总余额，包括现金、返点金、虚拟
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;运行时刻的总余额；总余额 = 累计现金余额+累计返点金余额+累计虚拟余额
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;总余额 = 累计充值金额-累计消耗金额
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+										</dl>
+									</li>
+									<li>
+										<div class="titleBox">
+											<h2>概况</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
+										<dl>
+											<dt>客单价分布占比</dt>
+											<dd>
+												定义：用户现金充值分布占比
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;按照用户现金充值情况，根据充值数值和分布阀值，计算在分布阀值范围内用户数占比。占比 = 某阀值范围内用户数/充值总用户数
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+										</dl>
+									</li>
+									<li>
+										<div class="titleBox">
+											<h2>充值情况</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
+										<dl>
+											<dt>虚拟充值</dt>
+											<dd>
+												定义：累计虚拟充值金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;从用户虚拟充值订单中统计累计虚拟充值金额
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+											<dt>返点金充值</dt>
+											<dd>
+												定义：累计返点金充值金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;从用户充值订单中统计累计返点金充值金额
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>现金充值</dt>
+											<dd>
+												定义：累计现金充值金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;从用户现金充值订单中统计累计现金充值金额
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+										</dl>
+									</li>
+									<li>
+										<div class="titleBox">
+											<h2>消耗情况</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
+										<dl>
+											<dt>虚拟消耗</dt>
+											<dd>
+												定义：累计虚拟消耗金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;从用户消耗详单表中统计累计虚拟消耗金额
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+											<dt>返点金消耗</dt>
+											<dd>
+												定义：累计返点金消耗金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;从用户消耗详单表中统计累计返点金消耗金额
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>现金消耗</dt>
+											<dd>
+												定义：累计现金消耗金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;从用户消耗详单表中统计累计现金消耗金额
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>仅现金余额会员</dt>
+											<dd>
+												定义：仅有现金余额的会员数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;现金余额>0 and 返点金余额=0 and 虚拟余额=0
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>仅返点金余额会员</dt>
+											<dd>
+												定义：仅有返点余额的会员数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;现金余额=0 and 返点金余额>0 and 虚拟余额=0
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+											<dt>仅虚拟余额会员</dt>
+											<dd>
+												定义：仅有虚拟月的会员
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;现金余额=0 and 返点金余额=0 and 虚拟余额>0
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											<dt>有余额会员</dt>
+											<dd>
+												定义：有余额的会员数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;现金余额>0 or 返点金余额>0 or 虚拟余额>0
+												<br /> 计算频率：小时
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+										</dl>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+                    <!--运营数据-->
                     <div class="panel panel-default hour-trend">
                         <nav class="navbar navbar-default" role="navigation">
                             <div class="container-fluid">
                                 <div class="navbar-header">
                                     <span class="navbar-brand">
-                                                    产品运营数据
+                                                    运营数据
                                     </span>
                                 </div>
                             </div>
