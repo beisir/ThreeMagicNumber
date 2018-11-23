@@ -83,34 +83,7 @@
                                                 <br />
                                             </dd>
                                         </dl>
-                                    </li>
-									<li>
-                                        <div class="titleBox">
-                                            <h2>实时数据(MIP站)</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
-                                        <dl>
-                                            <dt>IP</dt>
-                                            <dd>
-                                                定义：访问MIP的IP数
-                                                <br /> 计算频率：每天
-                                                <br /> 数据来源：百度统计后台
-                                                <br />
-                                            </dd>
-                                            <dt>PV</dt>
-                                            <dd>
-                                                定义：MIP站的Page View
-                                                <br /> 计算频率：每天
-                                                <br /> 数据来源：百度统计后台
-                                                <br />
-                                            </dd>
-                                            <dt>UV</dt>
-                                            <dd>
-                                                定义：访问MIP站的独立访客数
-                                                <br /> 计算频率：每天
-                                                <br /> 数据来源：百度统计后台
-                                                <br />
-                                            </dd>
-                                        </dl>
-                                    </li>
+                                    </li>									
                                     <li>
                                         <div class="titleBox">
                                             <h2>战斗力</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>

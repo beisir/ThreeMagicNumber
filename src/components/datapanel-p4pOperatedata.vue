@@ -194,12 +194,18 @@ export default {
                 },
                 colors: ['rgba(124,181,236,0.5)', '#434348', '#90ed7d', '#f7a35c'],
                 yAxis: {
-
+            		min: 0,
+            		stackLabels: {  // 堆叠数据标签
+            			enabled: true,
+            			style: {
+            				fontWeight: 'bold'
+            			}
+            		},
                     allowDecimals: false,
-                    min: 0,
                     title: {
                         text: '金额',
-                        x: -40
+                        x: -40,
+                        y: -80
                     }
                 },
                 tooltip: {
