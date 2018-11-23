@@ -136,25 +136,28 @@ public class P4pServiceImpl implements P4pService {
             for (RealTimeStaticDoubleHour hour : resultList) {
                 selectResult.put(hour.getDataType(), hour.getDataCount());
             }
-            Double all = selectResult.get(DataType.P4PALLEXPENDTOTAL.getType()) + selectResult.get(DataType.P4PALLBALANCE.getType());
-            drillDownBean = new DrillDownBean("消耗", new String[]{"现金", "返点金", "虚拟"},
-                    new Object[]{formartData(selectResult.get(DataType.P4PXIANJINEXPENDTOTAL.getType()), all),
-                            formartData(selectResult.get(DataType.P4PFANDIANJINEXPENDTOTAL.getType()), all),
-                            formartData(selectResult.get(DataType.P4PXUNIEXPENDTOTAL.getType()), all)});
-            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PALLEXPENDTOTAL.getType()), all), 1, drillDownBean);
-            twoCircleBeans.add(twoCircleBean);
-            drillDownBean = new DrillDownBean("余额", new String[]{"现金", "返点金", "虚拟"},
-                    new Object[]{formartData(selectResult.get(DataType.P4PXIANJINBALANCE.getType()), all),
-                            formartData(selectResult.get(DataType.P4PFANDIANJINBALANCE.getType()), all),
-                            formartData(selectResult.get(DataType.P4PXUNIBALANCE.getType()), all)});
-            twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PALLBALANCE.getType()), all), 2, drillDownBean);
-            twoCircleBeans.add(twoCircleBean);
+            if (selectResult != null && selectResult.size() >= 8) {
+                Double all = selectResult.get(DataType.P4PALLEXPENDTOTAL.getType()) + selectResult.get(DataType.P4PALLBALANCE.getType());
+                drillDownBean = new DrillDownBean("消耗", new String[]{"现金", "返点金", "虚拟"},
+                        new Object[]{formartData(selectResult.get(DataType.P4PXIANJINEXPENDTOTAL.getType()), all),
+                                formartData(selectResult.get(DataType.P4PFANDIANJINEXPENDTOTAL.getType()), all),
+                                formartData(selectResult.get(DataType.P4PXUNIEXPENDTOTAL.getType()), all)});
+                twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PALLEXPENDTOTAL.getType()), all), 1, drillDownBean);
+                twoCircleBeans.add(twoCircleBean);
+                drillDownBean = new DrillDownBean("余额", new String[]{"现金", "返点金", "虚拟"},
+                        new Object[]{formartData(selectResult.get(DataType.P4PXIANJINBALANCE.getType()), all),
+                                formartData(selectResult.get(DataType.P4PFANDIANJINBALANCE.getType()), all),
+                                formartData(selectResult.get(DataType.P4PXUNIBALANCE.getType()), all)});
+                twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PALLBALANCE.getType()), all), 2, drillDownBean);
+                twoCircleBeans.add(twoCircleBean);
+            }
         }
         resultMap.put("data", twoCircleBeans);
         return resultMap;
     }
 
     private Double formartData(Double d, double all) {
+        if(d == null ){return 0d;}
         DecimalFormat df = new DecimalFormat("0.00");
         return Double.parseDouble(df.format(d * 100 / all));
     }
