@@ -71,21 +71,21 @@
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pcombineChart" :timermillisec="0" :service="service.p4pcombine" :resetYAxisBeforeRedraw="false" chartTitle="第六个混合图"></chart-tendency>
                             </div>
 
-                            <div class="p4pCountLeft">
+                            <!-- <div class="p4pCountLeft">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart2" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="第七个折线图"></chart-tendency>
                             </div>
 
                             <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart" :timermillisec="0" :service="service.double" :resetYAxisBeforeRedraw="false" chartTitle="第八个词云图"></chart-tendency>
-                            </div>
+                            </div> -->
 
                         </div>
 
-                        <div class="panel-body tab-content mTop20">
+                        <!-- <div class="panel-body tab-content mTop20">
                             <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pDailyChart" :timermillisec="0" :service="service.double" chartTitle="第九个扇形图"></chart-tendency>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>
@@ -488,7 +488,7 @@ export default {
         _this.$refs.p4pcombineChart.$on('beforeRender', function(chartOptions) {
             Object.assign(chartOptions, {
                 title: {
-            		text: ''
+            		text: '会员情况'
             	},
                 yAxis: {
             		title: {
@@ -497,7 +497,7 @@ export default {
             	},
                 // labels: {
             	// 	items: [{
-            	// 		html: '水果消耗',
+            	// 		html: '会员情况',
             	// 		style: {
             	// 			left: '150px',
             	// 			top: '5px',
@@ -539,45 +539,45 @@ export default {
                 })
             })
 
-            let {browserData, versionsData} = _this.filterDoubleData(_t.data.circleData);
-            /**
-             * [添加图表序列数据]
-             */
-            chartEntity.addSeries({
-        		type: 'pie',
-        		name: '占比',
-                tooltip: {
-            		valueSuffix: '%'	// 滑动状态时数值之后的单位
-            	},
-        		data: browserData,
-        		center: [80, 60],
-                dataLabels: {
-        			formatter: function () {
-        				return this.y > 5 ? this.point.name : null;
-        			},
-        			color: '#ffffff',
-        			distance: -30
-        		},
-        		size: '15%'
-            }, false);
-            chartEntity.addSeries({
-                type: 'pie',
-         		name: '占比',
-                tooltip: {
-            		valueSuffix: '%'	// 滑动状态时数值之后的单位
-            	},
-         		data: versionsData,
-         		center: [80, 60],
-                dataLabels: {
-        			formatter: function () {
-        				return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
-        					this.y : null;
-        			}
-        		},
-        		id: 'versions',
-         		size: '30%',
-         		innerSize: '50%'
-            }, false);
+            // let {browserData, versionsData} = _this.filterDoubleData(_t.data.circleData);
+            // /**
+            //  * [添加图表序列数据]
+            //  */
+            // chartEntity.addSeries({
+        	// 	type: 'pie',
+        	// 	name: '占比',
+            //     tooltip: {
+            // 		valueSuffix: '%'	// 滑动状态时数值之后的单位
+            // 	},
+        	// 	data: browserData,
+        	// 	center: [80, 60],
+            //     dataLabels: {
+        	// 		formatter: function () {
+        	// 			return this.y > 5 ? this.point.name : null;
+        	// 		},
+        	// 		color: '#ffffff',
+        	// 		distance: -30
+        	// 	},
+        	// 	size: '15%'
+            // }, false);
+            // chartEntity.addSeries({
+            //     type: 'pie',
+         	// 	name: '占比',
+            //     tooltip: {
+            // 		valueSuffix: '%'	// 滑动状态时数值之后的单位
+            // 	},
+         	// 	data: versionsData,
+         	// 	center: [80, 60],
+            //     dataLabels: {
+        	// 		formatter: function () {
+        	// 			return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+        	// 				this.y : null;
+        	// 		}
+        	// 	},
+        	// 	id: 'versions',
+         	// 	size: '30%',
+         	// 	innerSize: '50%'
+            // }, false);
 
         });
 
@@ -592,118 +592,118 @@ export default {
          * @param  {[type]} chartOptions [description]
          * @return {[type]}              [description]
          */
-        _this.$refs.p4pLineChart2.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions, _this.p4pLineConifg, {
-                title: {
-            		text: null
-            	},
-                yAxis: {
-            		title: {
-            			text: '关键词数'
-            		}
-            	}
-            });
-        });
-        _this.$refs.p4pLineChart2.$on('beforeGetData', function(params) {
-            Object.assign(params, {
-                params: {
-                    flag: 'key'
-                }
-            });
-        });
-        _this.$refs.p4pLineChart2.$on('afterGetData', function(data) {
-            var _t = this;
-            /**
-             * [缓存数据]
-             */
-            _t.data = data || {};
-        });
-        _this.$refs.p4pLineChart2.$on('beforeRedraw', function(chartEntity) {
-            var _t = this;
-            chartEntity.xAxis[0].update({
-                categories: _t.data.time
-            }, false);
-            _t.data.data.forEach((lineItem, lineIndex) => {
-                chartEntity.addSeries({
-            		name: lineItem.name,
-            		data: lineItem.data
-                }, false);
-            });
-        });
+        // _this.$refs.p4pLineChart2.$on('beforeRender', function(chartOptions) {
+        //     Object.assign(chartOptions, _this.p4pLineConifg, {
+        //         title: {
+        //     		text: '开启关键词数趋势'
+        //     	},
+        //         yAxis: {
+        //     		title: {
+        //     			text: '关键词数'
+        //     		}
+        //     	}
+        //     });
+        // });
+        // _this.$refs.p4pLineChart2.$on('beforeGetData', function(params) {
+        //     Object.assign(params, {
+        //         params: {
+        //             flag: 'key'
+        //         }
+        //     });
+        // });
+        // _this.$refs.p4pLineChart2.$on('afterGetData', function(data) {
+        //     var _t = this;
+        //     /**
+        //      * [缓存数据]
+        //      */
+        //     _t.data = data || {};
+        // });
+        // _this.$refs.p4pLineChart2.$on('beforeRedraw', function(chartEntity) {
+        //     var _t = this;
+        //     chartEntity.xAxis[0].update({
+        //         categories: _t.data.time
+        //     }, false);
+        //     _t.data.data.forEach((lineItem, lineIndex) => {
+        //         chartEntity.addSeries({
+        //     		name: lineItem.name,
+        //     		data: lineItem.data
+        //         }, false);
+        //     });
+        // });
 
 
-        /**
-         * [top50消耗词图 词图云]
-         * @param  {[type]} chartOptions [description]
-         * @return {[type]}              [description]
-         */
-        _this.$refs.wordCloudChart.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions, _this.p4pLineConifg, {
-            	title: {
-            		text: 'top50消耗词图'
-            	}
-            });
-        });
-        _this.$refs.wordCloudChart.$on('beforeGetData', function(params) {
-            Object.assign(params, {
-                params: {
-                    type: '376'
-                }
-            });
-        });
-        _this.$refs.wordCloudChart.$on('afterGetData', function(data) {
+        // /**
+        //  * [top50消耗词图 词图云]
+        //  * @param  {[type]} chartOptions [description]
+        //  * @return {[type]}              [description]
+        //  */
+        // _this.$refs.wordCloudChart.$on('beforeRender', function(chartOptions) {
+        //     Object.assign(chartOptions, _this.p4pLineConifg, {
+        //     	title: {
+        //     		text: 'top50消耗词图'
+        //     	}
+        //     });
+        // });
+        // _this.$refs.wordCloudChart.$on('beforeGetData', function(params) {
+        //     Object.assign(params, {
+        //         params: {
+        //             type: '376'
+        //         }
+        //     });
+        // });
+        // _this.$refs.wordCloudChart.$on('afterGetData', function(data) {
+        //
+        //     var _t = this;
+        //     /**
+        //      * [缓存数据]
+        //      */
+        //     _t.data = data || {};
+        // });
+        // _this.$refs.wordCloudChart.$on('beforeRedraw', function(chartEntity) {
+        //     var _t = this;
+        //     var resultData = _this.filterWordCloudData(_t.data.data)
+        //     chartEntity.addSeries({
+        //         name: '消耗',
+        //         type: 'wordcloud',
+        //         data: resultData
+        //     }, false);
+        // });
 
-            var _t = this;
-            /**
-             * [缓存数据]
-             */
-            _t.data = data || {};
-        });
-        _this.$refs.wordCloudChart.$on('beforeRedraw', function(chartEntity) {
-            var _t = this;
-            var resultData = _this.filterWordCloudData(_t.data.data)
-            chartEntity.addSeries({
-                name: '消耗',
-                type: 'wordcloud',
-                data: resultData
-            }, false);
-        });
 
 
-        /*-------------------------------------------------------------------------*/
-
-        _this.$refs.p4pDailyChart.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions, _this.semicircleConfig, {
-                title: {
-                    text: '日均消耗分布占比'
-                }
-            });
-        });
-        _this.$refs.p4pDailyChart.$on('beforeGetData', function(params) {
-            Object.assign(params, {
-                params: {
-                    type: 379
-                }
-            });
-        });
-        _this.$refs.p4pDailyChart.$on('dataReady', function(data) {
-            var _t = this;
-            /**
-             * [缓存数据]
-             */
-            _t.data = data || {};
-        });
-        _this.$refs.p4pDailyChart.$on('beforeRedraw', function(chartEntity) {
-            var _t = this;
-            chartEntity.addSeries({
-                minPointSize: 10,
-        		innerSize: '20%',
-        		zMin: 0,
-        		name: 'countries',
-        		data: _t.data
-            }, false);
-        });
-        /*-------------------------------------------------------------------------*/
+        // /*-------------------------------------------------------------------------*/
+        // _this.$refs.p4pDailyChart.$on('beforeRender', function(chartOptions) {
+        //     Object.assign(chartOptions, _this.semicircleConfig, {
+        //         title: {
+        //             text: '互均消耗分布占比'
+        //         }
+        //     });
+        // });
+        // _this.$refs.p4pDailyChart.$on('beforeGetData', function(params) {
+        //     Object.assign(params, {
+        //         params: {
+        //             type: 379
+        //         }
+        //     });
+        // });
+        // _this.$refs.p4pDailyChart.$on('dataReady', function(data) {
+        //     var _t = this;
+        //     /**
+        //      * [缓存数据]
+        //      */
+        //     _t.data = data || {};
+        // });
+        // _this.$refs.p4pDailyChart.$on('beforeRedraw', function(chartEntity) {
+        //     var _t = this;
+        //     chartEntity.addSeries({
+        //         minPointSize: 10,
+        // 		innerSize: '20%',
+        // 		zMin: 0,
+        // 		name: 'countries',
+        // 		data: _t.data
+        //     }, false);
+        // });
+        // /*-------------------------------------------------------------------------*/
     },
 
     methods: {
