@@ -203,14 +203,14 @@ export default {
             	},
             	yAxis: {
             		title: {
-            			text: '客单均价'
+            			text: null
             		}
-            	},
+            	}/*,
             	legend: {
             		layout: 'vertical',
             		align: 'right',
             		verticalAlign: 'middle'
-            	}
+            	}*/
             }
         };
     },
@@ -438,7 +438,10 @@ export default {
             _t.data.data.forEach((lineItem, lineIndex) => {
                 chartEntity.addSeries({
             		name: lineItem.name,
-            		data: lineItem.data
+            		data: lineItem.data,
+                    tooltip: {
+                		valueSuffix: (lineItem.name === '会员数') ? ' 个':' 元'	// 滑动状态时数值之后的单位
+                	}
                 }, false);
             });
         });
@@ -495,20 +498,7 @@ export default {
             			text: '会员数'
             		}
             	},
-                // labels: {
-            	// 	items: [{
-            	// 		html: '会员情况',
-            	// 		style: {
-            	// 			left: '150px',
-            	// 			top: '5px',
-            	// 			color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
-            	// 		}
-            	// 	}]
-            	// },
                 plotOptions: {
-            		series: {
-            			stacking: 'normal'
-            		},
             		pie: {
             			allowPointSelect: true,
             			cursor: 'pointer',
@@ -534,8 +524,12 @@ export default {
             _t.data.data.forEach((combineItem, combineIndex) => {
                 chartEntity.addSeries({
                     type: 'spline',
+                    tooltip: {
+                		valueSuffix: ' 元'	// 滑动状态时数值之后的单位
+                	},
                     name: combineItem.name,
-                    data: combineItem.data
+                    data: combineItem.data,
+
                 })
             })
 
