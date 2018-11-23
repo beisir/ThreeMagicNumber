@@ -13,18 +13,16 @@
                         </nav>
                         <div class="p4pCount">
                             <div class="countCon">
-                                <div class="unitPrice"><span>客单价：</span><p>{{formulaData["客单价"]}}元</p></div>
-                                <div class="memberNum"><span><em class="xIco"></em>会员数：</span><p>{{formulaData["会员数"]}}万</p></div>
-                                <div class="salesVolume"><span>销售额：</span><p>{{formulaData["销售额"]}}万</p></div>
+                                <div class="unitPrice"><span>客单价：</span><p>{{formulaData["客单价"]}} 元</p></div>
+                                <div class="memberNum"><span><em class="xIco"></em>会员数：</span><p>{{formulaData["会员数"]}} 个</p></div>
+                                <div class="salesVolume"><span>销售额：</span><p>{{formulaData["销售额"]}} 元</p></div>
                             </div>
                             <div class="countCon countCon2">
-                                <div class="unitPrice"><span>余额：</span><p>{{formulaData["余额"]}}元</p></div>
-                                <div class="memberNum"><span><em class="jiaIco"></em>消耗：</span><p>{{formulaData["消耗"]}}元</p></div>
-                                <div class="salesVolume"><span>充值：</span><p>{{formulaData["充值"]}}元</p></div>
+                                <div class="unitPrice"><span>余额：</span><p>{{formulaData["余额"]}} 元</p></div>
+                                <div class="memberNum"><span><em class="jiaIco"></em>消耗：</span><p>{{formulaData["消耗"]}} 元</p></div>
+                                <div class="salesVolume"><span>充值：</span><p>{{formulaData["充值"]}} 元</p></div>
                             </div>
                         </div>
-
-
 
                         <div class="panel-body tab-content mTop40">
                             <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5;">
@@ -34,11 +32,11 @@
                                     </div>
                                 </div>
                             </nav>
-                            <div class="" style="width: 50%;float:left;border-right:solid #ccc 1px;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pWidenedChart" :timermillisec="0" :service="service.double"></chart-tendency>
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pWidenedChart" :timermillisec="0" :service="service.double" chartTitle="第一个扇形图"></chart-tendency>
                             </div>
-                            <div class="" style="width: 50%;float:left;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pOperatedChart" :timermillisec="0" :service="service.operate"></chart-tendency>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pOperatedChart" :timermillisec="0" :service="service.operate" chartTitle="第二个双圆图"></chart-tendency>
                             </div>
                         </div>
 
@@ -50,14 +48,13 @@
                                     </div>
                                 </div>
                             </nav>
-                            <div class="" style="width: 50%;float:left;border-right:solid #ccc 1px;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pColumn3Dchart" :timermillisec="0" :service="service.chart3d" :resetYAxisBeforeRedraw="false" chartTitle=""></chart-tendency>
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pColumn3Dchart" :timermillisec="0" :service="service.chart3d" :resetYAxisBeforeRedraw="false" chartTitle="第三个3D柱图"></chart-tendency>
                             </div>
-                            <div class="" style="width: 50%;float:left;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart1" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart1" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="第四个折线图"></chart-tendency>
                             </div>
                         </div>
-
 
                         <div class="panel-body tab-content mTop20">
                             <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5;">
@@ -67,29 +64,26 @@
                                     </div>
                                 </div>
                             </nav>
-                            <div class="" style="width: 50%;float:left;border-right:solid #ccc 1px;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pColumn3Dchart2" :timermillisec="0" :service="service.chart3d" :resetYAxisBeforeRedraw="false" chartTitle=""></chart-tendency>
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pColumn3Dchart2" :timermillisec="0" :service="service.chart3d" :resetYAxisBeforeRedraw="false" chartTitle="第五个3D柱图"></chart-tendency>
                             </div>
-                            <div class="" style="width: 50%;float:left;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pcombineChart" :timermillisec="0" :service="service.p4pcombine" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
-                            </div>
-
-                            <div class="" style="width: 50%;float:left;border-right:solid #ccc 1px;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart2" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pcombineChart" :timermillisec="0" :service="service.p4pcombine" :resetYAxisBeforeRedraw="false" chartTitle="第六个混合图"></chart-tendency>
                             </div>
 
-                            <div class="" style="width: 50%;float:left;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart" :timermillisec="0" :service="service.double" :resetYAxisBeforeRedraw="false" chartTitle="对比图"></chart-tendency>
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart2" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="第七个折线图"></chart-tendency>
+                            </div>
+
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart" :timermillisec="0" :service="service.double" :resetYAxisBeforeRedraw="false" chartTitle="第八个词云图"></chart-tendency>
                             </div>
 
                         </div>
 
-
-
-
                         <div class="panel-body tab-content mTop20">
-                            <div class="" style="width: 50%;float:left;">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pDailyChart" :timermillisec="0" :service="service.double"></chart-tendency>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pDailyChart" :timermillisec="0" :service="service.double" chartTitle="第九个扇形图"></chart-tendency>
                             </div>
                         </div>
 
@@ -450,7 +444,11 @@ export default {
         });
 
         _this.$refs.p4pColumn3Dchart2.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions, _this.column3Dconfig);
+            Object.assign(chartOptions, _this.column3Dconfig, {
+                title: {
+                    text: '累计消耗情况'
+                }
+            });
         });
         _this.$refs.p4pColumn3Dchart2.$on('beforeGetData', function(params) {
             Object.assign(params, {
@@ -532,7 +530,6 @@ export default {
             })
 
             let {browserData, versionsData} = _this.filterDoubleData(_t.data.circleData);
-            console.log(browserData)
             /**
              * [添加图表序列数据]
              */
@@ -649,8 +646,8 @@ export default {
         _this.$refs.wordCloudChart.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
             var resultData = _this.filterWordCloudData(_t.data.data)
-
             chartEntity.addSeries({
+                name: '消耗',
                 type: 'wordcloud',
                 data: resultData
             }, false);
@@ -708,23 +705,15 @@ export default {
          * @return {[type]}      [description]
          */
         filterWordCloudData (data) {
-            return data.split(/[,\. ]+/g)
-            .reduce(function (arr, word) {
-            	var obj = arr.find(function (obj) {
-            		return obj.name === word;
-            	});
-            	if (obj) {
-            		obj.weight += 1;
-            	} else {
-            		obj = {
-            			name: word,
-            			weight: 1
-            		};
-            		arr.push(obj);
-            	}
-            	return arr;
-            }, []);
+
+            return data.map((item, index) => {
+                return {
+                    name: item.name,
+                    weight: item.y
+                }
+            });
         },
+
 
 
         /**

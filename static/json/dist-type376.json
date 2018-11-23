@@ -1,4 +1,155 @@
 {
-    "errno": 0,
-    "data": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum erat ac justo sollicitudin, quis lacinia ligula fringilla. Pellentesque hendrerit, nisi vitae posuere condimentum, lectus urna accumsan libero, rutrum commodo mi lacus pretium erat. Phasellus pretium ultrices mi sed semper. Praesent ut tristique magna. Donec nisl tellus, sagittis ut tempus sit amet, consectetur eget erat. Sed ornare gravida lacinia. Curabitur iaculis metus purus, eget pretium est laoreet ut. Quisque tristique augue ac eros malesuada, vitae facilisis mauris sollicitudin. Mauris ac molestie nulla, vitae facilisis quam. Curabitur placerat ornare sem, in mattis purus posuere eget. Praesent non condimentum odio. Nunc aliquet, odio nec auctor congue, sapien justo dictum massa, nec fermentum massa sapien non tellus. Praesent luctus eros et nunc pretium hendrerit. In consequat et eros nec interdum. Ut neque dui, maximus id elit ac, consequat pretium tellus. Nullam vel accumsan lorem."
+  "errno": 0,
+  "data": [
+    {
+      "name": "办公家具",
+      "y": 9500,
+      "z": 95
+    },
+    {
+      "name": "办公用品",
+      "y": 2200,
+      "z": 22
+    },
+    {
+      "name": "不锈钢无缝钢管",
+      "y": 8600,
+      "z": 86
+    },
+    {
+      "name": "彩色监视器",
+      "y": 5500,
+      "z": 55
+    },
+    {
+      "name": "点胶机",
+      "y": 5000,
+      "z": 50
+    },
+    {
+      "name": "东北肉牛",
+      "y": 6000,
+      "z": 60
+    },
+    {
+      "name": "钢板",
+      "y": 8800,
+      "z": 88
+    },
+    {
+      "name": "广告扇",
+      "y": 6500,
+      "z": 65
+    },
+    {
+      "name": "纪念章",
+      "y": 4400,
+      "z": 44
+    },
+    {
+      "name": "净化工程",
+      "y": 6600,
+      "z": 66
+    },
+    {
+      "name": "开瓶器",
+      "y": 3000,
+      "z": 30
+    },
+    {
+      "name": "裤袜",
+      "y": 7500,
+      "z": 75
+    },
+    {
+      "name": "量热仪",
+      "y": 10000,
+      "z": 100
+    },
+    {
+      "name": "龙泉宝剑",
+      "y": 6600,
+      "z": 66
+    },
+    {
+      "name": "履带板",
+      "y": 3500,
+      "z": 35
+    },
+    {
+      "name": "蒙脱石干燥剂",
+      "y": 8000,
+      "z": 80
+    },
+    {
+      "name": "免费法律咨询",
+      "y": 7600,
+      "z": 76
+    },
+    {
+      "name": "模具配件",
+      "y": 2000,
+      "z": 20
+    },
+    {
+      "name": "抹光机",
+      "y": 7000,
+      "z": 70
+    },
+    {
+      "name": "耐磨板",
+      "y": 9000,
+      "z": 90
+    },
+    {
+      "name": "欧式抽油烟机",
+      "y": 3600,
+      "z": 36
+    },
+    {
+      "name": "喷泉泵",
+      "y": 5500,
+      "z": 55
+    },
+    {
+      "name": "全屏触摸电磁炉",
+      "y": 4600,
+      "z": 46
+    },
+    {
+      "name": "石油树脂",
+      "y": 5600,
+      "z": 56
+    },
+    {
+      "name": "太阳能层压机",
+      "y": 3300,
+      "z": 33
+    },
+    {
+      "name": "屠宰机械",
+      "y": 7700,
+      "z": 77
+    },
+    {
+      "name": "无缝管",
+      "y": 4000,
+      "z": 40
+    },
+    {
+      "name": "氧化铝",
+      "y": 9900,
+      "z": 99
+    },
+    {
+      "name": "液晶",
+      "y": 4500,
+      "z": 45
+    },
+    {
+      "name": "油加热器",
+      "y": 8500,
+      "z": 85
+    }
+  ]
 }

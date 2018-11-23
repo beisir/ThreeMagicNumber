@@ -2376,3 +2376,14 @@ dl,dt,dd{margin:0; padding:0;}
 .countCon span em{display:block; position:absolute; right:90px; height:30px;width:30px;top:-15px; background:url(../img/xIco.png);border-radius: 50%;}
 .countCon span em.jiaIco{ background:url(../img/jiaIco.png);}
 .countCon.countCon2 span em{right:80px;}
+
+.p4pCountLeft {
+    width: 50%;float:left;border-right:solid #ccc 1px;
+}
+.p4pCountRig {
+    width: 50%;float:left;
+}
+@media (max-width:960px){
+.countCon{width:98%; float:left; text-align:center;padding:5px 4% 0; box-sizing:border-box;background:#f8f8f8; margin:8px 1%; line-height:20px; border-radius:5px;}
+.p4pCountLeft ,.p4pCountRig{width:100% !important; border:0 !important;border-bottom:1px solid #ddd !important;}
+}
