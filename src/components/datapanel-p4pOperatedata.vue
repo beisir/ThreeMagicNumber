@@ -495,6 +495,16 @@ export default {
             			text: '会员数'
             		}
             	},
+                // labels: {
+            	// 	items: [{
+            	// 		html: '水果消耗',
+            	// 		style: {
+            	// 			left: '150px',
+            	// 			top: '5px',
+            	// 			color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+            	// 		}
+            	// 	}]
+            	// },
                 plotOptions: {
             		series: {
             			stacking: 'normal'
@@ -535,7 +545,10 @@ export default {
              */
             chartEntity.addSeries({
         		type: 'pie',
-        		name: '有余额',
+        		name: '占比',
+                tooltip: {
+            		valueSuffix: '%'	// 滑动状态时数值之后的单位
+            	},
         		data: browserData,
         		center: [80, 60],
                 dataLabels: {
@@ -545,11 +558,14 @@ export default {
         			color: '#ffffff',
         			distance: -30
         		},
-        		size: '30%'
+        		size: '15%'
             }, false);
             chartEntity.addSeries({
                 type: 'pie',
-         		name: '无余额',
+         		name: '占比',
+                tooltip: {
+            		valueSuffix: '%'	// 滑动状态时数值之后的单位
+            	},
          		data: versionsData,
          		center: [80, 60],
                 dataLabels: {
