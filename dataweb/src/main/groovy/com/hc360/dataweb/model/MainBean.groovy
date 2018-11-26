@@ -6,12 +6,12 @@ package com.hc360.dataweb.model
  */
 class MainBean {
     String name;
-    Long num;
+    String num;
 //    int flag
     MainBean(){
         super();
     }
-    MainBean(String name, Long num ) {
+    MainBean(String name, String num ) {
         this.name = name
         this.num = num
 
