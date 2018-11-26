@@ -702,7 +702,11 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
             for (RealTimeStaticHour realTimeStaticHour : hourDatas) {
                 if (!"".equals(realTimeStaticHour.getIrslDateH()) && realTimeStaticHour.getDataCount() != null) {
                     initMap.put(realTimeStaticHour.getIrslDateH(), realTimeStaticHour.getDataCount());
-                    tempMap.put("temp", realTimeStaticHour.getIrslDateH());
+                    if(tempMap.get("temp")!=null && Long.parseLong((String)tempMap.get("temp"))> Long.parseLong( realTimeStaticHour.getIrslDateH())){
+                        tempMap.put("temp", realTimeStaticHour.getIrslDateH());
+                    }else if(tempMap.get("temp")==null &&  realTimeStaticHour.getDataCount()>0){
+                        tempMap.put("temp", realTimeStaticHour.getIrslDateH());
+                    }
                 } else {
                     logger.error("小时表:" + "数据时间:" + realTimeStaticHour.getIrslDateH() + "数据类型:" + realTimeStaticHour.getDataType() + "-- 数据为空。");
                 }
@@ -710,7 +714,7 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
             if (times != null && times.size() > 0) {
                 Long data = null;
                 for (String time : times) {
-                    if (time.equals(tempMap.get("temp"))) {//有数据的最大时间之前数据为空进行补零
+                    if (Long.parseLong(time) >= Long.parseLong((String)tempMap.get("temp"))) {//有数据的最大时间之前数据为空进行补零
                         if ("".equals(initMap.get(time))) {
                             dataList.add(0);
                         } else {
