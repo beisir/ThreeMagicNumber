@@ -1,24 +1,24 @@
 package com.hc360.dataweb.model
 
 /**
- * Created by home on 2017/2/6.
- * 主要的四大模块： ip, pv ,uv, 收费会员
+ * Created by home on 2018/11/26.
  */
-class MainBean {
+class P4pBean {
     String name;
-    Long num;
+    String num;
 //    int flag
-    MainBean(){
+    P4pBean(){
         super();
     }
-    MainBean(String name, Long num ) {
+    P4pBean(String name, String num ) {
         this.name = name
         this.num = num
 
     }
+
     @Override
     public String toString() {
-        return "MainBean{" +
+        return "P4pBean{" +
                 "name='" + name + '\'' +
                 ", num='" + num + '\'' +
                 '}';
