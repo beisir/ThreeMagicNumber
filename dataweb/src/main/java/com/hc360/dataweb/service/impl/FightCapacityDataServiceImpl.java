@@ -697,12 +697,16 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
     private List<Object> hourConvert(List<RealTimeStaticHour> hourDatas, Integer dataType, List<String> times) {
         Map<String, Object> initMap = CommonUtil.initHourTimeMap(times);//初始化时间
         List<Object> dataList = new ArrayList<Object>();
-        Map<String, Object> tempMap = new HashMap<>();//用于数据补零,小时数据当前最新数据之前的补零,之后的维持原有""处理
+//        Map<String, Object> tempMap = new HashMap<>();//用于数据补零,小时数据当前最新数据之前的补零,之后的维持原有""处理
         if (hourDatas != null && hourDatas.size() > 0) {
             for (RealTimeStaticHour realTimeStaticHour : hourDatas) {
                 if (!"".equals(realTimeStaticHour.getIrslDateH()) && realTimeStaticHour.getDataCount() != null) {
                     initMap.put(realTimeStaticHour.getIrslDateH(), realTimeStaticHour.getDataCount());
-                    tempMap.put("temp", realTimeStaticHour.getIrslDateH());
+//                    if(tempMap.get("temp")!=null && Long.parseLong((String)tempMap.get("temp"))> Long.parseLong( realTimeStaticHour.getIrslDateH())){
+//                        tempMap.put("temp", realTimeStaticHour.getIrslDateH());
+//                    }else if(tempMap.get("temp")==null &&  realTimeStaticHour.getDataCount()>0){
+//                        tempMap.put("temp", realTimeStaticHour.getIrslDateH());
+//                    }
                 } else {
                     logger.error("小时表:" + "数据时间:" + realTimeStaticHour.getIrslDateH() + "数据类型:" + realTimeStaticHour.getDataType() + "-- 数据为空。");
                 }
@@ -710,22 +714,14 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
             if (times != null && times.size() > 0) {
                 Long data = null;
                 for (String time : times) {
-                    if (time.equals(tempMap.get("temp"))) {//有数据的最大时间之前数据为空进行补零
-                        if ("".equals(initMap.get(time))) {
-                            dataList.add(0);
+                    if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()
+                            || dataType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
+                            ||  dataType ==DataType.ZQPERCAPITAONLINETIME.getType().intValue()) {
+                        if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
+                            data = ((Long) initMap.get(time)) * 1000;
+                            dataList.add(data);
                         } else {
-                            if (dataType == DataType.PERCAPITAONLINETIME.getType().intValue()
-                                    || dataType == DataType.XQPERCAPITAONLINETIME.getType().intValue()
-                                    ||  dataType ==DataType.ZQPERCAPITAONLINETIME.getType().intValue()) {
-                                if (!"".equals(initMap.get(time)) && initMap.get(time) != null) {
-                                    data = ((Long) initMap.get(time)) * 1000;
-                                    dataList.add(data);
-                                } else {
-                                    dataList.add(initMap.get(time));
-                                }
-                            } else {
-                                dataList.add(initMap.get(time));
-                            }
+                            dataList.add(initMap.get(time));
                         }
                     } else {
                         dataList.add(initMap.get(time));
@@ -865,9 +861,9 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                         map.put(DataType.getName(realTimeStaticDay.getDataType()), realTimeStaticDay.getDataCount());
                     } else {
                         if (realTimeStaticDay.getDataType().intValue() == DataType.PERCAPITAONLINETIME.getType().intValue()) {//人均在线时长*1000 单位:毫秒
-                            mainBeans.add(new MainBean(CommonUtil.initName(realTimeStaticDay.getDataType()), (realTimeStaticDay.getDataCount().longValue() * 1000) + ""));
+                            mainBeans.add(new MainBean(CommonUtil.initName(realTimeStaticDay.getDataType()), (realTimeStaticDay.getDataCount().longValue() * 1000) ));
                         } else {
-                            mainBeans.add(new MainBean(CommonUtil.initName(realTimeStaticDay.getDataType()), realTimeStaticDay.getDataCount() + ""));
+                            mainBeans.add(new MainBean(CommonUtil.initName(realTimeStaticDay.getDataType()), realTimeStaticDay.getDataCount()));
                         }
                     }
                 } else {

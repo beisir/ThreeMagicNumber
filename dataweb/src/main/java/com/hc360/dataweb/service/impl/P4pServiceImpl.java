@@ -36,27 +36,27 @@ public class P4pServiceImpl implements P4pService {
         DecimalFormat threeNumDf = new DecimalFormat(",###.00");//每三位分隔一下
         List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
         if (resultList != null && resultList.size() > 0) {
-            List<MainBean> list = new ArrayList<>();
-            MainBean mainBean = null;
+            List<P4pBean> list = new ArrayList<>();
+            P4pBean mainBean = null;
             for (RealTimeStaticDoubleHour hour : resultList) {
 
                 if (hour.getDataType().intValue() == DataType.P4PPRICE.getType()) {
-                    mainBean = new MainBean("客单价", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new P4pBean("客单价", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PUSER.getType()) {
-                    mainBean = new MainBean("会员数", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new P4pBean("会员数", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PXIANJINCHARGETOTAL.getType()) {
-                    mainBean = new MainBean("销售额", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new P4pBean("销售额", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PALLEXPENDTOTAL.getType()) {
-                    mainBean = new MainBean("消耗", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new P4pBean("消耗", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PALLBALANCE.getType()) {
-                    mainBean = new MainBean("余额", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new P4pBean("余额", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PALLCHARGETOTAL.getType()) {
-                    mainBean = new MainBean("充值", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new P4pBean("充值", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 }
             }
