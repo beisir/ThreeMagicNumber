@@ -442,7 +442,7 @@ public enum DataType {
     P4PUSER("会员数",366),
     P4PNOBALANCEUSERS("无余额会员数",367),
 
-    P4PXIANJINBALANCEUSERS("仅现金余额会员",368),
+    P4PXIANJINBALANCEUSERS("有现金余额会员",368),
     P4PFANDIANJINBALANCEUSERS("仅返点金余额会员",369),
     P4PXUNIBALANCEUSERS("仅虚拟余额会员",370),
     P4PBALANCEKEYUSERS("有余额开启关键词用户数",371),
