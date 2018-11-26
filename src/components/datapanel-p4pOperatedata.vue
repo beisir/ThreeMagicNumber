@@ -7,7 +7,7 @@
                         <nav role="navigation" class="navbar navbar-default">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <span class="navbar-brand">产品线数据</span>
+                                    <span class="navbar-brand">P4P产品</span>
                                 </div>
                             </div>
                         </nav>
