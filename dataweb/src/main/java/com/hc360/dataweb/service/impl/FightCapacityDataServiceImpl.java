@@ -865,9 +865,9 @@ public class FightCapacityDataServiceImpl implements FightCapacityDataService {
                         map.put(DataType.getName(realTimeStaticDay.getDataType()), realTimeStaticDay.getDataCount());
                     } else {
                         if (realTimeStaticDay.getDataType().intValue() == DataType.PERCAPITAONLINETIME.getType().intValue()) {//人均在线时长*1000 单位:毫秒
-                            mainBeans.add(new MainBean(CommonUtil.initName(realTimeStaticDay.getDataType()), (realTimeStaticDay.getDataCount().longValue() * 1000) + ""));
+                            mainBeans.add(new MainBean(CommonUtil.initName(realTimeStaticDay.getDataType()), (realTimeStaticDay.getDataCount().longValue() * 1000) ));
                         } else {
-                            mainBeans.add(new MainBean(CommonUtil.initName(realTimeStaticDay.getDataType()), realTimeStaticDay.getDataCount() + ""));
+                            mainBeans.add(new MainBean(CommonUtil.initName(realTimeStaticDay.getDataType()), realTimeStaticDay.getDataCount()));
                         }
                     }
                 } else {
