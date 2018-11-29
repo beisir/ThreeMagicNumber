@@ -530,7 +530,7 @@ export default {
             			cursor: 'pointer',
                         stacking: 'normal',
                         dataLabels: {
-            				enabled: false,
+            				enabled: true,
             				distance: -20,
                             formatter: function () {
             					return (this.y ) + '%';
