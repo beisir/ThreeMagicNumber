@@ -81,11 +81,11 @@
 
                         </div>
 
-                        <div class="panel-body tab-content mTop20">
+                        <!-- <div class="panel-body tab-content mTop20">
                             <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pDailyChart" :timermillisec="0" :service="service.double" chartTitle="第九个扇形图"></chart-tendency>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>
@@ -559,45 +559,45 @@ export default {
                 })
             })
 
-            // let {browserData, versionsData} = _this.filterDoubleData(_t.data.circleData);
-            // /**
-            //  * [添加图表序列数据]
-            //  */
-            // chartEntity.addSeries({
-        	// 	type: 'pie',
-        	// 	name: '占比',
-            //     tooltip: {
-            // 		valueSuffix: '%'	// 滑动状态时数值之后的单位
-            // 	},
-        	// 	data: browserData,
-        	// 	center: [80, 60],
-            //     dataLabels: {
-        	// 		formatter: function () {
-        	// 			return this.y > 5 ? this.point.name : null;
-        	// 		},
-        	// 		color: '#ffffff',
-        	// 		distance: -30
-        	// 	},
-        	// 	size: '15%'
-            // }, false);
-            // chartEntity.addSeries({
-            //     type: 'pie',
-         	// 	name: '占比',
-            //     tooltip: {
-            // 		valueSuffix: '%'	// 滑动状态时数值之后的单位
-            // 	},
-         	// 	data: versionsData,
-         	// 	center: [80, 60],
-            //     dataLabels: {
-        	// 		formatter: function () {
-        	// 			return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
-        	// 				this.y : null;
-        	// 		}
-        	// 	},
-        	// 	id: 'versions',
-         	// 	size: '30%',
-         	// 	innerSize: '50%'
-            // }, false);
+            let {browserData, versionsData} = _this.filterDoubleData(_t.data.circleData);
+            /**
+             * [添加图表序列数据]
+             */
+            chartEntity.addSeries({
+        		type: 'pie',
+        		name: '占比',
+                tooltip: {
+            		valueSuffix: '%'	// 滑动状态时数值之后的单位
+            	},
+        		data: browserData,
+        		center: [80, 60],
+                dataLabels: {
+        			formatter: function () {
+        				return this.y > 5 ? this.point.name : null;
+        			},
+        			color: '#ffffff',
+        			distance: -30
+        		},
+        		size: '15%'
+            }, false);
+            chartEntity.addSeries({
+                type: 'pie',
+         		name: '占比',
+                tooltip: {
+            		valueSuffix: '%'	// 滑动状态时数值之后的单位
+            	},
+         		data: versionsData,
+         		center: [80, 60],
+                dataLabels: {
+        			formatter: function () {
+        				return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+        					this.y : null;
+        			}
+        		},
+        		id: 'versions',
+         		size: '30%',
+         		innerSize: '50%'
+            }, false);
 
         });
 
@@ -692,37 +692,37 @@ export default {
 
 
         /*-------------------------------------------------------------------------*/
-        _this.$refs.p4pDailyChart.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions, _this.semicircleConfig, {
-                title: {
-                    text: '互均消耗分布占比'
-                }
-            });
-        });
-        _this.$refs.p4pDailyChart.$on('beforeGetData', function(params) {
-            Object.assign(params, {
-                params: {
-                    type: 379
-                }
-            });
-        });
-        _this.$refs.p4pDailyChart.$on('dataReady', function(data) {
-            var _t = this;
-            /**
-             * [缓存数据]
-             */
-            _t.data = data || {};
-        });
-        _this.$refs.p4pDailyChart.$on('beforeRedraw', function(chartEntity) {
-            var _t = this;
-            chartEntity.addSeries({
-                minPointSize: 10,
-        		innerSize: '20%',
-        		zMin: 0,
-        		name: 'countries',
-        		data: _t.data
-            }, false);
-        });
+        // _this.$refs.p4pDailyChart.$on('beforeRender', function(chartOptions) {
+        //     Object.assign(chartOptions, _this.semicircleConfig, {
+        //         title: {
+        //             text: '互均消耗分布占比'
+        //         }
+        //     });
+        // });
+        // _this.$refs.p4pDailyChart.$on('beforeGetData', function(params) {
+        //     Object.assign(params, {
+        //         params: {
+        //             type: 379
+        //         }
+        //     });
+        // });
+        // _this.$refs.p4pDailyChart.$on('dataReady', function(data) {
+        //     var _t = this;
+        //     /**
+        //      * [缓存数据]
+        //      */
+        //     _t.data = data || {};
+        // });
+        // _this.$refs.p4pDailyChart.$on('beforeRedraw', function(chartEntity) {
+        //     var _t = this;
+        //     chartEntity.addSeries({
+        //         minPointSize: 10,
+        // 		innerSize: '20%',
+        // 		zMin: 0,
+        // 		name: 'countries',
+        // 		data: _t.data
+        //     }, false);
+        // });
         // /*-------------------------------------------------------------------------*/
     },
 
