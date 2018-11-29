@@ -72,7 +72,7 @@ public class P4pServiceImpl implements P4pService {
         paramMap.put("dataType", type);
         paramMap.put("day", day);
         Map<String, Object> resultMap = new HashMap<>();
-        DecimalFormat threeNumDf = new DecimalFormat(",###.00");//每三位分隔一下
+        DecimalFormat threeNumDf = new DecimalFormat("0.00");//每三位分隔一下
         List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
         List<CircleBean> list = new ArrayList<>();
         if (resultList != null && resultList.size() > 0) {
