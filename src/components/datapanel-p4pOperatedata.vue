@@ -528,9 +528,20 @@ export default {
             		pie: {
             			allowPointSelect: true,
             			cursor: 'pointer',
-            			dataLabels: {
-            				enabled: false
-            			}
+                        stacking: 'normal',
+                        dataLabels: {
+            				enabled: false,
+            				distance: -20,
+                            formatter: function () {
+            					return (this.y ) + '%';
+            				},
+            				style: {
+            					fontWeight: 'bold',
+            					color: 'white',
+            					textShadow: '0px 1px 2px black'
+            				}
+            			},
+                        showInLegend: true
             		}
             	}
             });
@@ -559,7 +570,7 @@ export default {
                 })
             })
 
-            let {browserData, versionsData} = _this.filterDoubleData(_t.data.circleData);
+            let {browserData, versionsData} = _this.filterDoubleData(_t.data.circleData, ['#7cb5ec', 'rgba(124,181,236, 0.5)', "rgba(67,67,72, 0.5)"]);
             /**
              * [添加图表序列数据]
              */
@@ -570,15 +581,8 @@ export default {
             		valueSuffix: '%'	// 滑动状态时数值之后的单位
             	},
         		data: browserData,
-        		center: [80, 60],
-                dataLabels: {
-        			formatter: function () {
-        				return this.y > 5 ? this.point.name : null;
-        			},
-        			color: '#ffffff',
-        			distance: -30
-        		},
-        		size: '15%'
+        		center: [80, 20],
+        		size: '40%'
             }, false);
             chartEntity.addSeries({
                 type: 'pie',
@@ -587,18 +591,11 @@ export default {
             		valueSuffix: '%'	// 滑动状态时数值之后的单位
             	},
          		data: versionsData,
-         		center: [80, 60],
-                dataLabels: {
-        			formatter: function () {
-        				return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
-        					this.y : null;
-        			}
-        		},
+         		center: [80, 20],
         		id: 'versions',
-         		size: '30%',
+         		size: '80%',
          		innerSize: '50%'
             }, false);
-
         });
 
 
@@ -756,9 +753,15 @@ export default {
          * [filterDoubleData 过滤双饼图数据组装]
          * @return {[type]} [description]
          */
-        filterDoubleData (result) {
-            var colors = Highcharts.getOptions().colors,
-            	categories = [],
+        filterDoubleData (result, col) {
+            var colors;
+            if (col) {
+                colors = col;
+            } else {
+                colors = Highcharts.getOptions().colors;
+            };
+            // var colors = Highcharts.getOptions().colors,
+            	var categories = [],
             	data = [];
                 result.forEach((item, index) => {
                     data.push({
@@ -781,7 +784,6 @@ export default {
             		y: data[i].y,
             		color: data[i].color
             	});
-            	// add version data
             	drillDataLen = data[i].drilldown.data.length;
             	for (j = 0; j < drillDataLen; j += 1) {
             		brightness = 0.2 - (j / drillDataLen) / 5;
