@@ -451,7 +451,7 @@ public enum DataType {
 
     P4PBALANCEKEY("总关键词数",373),
     P4PBALANCENOKEY("无效关键词数",374),
-    P4PAVGKEYS("互均开启关键数",375),
+    P4PAVGKEYS("互均关键数",375),
     P4PTOP50KEY("top50消耗关键",376),  //单独存到一个表格里面
 
     P4PPRICE("客单价",377),
