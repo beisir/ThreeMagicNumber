@@ -72,13 +72,13 @@ public class P4pServiceImpl implements P4pService {
         paramMap.put("dataType", type);
         paramMap.put("day", day);
         Map<String, Object> resultMap = new HashMap<>();
-
+        DecimalFormat threeNumDf = new DecimalFormat(",###.00");//每三位分隔一下
         List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
         List<CircleBean> list = new ArrayList<>();
         if (resultList != null && resultList.size() > 0) {
             CircleBean circleBean = null;
             for (RealTimeStatic3Data _realTimeStatic3Data : resultList) {
-                circleBean = new CircleBean(_realTimeStatic3Data.getElement(), _realTimeStatic3Data.getDataCount() * 100, _realTimeStatic3Data.getDataCount());
+                circleBean = new CircleBean(_realTimeStatic3Data.getElement(), Double.parseDouble(threeNumDf.format(_realTimeStatic3Data.getDataCount() * 100)), _realTimeStatic3Data.getDataCount());
                 list.add(circleBean);
             }
         }
