@@ -69,6 +69,7 @@ public interface RealTimeStaticHourMapper {
      */
     List<RealTimeStaticDoubleHour> findDoubleByDay(Map<String, Object>  param);
 
+    List<RealTimeStaticDoubleHour> findDoubleByType(Map<String, Object>  param);
     /***
      * 某天的 小时数据
      * @param param : day 日期， list，数据类型的list

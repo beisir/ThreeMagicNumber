@@ -439,7 +439,7 @@ public enum DataType {
     P4PXUNIBALANCE("虚拟余额",364),
     P4PALLBALANCE("余额",365),
 
-    P4PUSER("会员数",366),
+    P4PUSER("累计会员数",366),
     P4PNOBALANCEUSERS("无余额会员数",367),
 
     P4PXIANJINBALANCEUSERS("有现金余额会员",368),
@@ -451,8 +451,8 @@ public enum DataType {
 
     P4PBALANCEKEY("总关键词数",373),
     P4PBALANCENOKEY("无效关键词数",374),
-    P4PAVGKEYS("互均关键数",375),
-    P4PTOP50KEY("top50消耗关键",376),  //单独存到一个表格里面
+    P4PAVGKEYS("户均关键词数",375),
+    P4PTOP50KEY("top50消耗关键词",376),  //单独存到一个表格里面
 
     P4PPRICE("客单价",377),
     P4PPRICEPERCENT("客单价分布指标",378),

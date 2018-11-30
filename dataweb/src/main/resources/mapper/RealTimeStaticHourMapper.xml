@@ -200,7 +200,8 @@
         IRSL_DATE_H,
         row_number() over(partition by DATA_TYPE,substr(IRSL_DATE_H,0,8) order by IRSL_DATE_H desc) as rn
         from SJPT_REALTIME_STATIC_HOUR
-        where IRSL_DATE_H between concat(#{preday}, '00') and  concat(#{day}, '23')
+        where
+          IRSL_DATE_H between concat(#{preday}, '00') and  concat(#{day}, '23')
         <if test="list != null and list.size > 0">
             and DATA_TYPE in
             <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
@@ -212,6 +213,25 @@
         order by DATA_TYPE ,IRSL_DATE_H asc
     </select>
 
+
+    <select id="findDoubleByType" resultMap="P4PResultMap" parameterType="java.util.Map">
+        select DATA_TYPE, data_count, IRSL_DATE_H
+        from (select DATA_TYPE,
+        data_count,
+        IRSL_DATE_H,
+        row_number() over(partition by DATA_TYPE order by IRSL_DATE_H desc) as rn
+        from SJPT_REALTIME_STATIC_HOUR
+        where
+        1=1
+        <if test="list != null and list.size > 0">
+            and DATA_TYPE in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) t
+        where t.rn = 1
+    </select>
     <select id="findDoubleByTodayDay" resultMap="P4PResultMap" parameterType="java.util.Map">
         select DATA_TYPE, data_count, IRSL_DATE_H
         from (select DATA_TYPE,
