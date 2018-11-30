@@ -13,10 +13,10 @@
   <select id="findByType" parameterType="java.util.Map"  resultMap="BaseResultMap">
 select ELEMENT,DATA_COUNT
 from (
-    select ELEMENT,DATA_COUNT, row_number() over(partition by ELEMENT,IRSL_DATE order by IRSL_DATE desc) as rn
+    select ELEMENT,DATA_COUNT, row_number() over(partition by ELEMENT order by IRSL_DATE desc) as rn
     from sjpt_realtime_static_3data
-    where data_type =#{dataType} and IRSL_DATE like concat(#{day},'%')
-    order by ID
+    where data_type =#{dataType}
+    order by  ID asc
     ) t where t.rn =1
   </select>
 </mapper>
