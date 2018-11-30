@@ -31,10 +31,8 @@ public class P4pServiceImpl implements P4pService {
         Map<String, Object> resultMap = new HashMap<>();
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("list", typeList);
-        paramMap.put("day", ControllerDateUtil.getToday());
-        paramMap.put("preday", ControllerDateUtil.getToday());
         DecimalFormat threeNumDf = new DecimalFormat(",###.00");//每三位分隔一下
-        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
+        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByType(paramMap);
         if (resultList != null && resultList.size() > 0) {
             List<P4pBean> list = new ArrayList<>();
             P4pBean mainBean = null;
@@ -91,9 +89,7 @@ public class P4pServiceImpl implements P4pService {
         Map<String, Object> paramMap = new HashMap<>();
 
         paramMap.put("list", typeList);
-        paramMap.put("day", day);
-        paramMap.put("preday", day);
-        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
+        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByType(paramMap);
         List<TwoCircleBean> twoCircleBeans = new ArrayList<>();
         TwoCircleBean twoCircleBean = null;
         DrillDownBean drillDownBean = null;
@@ -125,9 +121,7 @@ public class P4pServiceImpl implements P4pService {
         Map<String, Object> paramMap = new HashMap<>();
 
         paramMap.put("list", typeList);
-        paramMap.put("day", day);
-        paramMap.put("preday", day);
-        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
+        List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByType(paramMap);
         List<TwoCircleBean> twoCircleBeans = new ArrayList<>();
         TwoCircleBean twoCircleBean = null;
         DrillDownBean drillDownBean = null;
@@ -192,10 +186,14 @@ public class P4pServiceImpl implements P4pService {
                 dataMap.put(time, 0d);
             }
         }
-
+        DecimalFormat threeNumDf = new DecimalFormat("0.00");//每三位分隔一下
         if (dataList != null && dataList.size() > 0) {
             for (RealTimeStaticDoubleHour hour : dataList) {
-                dataMap.put(hour.getIrslDateH().substring(0, 8), hour.getDataCount());
+                if(DataType.P4PAVGKEYS.getType().intValue() == hour.getDataType().intValue()){
+                    dataMap.put(hour.getIrslDateH().substring(0, 8), Double.parseDouble(threeNumDf.format(hour.getDataCount()) ));
+                }else{
+                   dataMap.put(hour.getIrslDateH().substring(0, 8), hour.getDataCount());
+                }
             }
         }
         List<Double> resultDataList = new ArrayList<>();

@@ -218,6 +218,7 @@ public class P4pOutcomeController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             List<Integer> dataTypeList = new ArrayList<>();
+            dataTypeList.add(DataType.P4PUSER.getType());// 总会员数
             dataTypeList.add(DataType.P4PBALANCEUSER.getType());// 都有
             dataTypeList.add(DataType.P4PXIANJINBALANCEUSERS.getType()); //仅现金
             dataTypeList.add(DataType.P4PFANDIANJINBALANCEUSERS.getType());// 仅返点金
