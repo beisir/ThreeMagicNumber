@@ -2,7 +2,7 @@ package com.hc360.dataweb.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hc360.dataweb.model.DataType;
-import com.hc360.dataweb.service.P4pService;
+import com.hc360.dataweb.service.OperateService;
 import com.hc360.dataweb.util.ControllerDateUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import java.util.Map;
 public class P4pOutcomeController {
     private Logger logger = Logger.getLogger(P4pOutcomeController.class);
     @Autowired
-    private P4pService p4pServiceImpl;
+    private OperateService operateService;
     /***
      * 头部的两个算式
      * @param request
@@ -47,7 +47,7 @@ public class P4pOutcomeController {
             typeList.add(DataType.P4PALLBALANCE.getType()); //余额
             typeList.add(DataType.P4PALLEXPENDTOTAL.getType()); //消耗
             typeList.add(DataType.P4PALLCHARGETOTAL.getType()); //充值
-            _dataMap  = p4pServiceImpl.p4pFormula(typeList);
+            _dataMap  = operateService.formula(typeList);
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
@@ -80,7 +80,7 @@ public class P4pOutcomeController {
         Map<String,Object> _dataMap  = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            _dataMap  = p4pServiceImpl.priceDist(type, ControllerDateUtil.getToday());
+            _dataMap  = operateService.priceDist(type, ControllerDateUtil.getToday());
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
@@ -117,7 +117,7 @@ public class P4pOutcomeController {
             dataTypeList.add(DataType.P4PXUNIBALANCE.getType());// 虚拟余额
             dataTypeList.add(DataType.P4PALLBALANCE.getType());// 累计余额
 
-            _dataMap  = p4pServiceImpl.twoCircle(dataTypeList, ControllerDateUtil.getToday());
+            _dataMap  = operateService.twoCircle(dataTypeList, ControllerDateUtil.getToday());
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
@@ -160,7 +160,7 @@ public class P4pOutcomeController {
                 dataTypeList.add(DataType.P4PFANDIANJINBALANCE.getType());// 返点金余额
                 dataTypeList.add(DataType.P4PXIANJINBALANCE.getType());// 现金余额
             }
-            _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
+            _dataMap  = operateService.columd3D(dataTypeList,6);
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
@@ -197,7 +197,7 @@ public class P4pOutcomeController {
                 dataTypeList.add(DataType.P4PBALANCEKEY.getType());// 总关键词数
                 dataTypeList.add(DataType.P4PBALANCENOKEY.getType());// 无效关键词数
             }
-            Map<String,Object> dataMap  = p4pServiceImpl.line(dataTypeList, 6);
+            Map<String,Object> dataMap  = operateService.line(dataTypeList, 6);
             _dataMap.put("data",dataMap);
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
@@ -230,7 +230,7 @@ public class P4pOutcomeController {
             dataTypeList.add(DataType.P4PXIANJINBALANCEUSERS.getType()); //仅现金
             dataTypeList.add(DataType.P4PFANDIANJINBALANCEUSERS.getType());// 仅返点金
             dataTypeList.add(DataType.P4PXUNIBALANCEUSERS.getType());// 仅虚拟
-            Map<String,Object>  dataMap  = p4pServiceImpl.line(dataTypeList,6);
+            Map<String,Object>  dataMap  = operateService.line(dataTypeList,6);
             _dataMap.put("data",dataMap);
 //同心圆
             dataTypeList = new ArrayList<>();
@@ -238,7 +238,7 @@ public class P4pOutcomeController {
             dataTypeList.add(DataType.P4PNOBALANCEUSERS.getType()); //无余额
             dataTypeList.add(DataType.P4PBALANCEKEYUSERS.getType()); //有余额且开启关键词
             dataTypeList.add(DataType.P4PBALANCENOKEYUSERS.getType());// 有余额且未开启关键词
-             p4pServiceImpl.twoCircleUsers(dataTypeList, ControllerDateUtil.getToday(), _dataMap);
+             operateService.twoCircleUsers(dataTypeList, ControllerDateUtil.getToday(), _dataMap);
 
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));

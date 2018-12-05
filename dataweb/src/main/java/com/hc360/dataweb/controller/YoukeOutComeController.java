@@ -2,7 +2,7 @@ package com.hc360.dataweb.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hc360.dataweb.model.DataType;
-import com.hc360.dataweb.service.P4pService;
+import com.hc360.dataweb.service.OperateService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class YoukeOutComeController {
     private Logger logger = Logger.getLogger(YoukeOutComeController.class);
     @Autowired
-    private P4pService p4pServiceImpl;
+    private OperateService operateService;
 
     /***
      * 头部的两个算式
@@ -42,7 +42,7 @@ public class YoukeOutComeController {
             typeList.add(DataType.YOUKEPRICE.getType()); // 客单价
             typeList.add(DataType.YOUKEUSER.getType()); //会员数
             typeList.add(DataType.YOUKETOTOALFEE.getType()); //销售额
-            _dataMap  = p4pServiceImpl.p4pFormula(typeList);
+            _dataMap  = operateService.formula(typeList);
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
@@ -85,7 +85,7 @@ public class YoukeOutComeController {
                 dataTypeList.add(DataType.YOUKEXIANSUOSEESUM.getType());// 被查看的线索数
             }
 
-            Map<String,Object> dataMap  = p4pServiceImpl.line(dataTypeList, 6);
+            Map<String,Object> dataMap  = operateService.line(dataTypeList, 6);
             _dataMap.put("data",dataMap);
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
