@@ -20,6 +20,7 @@ import java.util.Map;
 
 /**
  * 运营数据导航的接口
+ * p4p看板
  * 2018-11-20
  */
 @Controller
@@ -207,7 +208,7 @@ public class P4pOutcomeController {
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
             response.getWriter().close();
-            logger.error("column3D,flag="+flag, e);
+            logger.error("p4pline,flag="+flag, e);
         }
     }
 
