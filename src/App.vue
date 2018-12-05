@@ -299,7 +299,7 @@ export default {
                     _privileges.user[privilegeid] = 1;
                 });
 
-                
+
                 /**
                  * [$privileges 将权限数据挂载到VUE原型对象上，以便各VUE组件都能访问]
                  * @type {[type]}

@@ -7,7 +7,11 @@
                         <nav role="navigation" class="navbar navbar-default">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <span class="navbar-brand">P4P产品</span>
+                                    <router-link class="navbar-brand" to="/datapanel/p4pOperatedata">P4P产品</router-link>
+                                    <router-link class="navbar-brand" to="/datapanel/friendProducts">友客产品</router-link>
+                                    <!-- <span class="navbar-brand">P4P产品</span>
+                                    <span class="navbar-brand">友客产品</span> -->
+
                                 </div>
                             </div>
                         </nav>
@@ -52,7 +56,7 @@
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pColumn3Dchart" :timermillisec="0" :service="service.chart3d" :resetYAxisBeforeRedraw="false" chartTitle="第三个3D柱图"></chart-tendency>
                             </div>
                             <div class="p4pCountRig">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart1" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="第四个折线图"></chart-tendency>
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart1" :timermillisec="0" :service="service.p4pline" chartTitle="第四个折线图"></chart-tendency>
                             </div>
                         </div>
 
@@ -449,25 +453,15 @@ export default {
                 }
             });
         });
-        _this.$refs.p4pLineChart1.$on('afterGetData', function(data) {
-            var _t = this;
-            /**
-             * [缓存数据]
-             */
-            _t.data = data || {};
-        });
         _this.$refs.p4pLineChart1.$on('beforeRedraw', function(chartEntity) {
-            var _t = this;
-            chartEntity.xAxis[0].update({
-                categories: _t.data.time
-            }, false);
-            _t.data.data.forEach((lineItem, lineIndex) => {
-                chartEntity.addSeries({
-            		name: lineItem.name,
-            		data: lineItem.data,
-                    tooltip: {
-                		valueSuffix: (lineItem.name === '会员数') ? ' 个':' 元'	// 滑动状态时数值之后的单位
-                	}
+            chartEntity.series.forEach((series, index) => {
+                series.update({
+                    yAxis: 0,
+                    // 将折线设置为有菱角的折线
+                    marker: {
+                        enabled: true
+                    },
+                    // zIndex: index
                 }, false);
             });
         });
@@ -557,19 +551,24 @@ export default {
 
         _this.$refs.p4pcombineChart.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
-            chartEntity.xAxis[0].categories = _t.data.time;
-            _t.data.data.forEach((combineItem, combineIndex) => {
+            // console.log(_t.data);
+            // chartEntity.xAxis[0].categories = _t.data.time;
+            _t.data.data.dataList.forEach((combineItem, combineIndex) => {
                 chartEntity.addSeries({
                     type: 'spline',
                     tooltip: {
                 		valueSuffix: ' 个'	// 滑动状态时数值之后的单位
                 	},
                     name: combineItem.name,
-                    data: combineItem.data,
-
+                    data: combineItem.data
                 })
             })
-
+            chartEntity.series.forEach((series, index) => {
+                series.update({
+                    yAxis: 0
+                }, false);
+            });
+            //
             let {browserData, versionsData} = _this.filterDoubleData(_t.data.circleData, ['#7cb5ec', 'rgba(124,181,236, 0.5)', "rgba(67,67,72, 0.5)"]);
             /**
              * [添加图表序列数据]
@@ -611,6 +610,9 @@ export default {
          */
         _this.$refs.p4pLineChart2.$on('beforeRender', function(chartOptions) {
             Object.assign(chartOptions, _this.p4pLineConifg, {
+                chart: {
+                    type: 'spline'
+                },
                 title: {
             		text: '开启关键词数趋势'
             	},
@@ -628,22 +630,15 @@ export default {
                 }
             });
         });
-        _this.$refs.p4pLineChart2.$on('afterGetData', function(data) {
-            var _t = this;
-            /**
-             * [缓存数据]
-             */
-            _t.data = data || {};
-        });
         _this.$refs.p4pLineChart2.$on('beforeRedraw', function(chartEntity) {
-            var _t = this;
-            chartEntity.xAxis[0].update({
-                categories: _t.data.time
-            }, false);
-            _t.data.data.forEach((lineItem, lineIndex) => {
-                chartEntity.addSeries({
-            		name: lineItem.name,
-            		data: lineItem.data
+            chartEntity.series.forEach((series, index) => {
+                series.update({
+                    yAxis: 0,
+                    // 将折线设置为有菱角的折线
+                    marker: {
+                        enabled: true
+                    },
+                    // zIndex: index
                 }, false);
             });
         });
@@ -746,8 +741,6 @@ export default {
                 }
             });
         },
-
-
 
         /**
          * [filterDoubleData 过滤双饼图数据组装]

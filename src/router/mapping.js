@@ -29,6 +29,15 @@ const routeConfig = [{
             })
         }
     }, {
+        name: '友客产品',
+        path: '/datapanel/friendProducts',
+        component: resolve => {
+            require.ensure(['components/datapanel-friendProducts.vue'], () => {
+                resolve(require('components/datapanel-friendProducts.vue'))
+            })
+        },
+        hidden: true
+    }, {
         name: '运营数据',
         path: '/datapanel/operation',
         component: resolve => {
