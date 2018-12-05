@@ -12,4 +12,5 @@ public interface P4pService {
     Map<String,Object> twoCircle(List<Integer> typeList,String day) throws Exception;
     Map<String, Object> columd3D(List<Integer> typeList, int dayBeyond) throws Exception;
     void  twoCircleUsers(List<Integer> typeList, String day , Map<String, Object> resultMap) throws Exception;
+    public Map<String, Object> line(List<Integer> typeList, int dayBeyond) throws Exception;
 }

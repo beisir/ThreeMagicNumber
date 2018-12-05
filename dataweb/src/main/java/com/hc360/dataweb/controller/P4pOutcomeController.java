@@ -191,7 +191,8 @@ public class P4pOutcomeController {
                 dataTypeList.add(DataType.P4PBALANCEKEY.getType());// 总关键词数
                 dataTypeList.add(DataType.P4PBALANCENOKEY.getType());// 无效关键词数
             }
-            _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
+            Map<String,Object> dataMap  = p4pServiceImpl.line(dataTypeList, 6);
+            _dataMap.put("data",dataMap);
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
@@ -223,7 +224,8 @@ public class P4pOutcomeController {
             dataTypeList.add(DataType.P4PXIANJINBALANCEUSERS.getType()); //仅现金
             dataTypeList.add(DataType.P4PFANDIANJINBALANCEUSERS.getType());// 仅返点金
             dataTypeList.add(DataType.P4PXUNIBALANCEUSERS.getType());// 仅虚拟
-            _dataMap  = p4pServiceImpl.columd3D(dataTypeList,6);
+            Map<String,Object>  dataMap  = p4pServiceImpl.line(dataTypeList,6);
+            _dataMap.put("data",dataMap);
 //同心圆
             dataTypeList = new ArrayList<>();
             dataTypeList.add(DataType.P4PBALANCEUSER.getType());//有余额

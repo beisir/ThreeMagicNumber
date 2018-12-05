@@ -158,12 +158,33 @@ public class P4pServiceImpl implements P4pService {
         DecimalFormat df = new DecimalFormat("0.00");
         return Double.parseDouble(df.format(d * 100 / all));
     }
+        public Map<String, Object> columd3D(List<Integer> typeList, int dayBeyond) throws Exception {
+            Map<String, Object> resultMap = new HashMap<>();
+            List<String> timeList = this.getTimeList(dayBeyond);//时间轴
+            resultMap.put("time", timeList);
+            List<ColumnBean> dataList = new ArrayList<>();
+            for (Integer type : typeList) {
+                List<Integer> types = new ArrayList<>();
+                types.add(type);
+                Map<String, Object> paramMap = new HashMap<>();
+                paramMap.put("list", types);
+                paramMap.put("day", ControllerDateUtil.getToday());
+                paramMap.put("preday", ControllerDateUtil.getPreNDay(-dayBeyond));
+                List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
 
-    public Map<String, Object> columd3D(List<Integer> typeList, int dayBeyond) throws Exception {
+
+                List<Double> resultDatas = this.checkData(timeList, resultList);//结果数据
+                ColumnBean columnBean = new ColumnBean(DataType.getName(type), resultDatas);
+                dataList.add(columnBean);
+            }
+            resultMap.put("data", dataList);
+            return resultMap;
+        }
+    public Map<String, Object> line(List<Integer> typeList, int dayBeyond) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         List<String> timeList = this.getTimeList(dayBeyond);//时间轴
         resultMap.put("time", timeList);
-        List<ColumnBean> dataList = new ArrayList<>();
+        List<LineBean> dataList = new ArrayList<>();
         for (Integer type : typeList) {
             List<Integer> types = new ArrayList<>();
             types.add(type);
@@ -175,10 +196,10 @@ public class P4pServiceImpl implements P4pService {
 
 
             List<Double> resultDatas = this.checkData(timeList, resultList);//结果数据
-            ColumnBean columnBean = new ColumnBean(DataType.getName(type), resultDatas);
+            LineBean columnBean = new LineBean(DataType.getName(type), resultDatas,DataType.getUnit(type));
             dataList.add(columnBean);
         }
-        resultMap.put("data", dataList);
+        resultMap.put("dataList", dataList);
         return resultMap;
     }
 
