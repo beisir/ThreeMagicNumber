@@ -61,9 +61,14 @@ public class P4pOutcomeController {
     }
 
     /**
+     * p4p看板：
      * 客单价分布 378
      * 日消耗 379
      * 关键词云  376
+     * 友客看板：
+     * 客单价分布 383
+     * 订阅关键词TOP50云图 386
+     * 友客top50线索关键词 391
      * @param request
      * @param response
      * @throws Exception
