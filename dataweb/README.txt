@@ -1,5 +1,6 @@
 
 产品线数据--接口：
+P4P:
 日消耗分布 -- 玫瑰花
 http://data.360jz.com/dataweb/dist?type=379
 客单价分布  ---玫瑰花
