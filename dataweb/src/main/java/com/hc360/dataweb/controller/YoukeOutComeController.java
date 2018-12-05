@@ -85,7 +85,7 @@ public class YoukeOutComeController {
                 dataTypeList.add(DataType.YOUKEXIANSUOSEESUM.getType());// 被查看的线索数
             }
 
-            Map<String,Object> dataMap  = p4pServiceImpl.line(dataTypeList,6);
+            Map<String,Object> dataMap  = p4pServiceImpl.line(dataTypeList, 6);
             _dataMap.put("data",dataMap);
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
@@ -96,7 +96,7 @@ public class YoukeOutComeController {
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
             response.getWriter().close();
-            logger.error("column3D,flag="+flag, e);
+            logger.error("youkeLine,flag="+flag, e);
         }
     }
 
