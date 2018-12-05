@@ -457,6 +457,25 @@ public enum DataType {
     P4PPRICE("客单价",377),
     P4PPRICEPERCENT("客单价分布指标",378),
 
+    //友客的信息
+    YOUKEPRICE("客单价",382),
+    YOUKEUSER("用户数",380),
+    YOUKETOTOALFEE("销售额",381),
+    //订阅关键词总数
+    YOUKEUSERKEYNSUM("总数",384),
+    //友客互均订阅关键词数
+    YOUKEUSERKEYAVG("户均数",385),
+
+    //友客总线索数
+    YOUKEXIANSUOSUM("线索总数",387),
+    YOUKEXIANSUOSEESUM("被查看的线索数",388),
+    //友客线索被查看的次数
+    YOUKEXIANSUOSEETIME("被查看的次数",389),
+    //友客线索关键词数
+    YOUKEXIANSUOSKEYNUM("线索关键词",390),
+//友客线索关键词和用户订阅关键词重合数
+    YOUKEXIANSUOUSERKEYNUM("匹配数",392),
+
     /*MIP站流量的信息，这些数据是从百度统计抓取过来的**/
     MIP_IP("MIP站IP",338),
     MIP_PV("MIP站PV",339),
