@@ -56,6 +56,9 @@ public class P4pServiceImpl implements P4pService {
                 } else if (hour.getDataType().intValue() == DataType.P4PALLCHARGETOTAL.getType()) {
                     mainBean = new P4pBean("充值", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
+                }else{
+                    mainBean = new P4pBean(DataType.getName(hour.getDataType()), threeNumDf.format(hour.getDataCount()));
+                    list.add(mainBean);
                 }
             }
             resultMap.put("formula", list);
