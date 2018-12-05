@@ -119,4 +119,6 @@ public interface RealTimeStaticDayMapper {
      * @throws Exception
      */
     List<RealTimeStaticDoubleDay> findMonthDayDoubleData(Map<String, Object> param)throws Exception;
+
+    List<RealTimeStaticDoubleDay> findDoubleByDay(Map<String, Object> param)throws Exception;
 }

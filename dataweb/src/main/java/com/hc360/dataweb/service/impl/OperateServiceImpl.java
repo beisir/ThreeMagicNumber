@@ -1,9 +1,10 @@
 package com.hc360.dataweb.service.impl;
 
 import com.hc360.dataweb.dao.RealTimeStatic3DataMapper;
+import com.hc360.dataweb.dao.RealTimeStaticDayMapper;
 import com.hc360.dataweb.dao.RealTimeStaticHourMapper;
 import com.hc360.dataweb.model.*;
-import com.hc360.dataweb.service.P4pService;
+import com.hc360.dataweb.service.OperateService;
 import com.hc360.dataweb.util.ControllerDateUtil;
 import com.hc360.dataweb.util.DateUtil;
 import org.apache.log4j.Logger;
@@ -20,41 +21,47 @@ import java.util.Map;
  * Created by home on 2018/11/21.
  */
 @Service
-public class P4pServiceImpl implements P4pService {
-    private Logger logger = Logger.getLogger(P4pServiceImpl.class);
+public class OperateServiceImpl implements OperateService {
+
+    private Logger logger = Logger.getLogger(OperateServiceImpl.class);
     @Autowired
     private RealTimeStaticHourMapper realTimeStaticHourMapper;
     @Autowired
     private RealTimeStatic3DataMapper realTimeStatic3DataMapper;
+    @Autowired
+    private RealTimeStaticDayMapper realTimeStaticDayMapper;
 
-    public Map<String, Object> p4pFormula(List<Integer> typeList) throws Exception {
+    public Map<String, Object> formula(List<Integer> typeList) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("list", typeList);
         DecimalFormat threeNumDf = new DecimalFormat(",###.00");//每三位分隔一下
         List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByType(paramMap);
         if (resultList != null && resultList.size() > 0) {
-            List<P4pBean> list = new ArrayList<>();
-            P4pBean mainBean = null;
+            List<FormulaBean> list = new ArrayList<>();
+            FormulaBean mainBean = null;
             for (RealTimeStaticDoubleHour hour : resultList) {
 
                 if (hour.getDataType().intValue() == DataType.P4PPRICE.getType()) {
-                    mainBean = new P4pBean("客单价", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new FormulaBean("客单价", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PUSER.getType()) {
-                    mainBean = new P4pBean("会员数", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new FormulaBean("会员数", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PXIANJINCHARGETOTAL.getType()) {
-                    mainBean = new P4pBean("销售额", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new FormulaBean("销售额", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PALLEXPENDTOTAL.getType()) {
-                    mainBean = new P4pBean("消耗", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new FormulaBean("消耗", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PALLBALANCE.getType()) {
-                    mainBean = new P4pBean("余额", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new FormulaBean("余额", threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 } else if (hour.getDataType().intValue() == DataType.P4PALLCHARGETOTAL.getType()) {
-                    mainBean = new P4pBean("充值", threeNumDf.format(hour.getDataCount()));
+                    mainBean = new FormulaBean("充值", threeNumDf.format(hour.getDataCount()));
+                    list.add(mainBean);
+                } else {
+                    mainBean = new FormulaBean(DataType.getName(hour.getDataType()), threeNumDf.format(hour.getDataCount()));
                     list.add(mainBean);
                 }
             }
@@ -151,7 +158,9 @@ public class P4pServiceImpl implements P4pService {
     }
 
     private Double formartData(Double d, double all) {
-        if(d == null ){return 0d;}
+        if (d == null) {
+            return 0d;
+        }
         DecimalFormat df = new DecimalFormat("0.00");
         return Double.parseDouble(df.format(d * 100 / all));
     }
@@ -179,6 +188,51 @@ public class P4pServiceImpl implements P4pService {
         return resultMap;
     }
 
+    public Map<String, Object> line(List<Integer> typeList, int dayBeyond) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<String> timeList = this.getTimeList(dayBeyond);//时间轴
+        resultMap.put("time", timeList);
+        List<LineBean> dataList = new ArrayList<>();
+        for (Integer type : typeList) {
+            List<Integer> types = new ArrayList<>();
+            types.add(type);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("list", types);
+            paramMap.put("day", ControllerDateUtil.getToday());
+            paramMap.put("preday", ControllerDateUtil.getPreNDay(-dayBeyond));
+            List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
+
+
+            List<Double> resultDatas = this.checkData(timeList, resultList);//结果数据
+            LineBean columnBean = new LineBean(DataType.getName(type), resultDatas, DataType.getUnit(type));
+            dataList.add(columnBean);
+        }
+        resultMap.put("dataList", dataList);
+        return resultMap;
+    }
+
+    public Map<String, Object> lineFromDayTable(List<Integer> typeList, int dayBeyond) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<String> timeList = this.getTimeListEndYesterday(dayBeyond+1);//时间轴
+        resultMap.put("time", timeList);
+        List<LineBean> dataList = new ArrayList<>();
+        for (Integer type : typeList) {
+            List<Integer> types = new ArrayList<>();
+            types.add(type);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("list", types);
+            paramMap.put("day", ControllerDateUtil.getYesterday());
+            paramMap.put("preday", ControllerDateUtil.getPreNDay(-(dayBeyond+1)));
+            List<RealTimeStaticDoubleDay> resultList = realTimeStaticDayMapper.findDoubleByDay(paramMap);
+
+
+            List<Double> resultDatas = this.checkDataFromDay(timeList, resultList);//结果数据
+            LineBean columnBean = new LineBean(DataType.getName(type), resultDatas, DataType.getUnit(type));
+            dataList.add(columnBean);
+        }
+        resultMap.put("dataList", dataList);
+        return resultMap;
+    }
     private List<Double> checkData(List<String> timeList, List<RealTimeStaticDoubleHour> dataList) {
         Map<String, Double> dataMap = new HashMap<>();
         if (timeList != null && timeList.size() > 0) {
@@ -189,10 +243,10 @@ public class P4pServiceImpl implements P4pService {
         DecimalFormat threeNumDf = new DecimalFormat("0.00");//每三位分隔一下
         if (dataList != null && dataList.size() > 0) {
             for (RealTimeStaticDoubleHour hour : dataList) {
-                if(DataType.P4PAVGKEYS.getType().intValue() == hour.getDataType().intValue()){
-                    dataMap.put(hour.getIrslDateH().substring(0, 8), Double.parseDouble(threeNumDf.format(hour.getDataCount()) ));
-                }else{
-                   dataMap.put(hour.getIrslDateH().substring(0, 8), hour.getDataCount());
+                if (DataType.P4PAVGKEYS.getType().intValue() == hour.getDataType().intValue()) {
+                    dataMap.put(hour.getIrslDateH().substring(0, 8), Double.parseDouble(threeNumDf.format(hour.getDataCount())));
+                } else {
+                    dataMap.put(hour.getIrslDateH().substring(0, 8), hour.getDataCount());
                 }
             }
         }
@@ -205,10 +259,46 @@ public class P4pServiceImpl implements P4pService {
         return resultDataList;
     }
 
+    private List<Double> checkDataFromDay(List<String> timeList, List<RealTimeStaticDoubleDay> dataList) {
+        Map<String, Double> dataMap = new HashMap<>();
+        if (timeList != null && timeList.size() > 0) {
+            for (String time : timeList) {
+                dataMap.put(time, 0d);
+            }
+        }
+        DecimalFormat threeNumDf = new DecimalFormat("0.00");//每三位分隔一下
+        if (dataList != null && dataList.size() > 0) {
+            for (RealTimeStaticDoubleDay hour : dataList) {
+                if (DataType.P4PAVGKEYS.getType().intValue() == hour.getDataType().intValue()) {
+                    dataMap.put(hour.getIrslDate(), Double.parseDouble(threeNumDf.format(hour.getDataCount())));
+                } else {
+                    dataMap.put(hour.getIrslDate(), hour.getDataCount());
+                }
+            }
+        }
+        List<Double> resultDataList = new ArrayList<>();
+        if (timeList != null && timeList.size() > 0) {
+            for (String time : timeList) {
+                resultDataList.add(dataMap.get(time));
+            }
+        }
+        return resultDataList;
+    }
     private List<String> getTimeList(int dayBeyond) {
         List<String> timeList = new ArrayList<String>();//横坐标，时间轴
         for (int i = -dayBeyond; i <= 0; i++) {
             if (timeList.size() == dayBeyond + 1) {
+                break;
+            }
+            timeList.add(DateUtil.plusDays("yyyyMMdd", i)); //时间横坐标
+        }
+        return timeList;
+    }
+
+    private List<String> getTimeListEndYesterday(int dayBeyond) {
+        List<String> timeList = new ArrayList<String>();//横坐标，时间轴
+        for (int i = -dayBeyond; i <= 1; i++) {
+            if (timeList.size() == dayBeyond ) {
                 break;
             }
             timeList.add(DateUtil.plusDays("yyyyMMdd", i)); //时间横坐标
