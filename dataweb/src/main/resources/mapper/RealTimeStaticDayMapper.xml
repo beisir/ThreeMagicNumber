@@ -396,4 +396,26 @@
         ) x
         where order_sn = 1
     </select>
+
+
+    <select id="findDoubleByDay" resultMap="DoubleResultMap" parameterType="java.util.Map">
+        select DATA_TYPE, data_count, IRSL_DATE
+        from (select DATA_TYPE,
+        data_count,
+        IRSL_DATE,
+        row_number() over(partition by DATA_TYPE,IRSL_DATE order by IRSL_DATE desc) as rn
+        from sjpt_realtime_static_day
+        where
+        IRSL_DATE between #{preday} and  #{day}
+        <if test="list != null and list.size > 0">
+            and DATA_TYPE in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) t
+        where t.rn = 1
+        order by DATA_TYPE ,IRSL_DATE asc
+    </select>
+
 </mapper>
