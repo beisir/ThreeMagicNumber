@@ -1,6 +1,7 @@
 package com.hc360.dataweb.service.impl;
 
 import com.hc360.dataweb.dao.RealTimeStatic3DataMapper;
+import com.hc360.dataweb.dao.RealTimeStaticDayMapper;
 import com.hc360.dataweb.dao.RealTimeStaticHourMapper;
 import com.hc360.dataweb.model.*;
 import com.hc360.dataweb.service.OperateService;
@@ -27,6 +28,8 @@ public class OperateServiceImpl implements OperateService {
     private RealTimeStaticHourMapper realTimeStaticHourMapper;
     @Autowired
     private RealTimeStatic3DataMapper realTimeStatic3DataMapper;
+    @Autowired
+    private RealTimeStaticDayMapper realTimeStaticDayMapper;
 
     public Map<String, Object> formula(List<Integer> typeList) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
@@ -208,6 +211,28 @@ public class OperateServiceImpl implements OperateService {
         return resultMap;
     }
 
+    public Map<String, Object> lineFromDayTable(List<Integer> typeList, int dayBeyond) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<String> timeList = this.getTimeListEndYesterday(dayBeyond+1);//时间轴
+        resultMap.put("time", timeList);
+        List<LineBean> dataList = new ArrayList<>();
+        for (Integer type : typeList) {
+            List<Integer> types = new ArrayList<>();
+            types.add(type);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("list", types);
+            paramMap.put("day", ControllerDateUtil.getYesterday());
+            paramMap.put("preday", ControllerDateUtil.getPreNDay(-(dayBeyond+1)));
+            List<RealTimeStaticDoubleDay> resultList = realTimeStaticDayMapper.findDoubleByDay(paramMap);
+
+
+            List<Double> resultDatas = this.checkDataFromDay(timeList, resultList);//结果数据
+            LineBean columnBean = new LineBean(DataType.getName(type), resultDatas, DataType.getUnit(type));
+            dataList.add(columnBean);
+        }
+        resultMap.put("dataList", dataList);
+        return resultMap;
+    }
     private List<Double> checkData(List<String> timeList, List<RealTimeStaticDoubleHour> dataList) {
         Map<String, Double> dataMap = new HashMap<>();
         if (timeList != null && timeList.size() > 0) {
@@ -234,10 +259,46 @@ public class OperateServiceImpl implements OperateService {
         return resultDataList;
     }
 
+    private List<Double> checkDataFromDay(List<String> timeList, List<RealTimeStaticDoubleDay> dataList) {
+        Map<String, Double> dataMap = new HashMap<>();
+        if (timeList != null && timeList.size() > 0) {
+            for (String time : timeList) {
+                dataMap.put(time, 0d);
+            }
+        }
+        DecimalFormat threeNumDf = new DecimalFormat("0.00");//每三位分隔一下
+        if (dataList != null && dataList.size() > 0) {
+            for (RealTimeStaticDoubleDay hour : dataList) {
+                if (DataType.P4PAVGKEYS.getType().intValue() == hour.getDataType().intValue()) {
+                    dataMap.put(hour.getIrslDate(), Double.parseDouble(threeNumDf.format(hour.getDataCount())));
+                } else {
+                    dataMap.put(hour.getIrslDate(), hour.getDataCount());
+                }
+            }
+        }
+        List<Double> resultDataList = new ArrayList<>();
+        if (timeList != null && timeList.size() > 0) {
+            for (String time : timeList) {
+                resultDataList.add(dataMap.get(time));
+            }
+        }
+        return resultDataList;
+    }
     private List<String> getTimeList(int dayBeyond) {
         List<String> timeList = new ArrayList<String>();//横坐标，时间轴
         for (int i = -dayBeyond; i <= 0; i++) {
             if (timeList.size() == dayBeyond + 1) {
+                break;
+            }
+            timeList.add(DateUtil.plusDays("yyyyMMdd", i)); //时间横坐标
+        }
+        return timeList;
+    }
+
+    private List<String> getTimeListEndYesterday(int dayBeyond) {
+        List<String> timeList = new ArrayList<String>();//横坐标，时间轴
+        for (int i = -dayBeyond; i <= 1; i++) {
+            if (timeList.size() == dayBeyond ) {
                 break;
             }
             timeList.add(DateUtil.plusDays("yyyyMMdd", i)); //时间横坐标

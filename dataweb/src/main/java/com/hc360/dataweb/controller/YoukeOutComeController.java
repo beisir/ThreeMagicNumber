@@ -64,29 +64,39 @@ public class YoukeOutComeController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             List<Integer> dataTypeList = new ArrayList<>();
+
             if("sale".equals(flag)){//销售额
                 dataTypeList.add(DataType.YOUKEPRICE.getType()); //客单价
                 dataTypeList.add(DataType.P4PUSER.getType());// 会员数
+                Map<String,Object> dataMap  = operateService.line(dataTypeList, 6);
+                _dataMap.put("data",dataMap);
             }
             if("userKey".equals(flag)){//订阅关键词
                 dataTypeList.add(DataType.YOUKEUSERKEYNSUM.getType());// 总数
                 dataTypeList.add(DataType.YOUKEUSERKEYAVG.getType());// 户均数
+                Map<String,Object> dataMap  = operateService.line(dataTypeList, 6);
+                _dataMap.put("data",dataMap);
             }
             if("clue".equals(flag)){ //线索漏斗
                 dataTypeList.add(DataType.YOUKEXIANSUOSUM.getType());// 总数
                 dataTypeList.add(DataType.YOUKEXIANSUOSEESUM.getType());// 被查看的线索数
+                Map<String,Object> dataMap  = operateService.lineFromDayTable(dataTypeList, 6);
+                _dataMap.put("data",dataMap);
             }
 
             if("clueKey".equals(flag)){ //线索关键词
                 dataTypeList.add(DataType.YOUKEXIANSUOSKEYNUM.getType());// 总数
+                Map<String,Object> dataMap  = operateService.lineFromDayTable(dataTypeList, 6);
+                _dataMap.put("data",dataMap);
             }
             if("clueHot".equals(flag)){ //线索热度
                 dataTypeList.add(DataType.YOUKEXIANSUOSEETIME.getType());// 被查看的次数
                 dataTypeList.add(DataType.YOUKEXIANSUOSEESUM.getType());// 被查看的线索数
+                Map<String,Object> dataMap  = operateService.lineFromDayTable(dataTypeList, 6);
+                _dataMap.put("data",dataMap);
             }
 
-            Map<String,Object> dataMap  = operateService.line(dataTypeList, 6);
-            _dataMap.put("data",dataMap);
+
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
@@ -99,5 +109,6 @@ public class YoukeOutComeController {
             logger.error("youkeLine,flag="+flag, e);
         }
     }
+
 
 }
