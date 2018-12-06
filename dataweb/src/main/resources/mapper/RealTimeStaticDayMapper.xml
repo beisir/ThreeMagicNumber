@@ -403,7 +403,7 @@
         from (select DATA_TYPE,
         data_count,
         IRSL_DATE,
-        row_number() over(partition by DATA_TYPE,IRSL_DATE order by IRSL_DATE desc) as rn
+        row_number() over(partition by DATA_TYPE,IRSL_DATE order by OP_DATE desc) as rn
         from sjpt_realtime_static_day
         where
         IRSL_DATE between #{preday} and  #{day}
