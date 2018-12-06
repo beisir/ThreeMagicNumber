@@ -426,7 +426,7 @@ export default {
                             text: null
                         },
                         labels: {
-                            format: '{value}' + item.unit,
+                            format: '{value}' + (item.unit ? item.unit : ''),
                             style: {
                                 color: chartOptions.colors[index]
                             }
