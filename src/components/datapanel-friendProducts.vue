@@ -521,7 +521,7 @@ export default {
         _this.$refs.wordCloudChart3.$on('beforeRender', function(chartOptions) {
             Object.assign(chartOptions, _this.p4pLineConifg, {
             	title: {
-            		text: '线索关检词TOP50'
+            		text: '线索关键词TOP50'
             	}
             });
         });
@@ -585,7 +585,7 @@ export default {
         _this.$refs.p4pLineChart5.$on('beforeRender', function(chartOptions) {
             Object.assign(chartOptions, _this.p4pLineConifg, {
                 title: {
-                    text: '线索关键词'
+                    text: '线索热度'
                 },
                 yAxis: {
                    title: {
