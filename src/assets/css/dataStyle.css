@@ -2395,3 +2395,25 @@ dl,dt,dd{margin:0; padding:0;}
     width: 100%;
     height: 100%;
 }
+
+.new-brand:first-child{
+    margin-left: -15px;
+}
+
+.new-brand {
+    color: #000;
+    float: left;
+    font-weight: bold;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+}
+.new-brand:hover {
+    background-color: #55a4ed;
+    color: #fff;
+}
+.link-active {
+    background-color: #55a4ed;
+    color: #fff;
+}

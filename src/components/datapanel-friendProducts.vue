@@ -7,8 +7,9 @@
                         <nav role="navigation" class="navbar navbar-default">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <router-link class="navbar-brand" to="/datapanel/p4pOperatedata" v-if="this.$privileges.user['81']">P4P产品</router-link>
-                                    <router-link class="navbar-brand" to="/datapanel/friendProducts" v-if="$privileges.user['82']">友客产品</router-link>
+                                    <router-link v-for="(item, index) in navRouterLink" v-if="$privileges.user[item.id]" :class="['new-brand', (index === linkIndex)? 'link-active': '']" :to="item.path">{{item.name}}</router-link>
+                                    <!-- <router-link class="navbar-brand" to="/datapanel/p4pOperatedata" v-if="this.$privileges.user['81']">P4P产品</router-link>
+                                    <router-link class="navbar-brand" to="/datapanel/friendProducts" v-if="$privileges.user['82']">友客产品</router-link> -->
                                 </div>
                             </div>
                         </nav>
@@ -51,7 +52,7 @@
 
                         </div>
 
-                        <!-- <div class="panel-body tab-content mTop40">
+                        <div class="panel-body tab-content mTop40">
                             <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5;">
                                 <div class="container-fluid">
                                     <div class="navbar-header">
@@ -68,11 +69,11 @@
                             </div>
 
                             <div class="p4pCountLeft">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart3" :timermillisec="0" :service="service.double" :resetYAxisBeforeRedraw="false" chartTitle="第九个top云词"></chart-tendency>
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart3" :timermillisec="0" :service="service.dist.dist391" :resetYAxisBeforeRedraw="false" chartTitle="第九个top云词"></chart-tendency>
                             </div>
-                            <div class="p4pCountRig">
+                            <!-- <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart4" :timermillisec="0" :service="service.double" :resetYAxisBeforeRedraw="false" chartTitle="第十个top云词"></chart-tendency>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="panel-body tab-content mTop40">
@@ -84,17 +85,17 @@
                                 </div>
                             </nav>
 
-                            <div class="p4pCountLeft" id="vennChart" ref="vennChart" style="height:450px;" title="第十一个韦恩图">
+                            <!-- <div class="p4pCountLeft" id="vennChart" ref="vennChart" style="height:450px;" title="第十一个韦恩图"></div>-->
 
-                            </div>
+
                             <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart5" :timermillisec="0" :service="service.youkeLine.clueHot" chartTitle="第十二个折线图"></chart-tendency>
                             </div>
 
-                            <div class="p4pCountLeft">
+                            <!-- <div class="p4pCountLeft">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="pyramidChart" :timermillisec="0" :service="service.jingzita" :resetYAxisBeforeRedraw="false" chartTitle="第十三个金字塔图"></chart-tendency>
-                            </div>
-                        </div> -->
+                            </div> -->
+                        </div>
 
                     </div>
                 </div>
@@ -113,18 +114,30 @@ require('highcharts/modules/wordcloud')(Highcharts);
 export default {
     data () {
         return {
+            linkIndex: 1,
+            navRouterLink: [
+                {
+                    name: 'P4P产品',
+                    id: 81,
+                    path: '/datapanel/p4pOperatedata'
+                },
+                {
+                    name: '友客产品',
+                    id: 82,
+                    path: '/datapanel/friendProducts'
+                }
+            ],
             /**
              * [service 数据服务配置]
              * @type {Object}
              */
             service: {
-                double: {
-                    url: '/dataweb/dist'
-                },
                 youkeLine: {
-                    url: '/dataweb/youkeLine',
                     userKey: {
                         url: '/dataweb/youkeLine?flag=userKey'
+                    },
+                    clue: {
+                        url: '/dataweb/youkeLine?flag=clue'
                     },
                     sale: {
                         url: '/dataweb/youkeLine?flag=sale'
@@ -145,6 +158,9 @@ export default {
                     },
                     dist386: {
                         url: '/dataweb/dist?type=386'
+                    },
+                    dist391: {
+                        url: '/dataweb/dist?type=391'
                     }
 
                 },
@@ -227,7 +243,7 @@ export default {
      * @return {[type]} [description]
      */
     mounted () {
-        document.querySelector('ul.sub-nav').querySelectorAll('a')[1].classList.add('sub-nav-checked')  
+        document.querySelector('ul.sub-nav').querySelectorAll('a')[1].classList.add('sub-nav-checked')
         const _this = this;
         /**
          * [概况图->客单价分布占比图开始]
@@ -376,9 +392,9 @@ export default {
          * @return {[type]}              [description]
          */
         _this.$refs.wordCloudChart.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions, _this.p4pLineConifg, {
+            Object.assign(chartOptions, {
             	title: {
-            		text: '订阅关检词TOP50'
+            		text: '订阅关键词TOP50'
             	}
             });
         });
@@ -390,20 +406,20 @@ export default {
             var _t = this;
             var resultData = _this.filterWordCloudData(_t.data.data)
             chartEntity.addSeries({
-                name: '消耗',
+                name: '订阅数',
                 type: 'wordcloud',
                 data: resultData
             }, false);
         });
         /*-------------------------------------------------------------------------*/
 
-        // /*-------------------------------------------------------------------------*/
-        //     /*第六个top云关键词图*/
-        // /**
-        //  * [top50消耗词图 词图云]
-        //  * @param  {[type]} chartOptions [description]
-        //  * @return {[type]}              [description]
-        //  */
+        /*-------------------------------------------------------------------------*/
+            /*第六个top云关键词图*/
+        /**
+         * [top50消耗词图 词图云]
+         * @param  {[type]} chartOptions [description]
+         * @return {[type]}              [description]
+         */
         // _this.$refs.wordCloudChart2.$on('beforeRender', function(chartOptions) {
         //     Object.assign(chartOptions, _this.p4pLineConifg, {
         //     	title: {
@@ -431,113 +447,106 @@ export default {
         //         data: resultData
         //     }, false);
         // });
-        // /*-------------------------------------------------------------------------*/
-        //
-        // // p4pLineChart3
-        // _this.$refs.p4pLineChart3.$on('beforeRender', function(chartOptions) {
-        //     Object.assign(chartOptions, {
-        //         chart: {
-        //             type: 'area'
-        //         },
-        //         colors: ['rgb(124, 181, 236)', 'rgb(67, 67, 72)', 'rgb(144, 237, 125)'],
-        //         title: {
-        //             text: '线索漏斗'
-        //         },
-        //         plotOptions: {
-        //             area: {
-        //             	stacking: 'normal',
-        //             	lineColor: '#666666',
-        //             	lineWidth: 1,
-        //             	marker: {
-        //             		lineWidth: 1,
-        //             		lineColor: '#666666'
-        //             	}
-        //             }
-        //         }
-        //     });
-        // });
-        // _this.$refs.p4pLineChart3.$on('beforeRedraw', function(chartEntity) {
-        //     chartEntity.series.forEach((series, index) => {
-        //         series.update({
-        //             yAxis: 0,
-        //             // 将折线设置为有菱角的折线
-        //             marker: {
-        //                 enabled: true
-        //             }
-        //         }, false);
-        //     });
-        // });
-        // /*-------------------------------------------------------------------------*/
-        //
-        // /*-------------------------------------------------------------------------*/
-        // _this.$refs.p4pLineChart4.$on('beforeRender', function(chartOptions) {
-        //     Object.assign(chartOptions, _this.p4pLineConifg, {
-        //         title: {
-        //             text: '线索关键词'
-        //         },
-        //         yAxis: {
-        //            title: {
-        //                text: '数量'
-        //            }
-        //        }
-        //     });
-        // });
-        // _this.$refs.p4pLineChart4.$on('beforeRedraw', function(chartEntity) {
-        //     chartEntity.series.forEach((series, index) => {
-        //         series.update({
-        //             yAxis: 0,
-        //             // 将折线设置为有菱角的折线
-        //             marker: {
-        //                 enabled: true
-        //             }
-        //         }, false);
-        //     });
-        // });
-        //
-        //
-        // /*-------------------------------------------------------------------------*/
-        //     /*第六个top云关键词图*/
-        // /**
-        //  * [top50消耗词图 词图云]
-        //  * @param  {[type]} chartOptions [description]
-        //  * @return {[type]}              [description]
-        //  */
-        // _this.$refs.wordCloudChart3.$on('beforeRender', function(chartOptions) {
-        //     Object.assign(chartOptions, _this.p4pLineConifg, {
-        //     	title: {
-        //     		text: '线索关检词TOP50'
-        //     	}
-        //     });
-        // });
-        // _this.$refs.wordCloudChart3.$on('beforeGetData', function(params) {
-        //     Object.assign(params, {
-        //         params: {
-        //             type: '391'
-        //         }
-        //     });
-        // });
-        // _this.$refs.wordCloudChart3.$on('afterGetData', function(data) {
-        //     var _t = this;
-        //     _t.data = data || {};
-        // });
-        // _this.$refs.wordCloudChart3.$on('beforeRedraw', function(chartEntity) {
-        //     var _t = this;
-        //     var resultData = _this.filterWordCloudData(_t.data.data)
-        //     chartEntity.addSeries({
-        //         name: '消耗',
-        //         type: 'wordcloud',
-        //         data: resultData
-        //     }, false);
-        // });
-        // /*-------------------------------------------------------------------------*/
-        //
-        // /*-------------------------------------------------------------------------*/
-        //     /*第六个top云关键词图*/
-        // /**
-        //  * [top50消耗词图 词图云]
-        //  * @param  {[type]} chartOptions [description]
-        //  * @return {[type]}              [description]
-        //  */
+        /*-------------------------------------------------------------------------*/
+
+        // p4pLineChart3
+        _this.$refs.p4pLineChart3.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, {
+                chart: {
+                    type: 'area'
+                },
+                colors: ['rgb(124, 181, 236)', 'rgb(67, 67, 72)', 'rgb(144, 237, 125)'],
+                title: {
+                    text: '线索漏斗'
+                },
+                plotOptions: {
+                    area: {
+                    	stacking: 'normal',
+                    	lineColor: '#666666',
+                    	lineWidth: 1,
+                    	marker: {
+                    		lineWidth: 1,
+                    		lineColor: '#666666'
+                    	}
+                    }
+                }
+            });
+        });
+        _this.$refs.p4pLineChart3.$on('beforeRedraw', function(chartEntity) {
+            chartEntity.series.forEach((series, index) => {
+                series.update({
+                    yAxis: 0,
+                    // 将折线设置为有菱角的折线
+                    marker: {
+                        enabled: true
+                    }
+                }, false);
+            });
+        });
+        /*-------------------------------------------------------------------------*/
+
+        /*-------------------------------------------------------------------------*/
+        _this.$refs.p4pLineChart4.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.p4pLineConifg, {
+                title: {
+                    text: '线索关键词'
+                },
+                yAxis: {
+                   title: {
+                       text: '数量'
+                   }
+               }
+            });
+        });
+        _this.$refs.p4pLineChart4.$on('beforeRedraw', function(chartEntity) {
+            chartEntity.series.forEach((series, index) => {
+                series.update({
+                    yAxis: 0,
+                    // 将折线设置为有菱角的折线
+                    marker: {
+                        enabled: true
+                    }
+                }, false);
+            });
+        });
+
+
+        /*-------------------------------------------------------------------------*/
+            /*第六个top云关键词图*/
+        /**
+         * [top50消耗词图 词图云]
+         * @param  {[type]} chartOptions [description]
+         * @return {[type]}              [description]
+         */
+        _this.$refs.wordCloudChart3.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.p4pLineConifg, {
+            	title: {
+            		text: '线索关检词TOP50'
+            	}
+            });
+        });
+        _this.$refs.wordCloudChart3.$on('afterGetData', function(data) {
+            var _t = this;
+            _t.data = data || {};
+        });
+        _this.$refs.wordCloudChart3.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            var resultData = _this.filterWordCloudData(_t.data.data)
+            chartEntity.addSeries({
+                name: '线索数',
+                type: 'wordcloud',
+                data: resultData
+            }, false);
+        });
+        /*-------------------------------------------------------------------------*/
+
+        /*-------------------------------------------------------------------------*/
+            /*第六个top云关键词图*/
+        /**
+         * [top50消耗词图 词图云]
+         * @param  {[type]} chartOptions [description]
+         * @return {[type]}              [description]
+         */
         // _this.$refs.wordCloudChart4.$on('beforeRender', function(chartOptions) {
         //     Object.assign(chartOptions, _this.p4pLineConifg, {
         //     	title: {
@@ -565,64 +574,64 @@ export default {
         //         data: resultData
         //     }, false);
         // });
-        // /*-------------------------------------------------------------------------*/
-        //
-        // /*-------------------------------------------------------------------------*/
-        //     // 韦恩图
-        // // vennChart
-        // // _this.getVennData();
-        //
-        // /*-------------------------------------------------------------------------*/
-        // _this.$refs.p4pLineChart5.$on('beforeRender', function(chartOptions) {
-        //     Object.assign(chartOptions, _this.p4pLineConifg, {
-        //         title: {
-        //             text: '线索关键词'
-        //         },
-        //         yAxis: {
-        //            title: {
-        //                text: '数量'
-        //            }
-        //         },
-        //         tooltip: {
-        //             shared: true,
-        //             formatter: function() {
-        //                 var _t = this,
-        //                     _total = 0;
-        //                 var _arr = [
-        //                     '<span style="font-size: 10px;">' + _t.x + '</span><br>'
-        //                 ];
-        //                 for (var i = 0; i < _t.points.length; i++) {
-        //                     _arr = _arr.concat([
-        //                         '<span style="color:' + _t.points[i].color + '">\u25CF</span>',
-        //                         '<tspan> ' + _t.points[i].series.name + ': </tspan>',
-        //                         '<tspan style="font-weight:bold">' + _t.points[i].y + ' 元</tspan><br/>'
-        //                     ]);
-        //                 };
-        //                 if (_t.points[0].y && _t.points[1].y) {
-        //                     _total = _t.points[0].y / _t.points[1].y;
-        //                 };
-        //                 return _arr.concat([
-        //                     '<span>\u25CF</span>',
-        //                     '<tspan> 线索热度: </tspan>',
-        //                     '<tspan style="font-weight:bold">' + _total.toFixed(2) + '%</tspan>'
-        //                 ]).join('');
-        //             }
-        //         }
-        //     });
-        // });
-        // _this.$refs.p4pLineChart5.$on('beforeRedraw', function(chartEntity) {
-        //     chartEntity.series.forEach((series, index) => {
-        //         series.update({
-        //             yAxis: 0,
-        //             // 将折线设置为有菱角的折线
-        //             marker: {
-        //                 enabled: true
-        //             }
-        //         }, false);
-        //     });
-        // });
-        //
-        // /*-------------------------------------------------------------------------*/
+        /*-------------------------------------------------------------------------*/
+
+        /*-------------------------------------------------------------------------*/
+            // 韦恩图
+        // vennChart
+        // _this.getVennData();
+
+        /*-------------------------------------------------------------------------*/
+        _this.$refs.p4pLineChart5.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.p4pLineConifg, {
+                title: {
+                    text: '线索关键词'
+                },
+                yAxis: {
+                   title: {
+                       text: '数量'
+                   }
+                },
+                tooltip: {
+                    shared: true,
+                    formatter: function() {
+                        var _t = this,
+                            _total = 0;
+                        var _arr = [
+                            '<span style="font-size: 10px;">' + _t.x + '</span><br>'
+                        ];
+                        for (var i = 0; i < _t.points.length; i++) {
+                            _arr = _arr.concat([
+                                '<span style="color:' + _t.points[i].color + '">\u25CF</span>',
+                                '<tspan> ' + _t.points[i].series.name + ': </tspan>',
+                                '<tspan style="font-weight:bold">' + _t.points[i].y + ' 元</tspan><br/>'
+                            ]);
+                        };
+                        if (_t.points[0].y && _t.points[1].y) {
+                            _total = _t.points[0].y / _t.points[1].y;
+                        };
+                        return _arr.concat([
+                            '<span>\u25CF</span>',
+                            '<tspan> 线索热度: </tspan>',
+                            '<tspan style="font-weight:bold">' + _total.toFixed(2) + '%</tspan>'
+                        ]).join('');
+                    }
+                }
+            });
+        });
+        _this.$refs.p4pLineChart5.$on('beforeRedraw', function(chartEntity) {
+            chartEntity.series.forEach((series, index) => {
+                series.update({
+                    yAxis: 0,
+                    // 将折线设置为有菱角的折线
+                    marker: {
+                        enabled: true
+                    }
+                }, false);
+            });
+        });
+
+        /*-------------------------------------------------------------------------*/
         //
         // // pyramidChart
         // _this.$refs.pyramidChart.$on('beforeRender', function(chartOptions) {

@@ -7,8 +7,7 @@
                         <nav role="navigation" class="navbar navbar-default">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <router-link class="navbar-brand" to="/datapanel/p4pOperatedata" v-if="this.$privileges.user['81']">P4P产品</router-link>
-                                    <router-link class="navbar-brand" to="/datapanel/friendProducts" v-if="$privileges.user['82']">友客产品</router-link>
+                                    <router-link v-for="(item, index) in navRouterLink" v-if="$privileges.user[item.id]" :class="['new-brand', (index === linkIndex)? 'link-active': '']" :to="item.path">{{item.name}}</router-link>
                                 </div>
                             </div>
                         </nav>
@@ -104,6 +103,19 @@ import chartTendency from './chart-tendency.vue'
 export default {
     data () {
         return {
+            linkIndex: 0,
+            navRouterLink: [
+                {
+                    name: 'P4P产品',
+                    id: 81,
+                    path: '/datapanel/p4pOperatedata'
+                },
+                {
+                    name: '友客产品',
+                    id: 82,
+                    path: '/datapanel/friendProducts'
+                }
+            ],
             /**
              * [service 数据服务配置]
              * @type {Object}
