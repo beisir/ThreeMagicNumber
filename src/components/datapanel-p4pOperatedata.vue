@@ -7,11 +7,8 @@
                         <nav role="navigation" class="navbar navbar-default">
                             <div class="container-fluid">
                                 <div class="navbar-header">
-                                    <router-link class="navbar-brand" to="/datapanel/p4pOperatedata">P4P产品</router-link>
-                                    <router-link class="navbar-brand" to="/datapanel/friendProducts">友客产品</router-link>
-                                    <!-- <span class="navbar-brand">P4P产品</span>
-                                    <span class="navbar-brand">友客产品</span> -->
-
+                                    <router-link class="navbar-brand" to="/datapanel/p4pOperatedata" v-if="this.$privileges.user['81']">P4P产品</router-link>
+                                    <router-link class="navbar-brand" to="/datapanel/friendProducts" v-if="$privileges.user['82']">友客产品</router-link>
                                 </div>
                             </div>
                         </nav>
@@ -241,6 +238,9 @@ export default {
             }
         };
     },
+    destroyed () {
+        document.querySelector('ul.sub-nav').querySelectorAll('a')[1].classList.remove('sub-nav-checked')
+    },
     created () {
         const _this = this;
         this.$http.get('/dataweb/p4pformula').then((response) => {
@@ -264,7 +264,7 @@ export default {
      * @return {[type]} [description]
      */
     mounted () {
-        // console.log(Highcharts)
+        document.querySelector('ul.sub-nav').querySelectorAll('a')[1].classList.add('sub-nav-checked')
         const _this = this;
         /**
          * [概况图->客单价分布占比图开始]
@@ -551,21 +551,12 @@ export default {
 
         _this.$refs.p4pcombineChart.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
-            // console.log(_t.data);
-            // chartEntity.xAxis[0].categories = _t.data.time;
-            _t.data.data.dataList.forEach((combineItem, combineIndex) => {
-                chartEntity.addSeries({
-                    type: 'spline',
-                    tooltip: {
-                		valueSuffix: ' 个'	// 滑动状态时数值之后的单位
-                	},
-                    name: combineItem.name,
-                    data: combineItem.data
-                })
-            })
             chartEntity.series.forEach((series, index) => {
                 series.update({
-                    yAxis: 0
+                    yAxis: 0,
+                    marker: {
+                        enabled: true
+                    }
                 }, false);
             });
             //

@@ -2962,3 +2962,11 @@ dl,dt,dd{margin:0; padding:0;}
 .countCon{width:98%; float:left; text-align:center;padding:5px 4% 0; box-sizing:border-box;background:#f8f8f8; margin:8px 1%; line-height:20px; border-radius:5px;}
 .p4pCountLeft ,.p4pCountRig{width:100% !important; border:0 !important;border-bottom:1px solid #ddd !important;}
 }
+#vennChart {
+    padding-left: 50px;
+    box-sizing: border-box;
+}
+#vennChart canvas{
+    width: 100%;
+    height: 100%;
+}
