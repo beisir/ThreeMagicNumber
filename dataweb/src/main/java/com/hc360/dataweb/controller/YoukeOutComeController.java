@@ -67,7 +67,7 @@ public class YoukeOutComeController {
 
             if("sale".equals(flag)){//销售额
                 dataTypeList.add(DataType.YOUKEPRICE.getType()); //客单价
-                dataTypeList.add(DataType.P4PUSER.getType());// 会员数
+                dataTypeList.add(DataType.YOUKEUSER.getType());// 会员数
                 Map<String,Object> dataMap  = operateService.line(dataTypeList, 6);
                 _dataMap.put("data",dataMap);
             }
