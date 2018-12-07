@@ -740,7 +740,7 @@ export default {
             return data.map((item, index) => {
                 return {
                     name: item.name,
-                    weight: item.y
+                    weight: item.z
                 }
             });
         },

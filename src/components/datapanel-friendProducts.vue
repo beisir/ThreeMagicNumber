@@ -487,15 +487,15 @@ export default {
 
         /*-------------------------------------------------------------------------*/
         _this.$refs.p4pLineChart4.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions, _this.p4pLineConifg, {
+            Object.assign(chartOptions, {
                 title: {
                     text: '线索关键词'
                 },
                 yAxis: {
-                   title: {
-                       text: '数量'
-                   }
-               }
+        			title: {
+        				text: '数量'
+        			}
+        		}
             });
         });
         _this.$refs.p4pLineChart4.$on('beforeRedraw', function(chartEntity) {
@@ -756,7 +756,7 @@ export default {
             return data.map((item, index) => {
                 return {
                     name: item.name,
-                    weight: item.y
+                    weight: item.z
                 }
             });
         },
