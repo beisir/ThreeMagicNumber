@@ -319,7 +319,7 @@ export default {
         _this.$refs.p4pLineChart2.$on('beforeRedraw', function(chartEntity) {
             chartEntity.series.forEach((series, index) => {
                 series.update({
-                    yAxis: 0,
+                    // yAxis: 0,
                     // 将折线设置为有菱角的折线
                     marker: {
                         enabled: true
@@ -604,7 +604,7 @@ export default {
                             _arr = _arr.concat([
                                 '<span style="color:' + _t.points[i].color + '">\u25CF</span>',
                                 '<tspan> ' + _t.points[i].series.name + ': </tspan>',
-                                '<tspan style="font-weight:bold">' + _t.points[i].y + ' 元</tspan><br/>'
+                                '<tspan style="font-weight:bold">' + _t.points[i].y + ' 个</tspan><br/>'
                             ]);
                         };
                         if (_t.points[0].y && _t.points[1].y) {
