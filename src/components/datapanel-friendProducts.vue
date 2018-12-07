@@ -604,7 +604,7 @@ export default {
                             _arr = _arr.concat([
                                 '<span style="color:' + _t.points[i].color + '">\u25CF</span>',
                                 '<tspan> ' + _t.points[i].series.name + ': </tspan>',
-                                '<tspan style="font-weight:bold">' + _t.points[i].y + ' 个</tspan><br/>'
+                                '<tspan style="font-weight:bold">' + _t.points[i].y + ' ' + (_t.points[i].series.name.includes('次')?'次': '个') +'</tspan><br/>'
                             ]);
                         };
                         if (_t.points[0].y && _t.points[1].y) {
