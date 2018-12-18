@@ -43,9 +43,7 @@
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="cascadingChart" :timermillisec="0" :service="service.cascading" chartTitle="第四个竖状层叠图"></chart-tendency>
                             </div> -->
 
-                            <div class="p4pCountRig">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart" :timermillisec="0" :service="service.dist.dist386" :resetYAxisBeforeRedraw="false" chartTitle="第五个top云词"></chart-tendency>
-                            </div>
+
                             <!-- <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart2" :timermillisec="0" :service="service.double" :resetYAxisBeforeRedraw="false" chartTitle="第六个top云词"></chart-tendency>
                             </div> -->
@@ -68,8 +66,8 @@
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart4" :timermillisec="0" :service="service.youkeLine.clueKey" chartTitle="第八个折线图"></chart-tendency>
                             </div>
 
-                            <div class="p4pCountLeft">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart3" :timermillisec="0" :service="service.dist.dist391" :resetYAxisBeforeRedraw="false" chartTitle="第九个top云词"></chart-tendency>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart5" :timermillisec="0" :service="service.youkeLine.clueHot" chartTitle="第十二个折线图"></chart-tendency>
                             </div>
                             <!-- <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart4" :timermillisec="0" :service="service.double" :resetYAxisBeforeRedraw="false" chartTitle="第十个top云词"></chart-tendency>
@@ -86,11 +84,14 @@
                             </nav>
 
                             <!-- <div class="p4pCountLeft" id="vennChart" ref="vennChart" style="height:450px;" title="第十一个韦恩图"></div>-->
-
-
-                            <div class="p4pCountRig">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart5" :timermillisec="0" :service="service.youkeLine.clueHot" chartTitle="第十二个折线图"></chart-tendency>
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart" :timermillisec="0" :service="service.dist.dist386" :resetYAxisBeforeRedraw="false" chartTitle="第五个top云词"></chart-tendency>
                             </div>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart3" :timermillisec="0" :service="service.dist.dist391" :resetYAxisBeforeRedraw="false" chartTitle="第九个top云词"></chart-tendency>
+                            </div>
+
+
 
                             <!-- <div class="p4pCountLeft">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="pyramidChart" :timermillisec="0" :service="service.jingzita" :resetYAxisBeforeRedraw="false" chartTitle="第十三个金字塔图"></chart-tendency>
