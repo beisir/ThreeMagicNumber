@@ -14,4 +14,5 @@ public interface OperateService {
     void  twoCircleUsers(List<Integer> typeList, String day , Map<String, Object> resultMap) throws Exception;
     public Map<String, Object> line(List<Integer> typeList, int dayBeyond) throws Exception;
     public Map<String, Object> lineFromDayTable(List<Integer> typeList, int dayBeyond) throws Exception;
+    public Map<String, Object> match(Integer type) throws Exception;
 }

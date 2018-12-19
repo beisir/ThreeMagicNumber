@@ -1,6 +1,7 @@
 package com.hc360.dataweb.service.impl;
 
 import com.hc360.dataweb.dao.RealTimeStatic3DataMapper;
+import com.hc360.dataweb.dao.RealTimeStatic4DataMapper;
 import com.hc360.dataweb.dao.RealTimeStaticDayMapper;
 import com.hc360.dataweb.dao.RealTimeStaticHourMapper;
 import com.hc360.dataweb.model.*;
@@ -30,6 +31,46 @@ public class OperateServiceImpl implements OperateService {
     private RealTimeStatic3DataMapper realTimeStatic3DataMapper;
     @Autowired
     private RealTimeStaticDayMapper realTimeStaticDayMapper;
+    @Autowired
+    private RealTimeStatic4DataMapper realTimeStatic4DataMapper;
+
+    public Map<String, Object> match(Integer type) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dataType", type);
+        String[] categories = null;
+        Object[] data = null;
+        Object[] data2 = null;
+        List<BarBean> barBeanList = new ArrayList<>();
+        List<RealTimeStatic4Data> resultList = this.realTimeStatic4DataMapper.findByType(paramMap);
+        if (resultList != null && resultList.size() > 0) {
+            categories = new String[resultList.size()];
+            data = new Object[resultList.size()];
+            data2 = new Object[resultList.size()];
+            int i = 0;
+            for (RealTimeStatic4Data realTimeStatic4Data : resultList) {
+                categories[i] = realTimeStatic4Data.getElement();
+                data[i] = realTimeStatic4Data.getDataCount1();
+                data2[i] = realTimeStatic4Data.getDataCount2();
+                i++;
+            }
+            if(type == DataType.YOUKEKEYAMATCHB.getType().intValue()){
+                BarBean barBean=  new BarBean("订阅词",data);
+                barBeanList.add(barBean);
+                barBean=  new BarBean("线索词",data2);
+                barBeanList.add(barBean);
+            }else if(type == DataType.YOUKEKEYBMATCHA.getType().intValue()){
+                BarBean barBean=  new BarBean("线索词",data);
+                barBeanList.add(barBean);
+                barBean=  new BarBean("订阅词",data2);
+                barBeanList.add(barBean);
+            }
+            resultMap.put("categories",categories);
+            resultMap.put("series",barBeanList);
+        }
+
+        return resultMap;
+    }
 
     public Map<String, Object> formula(List<Integer> typeList) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
@@ -213,7 +254,7 @@ public class OperateServiceImpl implements OperateService {
 
     public Map<String, Object> lineFromDayTable(List<Integer> typeList, int dayBeyond) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
-        List<String> timeList = this.getTimeListEndYesterday(dayBeyond+1);//时间轴
+        List<String> timeList = this.getTimeListEndYesterday(dayBeyond + 1);//时间轴
         resultMap.put("time", timeList);
         List<LineBean> dataList = new ArrayList<>();
         for (Integer type : typeList) {
@@ -222,7 +263,7 @@ public class OperateServiceImpl implements OperateService {
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("list", types);
             paramMap.put("day", ControllerDateUtil.getYesterday());
-            paramMap.put("preday", ControllerDateUtil.getPreNDay(-(dayBeyond+1)));
+            paramMap.put("preday", ControllerDateUtil.getPreNDay(-(dayBeyond + 1)));
             List<RealTimeStaticDoubleDay> resultList = realTimeStaticDayMapper.findDoubleByDay(paramMap);
 
 
@@ -233,6 +274,7 @@ public class OperateServiceImpl implements OperateService {
         resultMap.put("dataList", dataList);
         return resultMap;
     }
+
     private List<Double> checkData(List<String> timeList, List<RealTimeStaticDoubleHour> dataList) {
         Map<String, Double> dataMap = new HashMap<>();
         if (timeList != null && timeList.size() > 0) {
@@ -284,6 +326,7 @@ public class OperateServiceImpl implements OperateService {
         }
         return resultDataList;
     }
+
     private List<String> getTimeList(int dayBeyond) {
         List<String> timeList = new ArrayList<String>();//横坐标，时间轴
         for (int i = -dayBeyond; i <= 0; i++) {
@@ -298,7 +341,7 @@ public class OperateServiceImpl implements OperateService {
     private List<String> getTimeListEndYesterday(int dayBeyond) {
         List<String> timeList = new ArrayList<String>();//横坐标，时间轴
         for (int i = -dayBeyond; i <= 1; i++) {
-            if (timeList.size() == dayBeyond ) {
+            if (timeList.size() == dayBeyond) {
                 break;
             }
             timeList.add(DateUtil.plusDays("yyyyMMdd", i)); //时间横坐标

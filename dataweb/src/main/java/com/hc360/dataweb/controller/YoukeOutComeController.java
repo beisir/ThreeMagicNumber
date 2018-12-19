@@ -110,5 +110,39 @@ public class YoukeOutComeController {
         }
     }
 
+    /**
+     * 匹配度
+     * @param request
+     * @param response
+     * @param flag  ab:订阅关键词线索匹配度  ba 线索关键词订阅匹配度
+     * @throws Exception
+     */
+    @RequestMapping(value = "/keyMatch", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
+    public void keyMatch(HttpServletRequest request, HttpServletResponse response,@RequestParam String flag) throws Exception{
+        response.setContentType("application/json; charset=UTF-8");
+        Map<String,Object> _dataMap  = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            int dataType = 0;
+            if("ab".equals(flag)){//订阅关键词线索匹配度
+                dataType = DataType.YOUKEKEYAMATCHB.getType();
 
+            }else if("ba".equals(flag)){//线索关键词订阅匹配度
+                dataType = DataType.YOUKEKEYBMATCHA.getType();
+            }
+            Map<String,Object> dataMap  = this.operateService.match(dataType);
+
+            _dataMap.put("data",dataMap);
+            _dataMap.put("errno",0);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (Exception e) {
+            _dataMap.put("errno",1);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+            logger.error("keyMatch,flag="+flag, e);
+        }
+    }
 }

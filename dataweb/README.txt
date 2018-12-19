@@ -52,3 +52,7 @@ http://data.360jz.com/dataweb/youkeLine?flag=clue
 http://data.360jz.com/dataweb/youkeLine?flag=clueKey
 线索热度
 http://data.360jz.com/dataweb/youkeLine?flag=clueHot
+订阅关键词线索匹配度
+http://data.360jz.com/dataweb/keyMatch?flag=ab
+线索关键词订阅匹配度
+http://data.360jz.com/dataweb/keyMatch?flag=ba
