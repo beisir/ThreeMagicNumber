@@ -65,8 +65,8 @@ public class OperateServiceImpl implements OperateService {
                 barBean=  new BarBean("订阅词",data2);
                 barBeanList.add(barBean);
             }
-            resultMap.put("categories",categories);
-            resultMap.put("series",barBeanList);
+            resultMap.put("time",categories);
+            resultMap.put("dataList",barBeanList);
         }
 
         return resultMap;
