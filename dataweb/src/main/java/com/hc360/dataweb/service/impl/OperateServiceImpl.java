@@ -42,8 +42,9 @@ public class OperateServiceImpl implements OperateService {
 
         DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
         List<RealTimeStaticDoubleDay> resultList = realTimeStaticDayMapper.findByTypeList(paramMap);
-        List<VennBean> vennBeanList = new ArrayList<>();
+        List<Object> vennBeanList = new ArrayList<>();
         VennBean vennBean=null;
+        Venn2Bean venn2Bean = null;
         if(resultList!=null && resultList.size()>0){
             for(RealTimeStaticDoubleDay realTimeStaticDoubleDay : resultList){
                 String count = threeNumDf.format(realTimeStaticDoubleDay.getDataCount());
@@ -53,11 +54,11 @@ public class OperateServiceImpl implements OperateService {
                     vennBean.setName("重合:"+count);
                     vennBeanList.add(vennBean);
                 }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEUSERKEYNSUM.getType().intValue()){
-                    vennBean = new VennBean(new Object[]{"订阅关键词:"+count},count);
-                    vennBeanList.add(vennBean);
+                    venn2Bean = new Venn2Bean(new Object[]{"订阅关键词:"+count},count);
+                    vennBeanList.add(venn2Bean);
                 }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOSKEYNUM.getType().intValue()){
-                    vennBean = new VennBean(new Object[]{"线索关键词:"+count},count);
-                    vennBeanList.add(vennBean);
+                    venn2Bean = new Venn2Bean(new Object[]{"线索关键词:"+count},count);
+                    vennBeanList.add(venn2Bean);
                 }
             }
             resultMap.put("dataList",vennBeanList);
@@ -80,8 +81,8 @@ public class OperateServiceImpl implements OperateService {
             int i = 0;
             for (RealTimeStatic4Data realTimeStatic4Data : resultList) {
                 categories[i] = realTimeStatic4Data.getElement();
-                data[i] = realTimeStatic4Data.getDataCount1();
-                data2[i] = -realTimeStatic4Data.getDataCount2();
+                data[i] = -realTimeStatic4Data.getDataCount1();
+                data2[i] = realTimeStatic4Data.getDataCount2();
                 i++;
             }
             if(type == DataType.YOUKEKEYAMATCHB.getType().intValue()){
