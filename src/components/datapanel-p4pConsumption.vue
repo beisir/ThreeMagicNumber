@@ -27,7 +27,7 @@
     </div>
 </template>
 <script>
-require("highcharts/js/highcharts-more")(Highcharts);
+require("highcharts/highcharts-more")(Highcharts);
 import chartTendency from "./chart-tendency.vue";
 import pieChart from "./pieChart.vue";
 //import pieChart from "./pieChart-tt.vue";

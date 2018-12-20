@@ -88,7 +88,7 @@
 </template>
 
 <script  type="text/ecmascript-6">
-require('highcharts/js/highcharts-more')(Highcharts);
+require('highcharts/highcharts-more')(Highcharts);
 import chartTendency from './chart-tendency.vue'
 
 export default {

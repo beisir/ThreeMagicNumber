@@ -1,7 +1,30 @@
 {
-    "errno": 0,
-    "data": {
-        "dataList": [],
-        "time": []
-    }
+  "errno": 0,
+  "data": {
+    "dataList": [
+      {
+        "sets": [
+          "订阅关键词"
+        ],
+        "value": 29.352,
+        "percentage": 29352
+      },
+      {
+        "sets": [
+          "线索关键词"
+        ],
+        "value": 3.242,
+        "percentage": 3242
+      },
+      {
+        "sets": [
+          "线索关键词",
+          "订阅关键词"
+        ],
+        "value": 1.477,
+        "name": "1,477",
+        "percentage": 1477
+      }
+    ]
+  }
 }

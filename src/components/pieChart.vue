@@ -3,7 +3,7 @@
 </template>
 
 <script>
-require("highcharts/js/highcharts-more")(Highcharts);
+require("highcharts/highcharts-more")(Highcharts);
 export default {
   data() {
     return {
@@ -46,7 +46,7 @@ export default {
             dataLabels: {
               enabled: true,
               distance:-50,
-              //format:"<b>{point.name}</b>:{point.tadayNum}<br>与昨日对比：{point.trend} {point.percentnum}%",            
+              //format:"<b>{point.name}</b>:{point.tadayNum}<br>与昨日对比：{point.trend} {point.percentnum}%",
               style: {
                 color: "black"
               }
@@ -98,7 +98,7 @@ export default {
       });
     },
     /**
-     * 重新组合后台返回的数据 
+     * 重新组合后台返回的数据
      */
     formChartData(data) {
       let chartData = {};
@@ -116,9 +116,9 @@ export default {
                //今天的数据
               y:Number(item.num.replace(/,/g,'')),
               //今天和昨天的百分比
-              percentnum:percentun.num,             
+              percentnum:percentun.num,
               //上升下降
-              trend: percentun.direction 
+              trend: percentun.direction
             };
           if (!chartData[key]) {
             chartData[key] = [];
@@ -129,7 +129,7 @@ export default {
       return chartData;
     },
     /**
-     * 计算百分比 
+     * 计算百分比
      * （今日截至到当前数据-昨天同一时间数据）/  昨天同一时间数据
      */
     percentum(todayData, yesterdayData) {
@@ -139,7 +139,7 @@ export default {
           percentObj = {
             direction: differ >= 0 ? "↑" : "↓",
             num:yesterdayNum == 0 ? 100 : (Math.abs(differ / yesterdayNum) * 100).toFixed(2)
-          };      
+          };
       return percentObj;
     },
     /**
@@ -183,4 +183,3 @@ export default {
   }
 };
 </script>
-

@@ -83,7 +83,6 @@
                                 </div>
                             </nav>
 
-                            <!-- <div class="p4pCountLeft" id="vennChart" ref="vennChart" style="height:450px;" title="第十一个韦恩图"></div>-->
                             <div class="p4pCountLeft">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="wordCloudChart" :timermillisec="0" :service="service.dist.dist386" :resetYAxisBeforeRedraw="false" chartTitle="第五个top云词"></chart-tendency>
                             </div>
@@ -93,9 +92,17 @@
 
 
 
-                            <!-- <div class="p4pCountLeft">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="pyramidChart" :timermillisec="0" :service="service.jingzita" :resetYAxisBeforeRedraw="false" chartTitle="第十三个金字塔图"></chart-tendency>
-                            </div> -->
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="pyramidChart" :timermillisec="0" :service="service.keyMatch.flagab" :resetYAxisBeforeRedraw="false" chartTitle="第十三个金字塔图"></chart-tendency>
+                            </div>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="pyramidChart2" :timermillisec="0" :service="service.keyMatch.flagba" :resetYAxisBeforeRedraw="false" chartTitle="第十三个金字塔图"></chart-tendency>
+                            </div>
+
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="vennChart" :timermillisec="0" :service="service.venn" :resetYAxisBeforeRedraw="false" :resetSeriesBeforeRedraw="false" chartTitle="第五个韦恩图"></chart-tendency>
+                            </div>
+
                         </div>
 
                     </div>
@@ -108,10 +115,8 @@
 <script>
 import chartTendency from './chart-tendency.vue'
 require('highcharts/modules/variable-pie')(Highcharts);
+require('highcharts/modules/venn')(Highcharts);
 require('highcharts/modules/wordcloud')(Highcharts);
-// import Echarts from 'echarts';
-// require('echarts/config.js')
-// require('echarts/chart/venn.js');
 export default {
     data () {
         return {
@@ -165,8 +170,13 @@ export default {
                     }
 
                 },
-                jingzita: {
-                    url: '/dataweb/jingzita'
+                keyMatch: {
+                    flagab: {
+                        url: '/dataweb/keyMatch?flag=ab'
+                    },
+                    flagba: {
+                        url: '/dataweb/keyMatch?flag=ba'
+                    }
                 },
                 venn: {
                     url: '/dataweb/venn'
@@ -234,6 +244,62 @@ export default {
                     verticalAlign: 'middle'
                 }*/
             },
+            pyramidChartData: {
+                chart: {
+            		type: 'bar'
+            	},
+            	title: {
+            		text: '订阅关键词线索匹配度'
+            	},
+            	xAxis: [{
+            		reversed: false,
+            		labels: {
+            			step: 1
+            		}
+            	}, {
+            		// 显示在右侧的镜像 xAxis （通过 linkedTo 与第一个 xAxis 关联）
+            		opposite: true,
+            		reversed: false,
+            		linkedTo: 0,
+            		labels: {
+            			step: 1
+            		}
+            	}],
+            	yAxis: {
+            		title: {
+            			text: null
+            		},
+            		labels: {
+            			formatter: function () {
+            				return (Math.abs(this.value))
+            			}
+            		},
+                    min: -400,
+                    max: 400
+            	},
+            	plotOptions: {
+            		series: {
+            			stacking: 'normal'
+            		}
+            	},
+            	tooltip: {
+                    shared: true,
+            		formatter: function () {
+                        var _t = this;
+                        var _arr = [
+                            '<span style="font-size: 10px;">' + _t.x + '</span><br>'
+                        ];
+                        for (var i = 0; i < _t.points.length; i++) {
+                            _arr = _arr.concat([
+                                '<span style="color:' + _t.points[i].color + '">\u25CF</span>',
+                                '<tspan> ' + _t.points[i].series.name + ': </tspan>',
+                                '<tspan style="font-weight:bold">' + Math.abs(_t.points[i].y) +'</tspan><br/>'
+                            ]);
+                        };
+                        return _arr.join('');
+            		}
+            	}
+            }
         }
     },
     destroyed () {
@@ -578,9 +644,76 @@ export default {
         /*-------------------------------------------------------------------------*/
 
         /*-------------------------------------------------------------------------*/
-            // 韦恩图
-        // vennChart
-        // _this.getVennData();
+            //
+        /**
+         * [韦恩图 ]
+         * @param  {[type]} chartOptions [description]
+         * @return {[type]}              [description]
+         */
+        _this.$refs.vennChart.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions,{
+                // plotOptions: {
+                //     venn: {
+                //         stacking: 'normal',
+                //         allowPointSelect: true,
+                //         cursor: 'pointer',
+                //         dataLabels: {
+            	// 			enabled: true,
+            	// 			distance: 20,
+                //             formatter: function () {
+                //                 console.log(this)
+            	// 				return (this.y / 100) + '%';
+            	// 			},
+            	// 			style: {
+            	// 				fontWeight: 'bold',
+            	// 				color: 'white',
+            	// 				textShadow: '0px 1px 2px black'
+            	// 			}
+            	// 		},
+                //         showInLegend: true
+                //     }
+                // },
+                tooltip: {
+            		// headerFormat:
+            		// '<span style="color:{point.color}">\u2022</span> ' +
+            		// '<span style="font-size: 10px;">{point.point.name}</span><br>',
+            		// pointFormat: '{percentage}<br><span style="font-size: 10px">Source: Wikipedia</span>',
+                    formatter: function (){
+                        var _t = this;
+                            var _arr = [
+                                '<span style="font-size: 10px;">' + _t.point.name + '</span><br>',
+                                '<span style="color:' + _t.point.color + '">\u25CF</span>',
+                                // '<tspan> '+  +' </tspan>',
+                                '<tspan style="font-weight:bold">' + _t.percentage +'</tspan><br/>'
+
+                            ];
+                        return _arr.join('');
+                        // console.log(this)
+                    }
+            	},
+                yAxis: {
+                    title: null
+                },
+                legend: false,
+            	title: {
+            		text: ''
+            	}
+            });
+        });
+        _this.$refs.vennChart.$on('afterGetData', function(data) {
+            var _t = this;
+            _t.data = data.data.dataList || {};
+        });
+        _this.$refs.vennChart.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.update({
+                series: [{
+                    type: 'venn',
+                    data: _t.data
+                }]
+            });
+        });
+
 
         /*-------------------------------------------------------------------------*/
         _this.$refs.p4pLineChart5.$on('beforeRender', function(chartOptions) {
@@ -633,120 +766,51 @@ export default {
         });
 
         /*-------------------------------------------------------------------------*/
-        //
-        // // pyramidChart
-        // _this.$refs.pyramidChart.$on('beforeRender', function(chartOptions) {
-        //     Object.assign(chartOptions, {
-        //         chart: {
-        //     		type: 'bar'
-        //     	},
-        //     	title: {
-        //     		text: '订阅关键词匹配度'
-        //     	},
-        //     	xAxis: [{
-        //     		reversed: false,
-        //     		labels: {
-        //     			step: 1
-        //     		}
-        //     	}, {
-        //     		// 显示在右侧的镜像 xAxis （通过 linkedTo 与第一个 xAxis 关联）
-        //     		opposite: true,
-        //     		reversed: false,
-        //     		linkedTo: 0,
-        //     		labels: {
-        //     			step: 1
-        //     		}
-        //     	}],
-        //     	yAxis: {
-        //     		title: {
-        //     			text: null
-        //     		},
-        //     		labels: {
-        //     			formatter: function () {
-        //     				return (Math.abs(this.value) / 1000000) + 'M';
-        //     			}
-        //     		}
-        //     	},
-        //     	plotOptions: {
-        //     		series: {
-        //     			stacking: 'normal'
-        //     		}
-        //     	},
-        //     	// tooltip: {
-        //     	// 	formatter: function () {
-        //     	// 		return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-        //     	// 			'人口: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
-        //     	// 	}
-        //     	// }
-        //     });
-        // });
-        // _this.$refs.pyramidChart.$on('dataReady', function(data) {
-        //     var _t = this;
-        //     _t.data = data || {};
-        // });
-        // _this.$refs.pyramidChart.$on('beforeRedraw', function(chartEntity) {
-        //     var categories = this.data.time;
-        //     chartEntity.series.forEach((series, index) => {
-        //         series.update({
-        //             yAxis: 0
-        //         }, false);
-        //     });
-        //     chartEntity.xAxis.forEach((item, index) => {
-        //         item.update({categories});
-        //     })
-        // });
+
+        // pyramidChart
+        _this.$refs.pyramidChart.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.pyramidChartData);
+        });
+        _this.$refs.pyramidChart.$on('dataReady', function(data) {
+            var _t = this;
+            _t.data = data || {};
+        });
+        _this.$refs.pyramidChart.$on('beforeRedraw', function(chartEntity) {
+            var categories = this.data.time;
+
+            chartEntity.series.forEach((series, index) => {
+                series.update({
+                    yAxis: 0
+                }, false);
+            });
+            chartEntity.xAxis.forEach((item, index) => {
+                item.update({categories});
+            })
+        });
+
+        /*-------------------------------------------------------------------------*/
+        _this.$refs.pyramidChart2.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, _this.pyramidChartData, {
+                title:{text: '线索关键词订阅匹配度'}
+            });
+        });
+        _this.$refs.pyramidChart2.$on('dataReady', function(data) {
+            var _t = this;
+            _t.data = data || {};
+        });
+        _this.$refs.pyramidChart2.$on('beforeRedraw', function(chartEntity) {
+            var categories = this.data.time;
+            chartEntity.series.forEach((series, index) => {
+                series.update({
+                    yAxis: 0
+                }, false);
+            });
+            chartEntity.xAxis.forEach((item, index) => {
+                item.update({categories});
+            })
+        });
     },
     methods: {
-        getVennData () {
-            console.log(Echarts)
-            var vennEle = Echarts.init(this.$refs.vennChart);
-            var options = {
-                title : {
-                    text: '访问 vs 咨询',
-                    x: 'center'
-                },
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{b}: {c}"
-                },
-                calculable : false,
-                series : [
-                    {
-                        name:'韦恩图',
-                        type:'venn',
-                        itemStyle: {
-                            normal: {
-                                label: {
-                                    show: true
-                                },
-                                labelLine: {
-                                    show: false,
-                                    length: 10,
-                                    lineStyle: {
-                                        // color: 各异,
-                                        width: 1,
-                                        type: 'solid'
-                                    }
-                                }
-                            },
-                            emphasis: {
-                                color: '#cc99cc',
-                                borderWidth: 3,
-                                borderColor: '#996699'
-                            }
-                        },
-                        data:[
-                            {value:50, name:'访问'},
-                            {value:30, name:'咨询'},
-                            {value:20, name:'公共'}
-                        ]
-                    }
-                ]
-            };
-            vennEle.setOption(options);
-            // window.onresize = vennEle.resize;
-        },
-
         /**
          * [filterWordCloudData 过滤关键词云的数据]
          * @param  {[type]} data [description]

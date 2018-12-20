@@ -174,7 +174,7 @@
                             <div class="container-fluid">
                                 <div class="navbar-header">
                                     <span class="navbar-brand">
-                                                    产品线数据
+                                                    产品线数据(P4P产品)
                                                 </span>
                                 </div>
                             </div>
@@ -405,6 +405,151 @@
 											</dd>
 										</dl>
 									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<div class="panel panel-default hour-trend">
+                        <nav class="navbar navbar-default" role="navigation">
+                            <div class="container-fluid">
+                                <div class="navbar-header">
+                                    <span class="navbar-brand">
+                                                    产品线数据(友客产品)
+                                                </span>
+                                </div>
+                            </div>
+                        </nav>
+                        <div class="panel-body tab-content mTop20">
+                            <div class="explainBox">
+                                <ul>
+									<li>
+										<div class="titleBox">
+											<h2>友客数据</h2><a class="eHide" v-on:click="toggleDescription($event)">收起<s></s></a></div>
+										<dl>
+											<dt>客单价</dt>
+											<dd>
+												定义：用户平均花费现金金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;客单价 = 累计订单金额/友客累计用户数
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;由于计算为结果为四舍五入，所以 会员数*客单价 ≈ 销售额，不能完全相等。
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>会员数</dt>
+											<dd>
+												定义：友客累计用户数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;下过有效订单并且金额大于0的用户
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+									
+											<dt>销售额</dt>
+											<dd>
+												定义：累计订单金额
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;所有有效订单的金额
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+											<dt>订阅关键词</dt>
+											<dd>
+												定义：用户在友客上订阅的关键词数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;所有用户订阅的关键词数
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+											<dt>线索总数</dt>
+											<dd>
+												定义：线索总数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;当天新增线索数
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+								     <dt>被查看的线索数</dt>
+											<dd>
+												定义：被用户查看过的线索数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;当天有被用户查看过的的线索数
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+											<dt>线索关键词</dt>
+											<dd>
+												定义：线索通过鹰眼切词后得到的关键词数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;当天新增线索的关键词数
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+								      <dt>订阅关键词TOP50</dt>
+											<dd>
+												定义：用户订阅的关键词前50
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;根据关键词被用户订阅的数，取前50显示
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+										 <dt>线索关键词TOP50</dt>
+											<dd>
+												定义：线索提取关键词前50
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;根据关键词从多少个线索中提取出来，取前50显示
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+											<dt>关键词匹配</dt>
+											<dd>
+												定义：用户订阅关键词与线索关键词匹配数
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;据用户订阅关键词和当天线索提取关键词等值关联，获得匹配关键词数
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+											<dt>订阅关键词线索匹配度</dt>
+											<dd>
+												定义：订阅关键词与线索关键词匹配度
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;首先根据用户订阅关键词数从用户订阅关键词中取前21个，然后在当天线索中查找能匹配多少线索。
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+											<dt>线索关键词订阅匹配度</dt>
+											<dd>
+												定义：线索关键词与用户订阅关键词匹配度
+												<br /> 统计规则：
+												<br /> &nbsp;&nbsp;&nbsp;&nbsp;首先根据当天线索关键词数从线索中提取前21个，然后在用户订阅关键词中查找能匹配多少关键词。
+												<br /> 计算频率：天
+												<br /> 数据来源：用户行为分析平台
+												<br />
+											</dd>
+											
+										</dl>
+									</li>									
 								</ul>
 							</div>
 						</div>
