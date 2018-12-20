@@ -674,10 +674,6 @@ export default {
                 //     }
                 // },
                 tooltip: {
-            		// headerFormat:
-            		// '<span style="color:{point.color}">\u2022</span> ' +
-            		// '<span style="font-size: 10px;">{point.point.name}</span><br>',
-            		// pointFormat: '{percentage}<br><span style="font-size: 10px">Source: Wikipedia</span>',
                     formatter: function (){
                         var _t = this;
                             var _arr = [
@@ -688,7 +684,6 @@ export default {
 
                             ];
                         return _arr.join('');
-                        // console.log(this)
                     }
             	},
                 yAxis: {
@@ -696,7 +691,7 @@ export default {
                 },
                 legend: false,
             	title: {
-            		text: ''
+            		text: '关键词匹配'
             	}
             });
         });
