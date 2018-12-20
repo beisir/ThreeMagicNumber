@@ -145,4 +145,37 @@ public class YoukeOutComeController {
             logger.error("keyMatch,flag="+flag, e);
         }
     }
+
+    /***
+     * 韦恩图
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(value = "/venn", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
+    public void venn(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setContentType("application/json; charset=UTF-8");
+        Map<String,Object> _dataMap  = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            List<Integer> typeList = new ArrayList<>();
+            typeList.add(DataType.YOUKEUSERKEYNSUM.getType());
+            typeList.add(DataType.YOUKEXIANSUOSKEYNUM.getType());
+            typeList.add(DataType.YOUKEXIANSUOUSERKEYNUM.getType());
+
+            Map<String,Object> dataMap  = this.operateService.venn(typeList);
+
+            _dataMap.put("data",dataMap);
+            _dataMap.put("errno",0);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (Exception e) {
+            _dataMap.put("errno",1);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+            logger.error("venn", e);
+        }
+    }
 }

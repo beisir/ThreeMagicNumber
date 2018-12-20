@@ -34,6 +34,36 @@ public class OperateServiceImpl implements OperateService {
     @Autowired
     private RealTimeStatic4DataMapper realTimeStatic4DataMapper;
 
+    public Map<String, Object> venn(List<Integer> typeList) throws Exception {
+        if(typeList==null || typeList.size()==0){return null;}
+        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("list", typeList);
+
+        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
+        List<RealTimeStaticDoubleDay> resultList = realTimeStaticDayMapper.findByTypeList(paramMap);
+        List<VennBean> vennBeanList = new ArrayList<>();
+        VennBean vennBean=null;
+        if(resultList!=null && resultList.size()>0){
+            for(RealTimeStaticDoubleDay realTimeStaticDoubleDay : resultList){
+                String count = threeNumDf.format(realTimeStaticDoubleDay.getDataCount());
+                if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOUSERKEYNUM.getType().intValue()){
+                    //'线索关键词', '订阅关键词'
+                    vennBean = new VennBean(new Object[]{"线索关键词","订阅关键词"},count);
+                    vennBean.setName("重合:"+count);
+                    vennBeanList.add(vennBean);
+                }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEUSERKEYNSUM.getType().intValue()){
+                    vennBean = new VennBean(new Object[]{"订阅关键词:"+count},count);
+                    vennBeanList.add(vennBean);
+                }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOSKEYNUM.getType().intValue()){
+                    vennBean = new VennBean(new Object[]{"线索关键词:"+count},count);
+                    vennBeanList.add(vennBean);
+                }
+            }
+            resultMap.put("dataList",vennBeanList);
+        }
+        return resultMap;
+    }
     public Map<String, Object> match(Integer type) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         Map<String, Object> paramMap = new HashMap<>();
@@ -51,7 +81,7 @@ public class OperateServiceImpl implements OperateService {
             for (RealTimeStatic4Data realTimeStatic4Data : resultList) {
                 categories[i] = realTimeStatic4Data.getElement();
                 data[i] = realTimeStatic4Data.getDataCount1();
-                data2[i] = realTimeStatic4Data.getDataCount2();
+                data2[i] = -realTimeStatic4Data.getDataCount2();
                 i++;
             }
             if(type == DataType.YOUKEKEYAMATCHB.getType().intValue()){
