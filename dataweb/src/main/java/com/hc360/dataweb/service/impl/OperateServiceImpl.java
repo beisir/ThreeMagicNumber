@@ -40,7 +40,7 @@ public class OperateServiceImpl implements OperateService {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("list", typeList);
 
-        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
+//        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
         List<RealTimeStaticDoubleDay> resultList = realTimeStaticDayMapper.findByTypeList(paramMap);
         List<Object> vennBeanList = new ArrayList<>();
         VennBean vennBean=null;
@@ -52,7 +52,7 @@ public class OperateServiceImpl implements OperateService {
                 if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOUSERKEYNUM.getType().intValue()){
                     //'线索关键词', '订阅关键词'
                     vennBean = new VennBean(new Object[]{"线索关键词","订阅关键词"},count/scale,count);
-                    vennBean.setName(threeNumDf.format(count));
+                    vennBean.setName("匹配数");
                     vennBeanList.add(vennBean);
                 }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEUSERKEYNSUM.getType().intValue()){
                     venn2Bean = new Venn2Bean(new Object[]{"订阅关键词"},count/scale,count);
