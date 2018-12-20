@@ -6,9 +6,10 @@ package com.hc360.dataweb.model
 class Venn2Bean {
     Object[] sets;
     Object value;
-
-    Venn2Bean(Object[] sets,Object value){
+    Object percentage
+    Venn2Bean(Object[] sets,Object value, Object percentage){
         this.sets=sets
         this.value=value
+        this.percentage=percentage
     }
 }

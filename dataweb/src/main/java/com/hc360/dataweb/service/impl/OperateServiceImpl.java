@@ -45,19 +45,20 @@ public class OperateServiceImpl implements OperateService {
         List<Object> vennBeanList = new ArrayList<>();
         VennBean vennBean=null;
         Venn2Bean venn2Bean = null;
+        int scale =1000; //数据缩放比例
         if(resultList!=null && resultList.size()>0){
             for(RealTimeStaticDoubleDay realTimeStaticDoubleDay : resultList){
-                String count = threeNumDf.format(realTimeStaticDoubleDay.getDataCount());
+                double count = realTimeStaticDoubleDay.getDataCount();
                 if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOUSERKEYNUM.getType().intValue()){
                     //'线索关键词', '订阅关键词'
-                    vennBean = new VennBean(new Object[]{"线索关键词","订阅关键词"},count);
-                    vennBean.setName("重合:"+count);
+                    vennBean = new VennBean(new Object[]{"线索关键词","订阅关键词"},count/scale,count);
+                    vennBean.setName(threeNumDf.format(count));
                     vennBeanList.add(vennBean);
                 }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEUSERKEYNSUM.getType().intValue()){
-                    venn2Bean = new Venn2Bean(new Object[]{"订阅关键词:"+count},count);
+                    venn2Bean = new Venn2Bean(new Object[]{"订阅关键词"},count/scale,count);
                     vennBeanList.add(venn2Bean);
                 }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOSKEYNUM.getType().intValue()){
-                    venn2Bean = new Venn2Bean(new Object[]{"线索关键词:"+count},count);
+                    venn2Bean = new Venn2Bean(new Object[]{"线索关键词"},count/scale,count);
                     vennBeanList.add(venn2Bean);
                 }
             }
