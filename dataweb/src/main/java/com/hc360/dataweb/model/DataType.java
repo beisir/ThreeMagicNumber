@@ -472,11 +472,15 @@ public enum DataType {
     YOUKEXIANSUOSUM("线索总数",387,"个"),
     YOUKEXIANSUOSEESUM("被查看的线索数",388,"个"),
     //友客线索被查看的次数
-    YOUKEXIANSUOSEETIME("被查看的次数",389,"个"),
+    YOUKEXIANSUOSEETIME("被查看的次数",389,"次"),
     //友客线索关键词数
     YOUKEXIANSUOSKEYNUM("线索关键词",390,"个"),
 //友客线索关键词和用户订阅关键词重合数
     YOUKEXIANSUOUSERKEYNUM("匹配数",392,"个"),
+//订阅关键词线索匹配度
+    YOUKEKEYAMATCHB("匹配数",393,""),
+    //线索关键词订阅匹配度
+    YOUKEKEYBMATCHA("匹配数",394,""),
 
     /*MIP站流量的信息，这些数据是从百度统计抓取过来的**/
     MIP_IP("MIP站IP",338,""),

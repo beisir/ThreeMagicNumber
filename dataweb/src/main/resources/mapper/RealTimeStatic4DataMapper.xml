@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc360.dataweb.dao.RealTimeStatic4DataMapper">
+    <resultMap id="BaseResultMap" type="com.hc360.dataweb.model.RealTimeStatic4Data">
+        <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="DATA_TYPE" property="dataType" jdbcType="DECIMAL"/>
+        <result column="ELEMENT" property="element" jdbcType="VARCHAR"/>
+        <result column="DATA_COUNT1" property="dataCount1" jdbcType="DECIMAL"/>
+        <result column="DATA_COUNT2" property="dataCount2" jdbcType="DECIMAL"/>
+        <result column="IRSL_DATE" property="irslDate" jdbcType="VARCHAR"/>
+        <result column="OP_DATE" property="opDate" jdbcType="DATE"/>
+    </resultMap>
+    <select id="findByType" resultMap="BaseResultMap" parameterType="java.util.Map">
+            select
+        id,data_type,element,DATA_COUNT1,DATA_COUNT2,IRSL_DATE,OP_DATE
+        from SJPT_REALTIME_STATIC_4DATA
+        where data_type=#{dataType}
+          and IRSL_DATE = (select max(IRSL_DATE) from SJPT_REALTIME_STATIC_4DATA where data_type=#{dataType})
+        order by DATA_COUNT1 desc
+
+  </select>
+
+</mapper>

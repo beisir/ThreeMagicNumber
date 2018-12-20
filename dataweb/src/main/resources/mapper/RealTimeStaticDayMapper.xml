@@ -417,5 +417,25 @@
         where t.rn = 1
         order by DATA_TYPE ,IRSL_DATE asc
     </select>
+    <select id="findByTypeList" resultMap="DoubleResultMap" parameterType="java.util.Map">
+
+        select DATA_TYPE, data_count, IRSL_DATE,OP_DATE
+        from (select DATA_TYPE,
+        data_count,
+        IRSL_DATE,
+        OP_DATE,
+        row_number() over(partition by DATA_TYPE order by OP_DATE desc) as rn
+        from SJPT_REALTIME_STATIC_DAY
+        where 1=1
+        <if test="list != null and list.size > 0">
+            and DATA_TYPE in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        ) t
+        where t.rn = 1
+        order by DATA_TYPE
+    </select>
 
 </mapper>
