@@ -11,15 +11,13 @@
         <result column="OP_DATE" property="opDate" jdbcType="DATE"/>
     </resultMap>
     <select id="findByType" resultMap="BaseResultMap" parameterType="java.util.Map">
-    select *
-    from (
-        select
-        id,data_type,element,DATA_COUNT1,DATA_COUNT2,IRSL_DATE,OP_DATE,
-        row_number() over(partition by DATA_TYPE,IRSL_DATE,element order by IRSL_DATE desc) as rn
+            select
+        id,data_type,element,DATA_COUNT1,DATA_COUNT2,IRSL_DATE,OP_DATE
         from SJPT_REALTIME_STATIC_4DATA
         where data_type=#{dataType}
+          and IRSL_DATE = (select max(IRSL_DATE) from SJPT_REALTIME_STATIC_4DATA where data_type=#{dataType})
         order by DATA_COUNT1 desc
-    )t where t.rn=1
+
   </select>
 
 </mapper>
