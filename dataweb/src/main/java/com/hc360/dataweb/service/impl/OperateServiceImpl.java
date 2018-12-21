@@ -45,20 +45,29 @@ public class OperateServiceImpl implements OperateService {
         List<Object> vennBeanList = new ArrayList<>();
         VennBean vennBean=null;
         Venn2Bean venn2Bean = null;
-        int scale =1000; //数据缩放比例
+
+        double scale =1; //数据缩放比例
+
         if(resultList!=null && resultList.size()>0){
+            for(RealTimeStaticDoubleDay realTimeStaticDoubleDay : resultList){
+                if(scale ==1 ){
+                    scale = realTimeStaticDoubleDay.getDataCount();
+                }else if(realTimeStaticDoubleDay.getDataCount()<scale){
+                    scale = realTimeStaticDoubleDay.getDataCount();
+                }
+            }
             for(RealTimeStaticDoubleDay realTimeStaticDoubleDay : resultList){
                 double count = realTimeStaticDoubleDay.getDataCount();
                 if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOUSERKEYNUM.getType().intValue()){
                     //'线索关键词', '订阅关键词'
-                    vennBean = new VennBean(new Object[]{"线索关键词","订阅关键词"},count/scale,count);
+                    vennBean = new VennBean(new Object[]{"线索关键词","订阅关键词"},Math.round(count/scale),count);
                     vennBean.setName("匹配数");
                     vennBeanList.add(vennBean);
                 }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEUSERKEYNSUM.getType().intValue()){
-                    venn2Bean = new Venn2Bean(new Object[]{"订阅关键词"},count/scale,count);
+                    venn2Bean = new Venn2Bean(new Object[]{"订阅关键词"},Math.round(count/scale),count);
                     vennBeanList.add(venn2Bean);
                 }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOSKEYNUM.getType().intValue()){
-                    venn2Bean = new Venn2Bean(new Object[]{"线索关键词"},count/scale,count);
+                    venn2Bean = new Venn2Bean(new Object[]{"线索关键词"},Math.round(count/scale),count);
                     vennBeanList.add(venn2Bean);
                 }
             }
@@ -87,14 +96,14 @@ public class OperateServiceImpl implements OperateService {
                 i++;
             }
             if(type == DataType.YOUKEKEYAMATCHB.getType().intValue()){
-                BarBean barBean=  new BarBean("订阅词",data);
+                BarBean barBean=  new BarBean("订阅量",data);
                 barBeanList.add(barBean);
-                barBean=  new BarBean("线索词",data2);
+                barBean=  new BarBean("线索量",data2);
                 barBeanList.add(barBean);
             }else if(type == DataType.YOUKEKEYBMATCHA.getType().intValue()){
-                BarBean barBean=  new BarBean("线索词",data);
+                BarBean barBean=  new BarBean("线索量",data);
                 barBeanList.add(barBean);
-                barBean=  new BarBean("订阅词",data2);
+                barBean=  new BarBean("订阅量",data2);
                 barBeanList.add(barBean);
             }
             resultMap.put("time",categories);
