@@ -11,12 +11,11 @@
   </resultMap>
 
   <select id="findByType" parameterType="java.util.Map"  resultMap="BaseResultMap">
-select ELEMENT,DATA_COUNT
-from (
-    select ELEMENT,DATA_COUNT, row_number() over(partition by ELEMENT order by IRSL_DATE desc) as rn
+
+    select ELEMENT,DATA_COUNT
     from sjpt_realtime_static_3data
     where data_type =#{dataType}
+    and IRSL_DATE=(select max(IRSL_DATE) from sjpt_realtime_static_3data where data_type=#{dataType})
     order by  ID asc
-    ) t where t.rn =1
   </select>
 </mapper>
