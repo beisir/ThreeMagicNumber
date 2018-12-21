@@ -210,9 +210,12 @@ export default {
             		min: 0,
             		stackLabels: {  // 堆叠数据标签
             			enabled: true,
+                        rotation: -90,
+                        y: 50,
             			style: {
             				fontWeight: 'bold'
-            			}
+            			},
+                        // format:'总和 {total} 元'
             		},
                     allowDecimals: false,
                     title: {
@@ -221,10 +224,10 @@ export default {
                         y: -80
                     }
                 },
-                tooltip: {
-                    headerFormat: '<b>{point.key}</b><br>',
-                    pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: {point.y} 元'
-                },
+                // tooltip: {
+                //     headerFormat: '<b>{point.key}</b><br>',
+                //     pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: {point.y} 元'
+                // },
                 plotOptions: {
                     column: {
                         stacking: 'normal',
