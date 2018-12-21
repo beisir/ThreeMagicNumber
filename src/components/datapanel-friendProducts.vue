@@ -99,9 +99,9 @@
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="pyramidChart2" :timermillisec="0" :service="service.keyMatch.flagba" :resetYAxisBeforeRedraw="false" chartTitle="第十三个金字塔图"></chart-tendency>
                             </div>
 
-                            <div class="p4pCountLeft">
+                            <!-- <div class="p4pCountLeft">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="vennChart" :timermillisec="0" :service="service.venn" :resetYAxisBeforeRedraw="false" :resetSeriesBeforeRedraw="false" chartTitle="第五个韦恩图"></chart-tendency>
-                            </div>
+                            </div> -->
 
                         </div>
 
@@ -650,64 +650,43 @@ export default {
          * @param  {[type]} chartOptions [description]
          * @return {[type]}              [description]
          */
-        _this.$refs.vennChart.$on('beforeRender', function(chartOptions) {
-            Object.assign(chartOptions,{
-                // plotOptions: {
-                //     venn: {
-                //         stacking: 'normal',
-                //         allowPointSelect: true,
-                //         cursor: 'pointer',
-                //         dataLabels: {
-            	// 			enabled: true,
-            	// 			distance: 20,
-                //             formatter: function () {
-                //                 console.log(this)
-            	// 				return (this.y / 100) + '%';
-            	// 			},
-            	// 			style: {
-            	// 				fontWeight: 'bold',
-            	// 				color: 'white',
-            	// 				textShadow: '0px 1px 2px black'
-            	// 			}
-            	// 		},
-                //         showInLegend: true
-                //     }
-                // },
-                tooltip: {
-                    formatter: function (){
-                        var _t = this;
-                            var _arr = [
-                                '<span style="font-size: 10px;">' + _t.point.name + '</span><br>',
-                                '<span style="color:' + _t.point.color + '">\u25CF</span>',
-                                // '<tspan> '+  +' </tspan>',
-                                '<tspan style="font-weight:bold">' + _t.percentage +'</tspan><br/>'
-
-                            ];
-                        return _arr.join('');
-                    }
-            	},
-                yAxis: {
-                    title: null
-                },
-                legend: false,
-            	title: {
-            		text: '关键词匹配'
-            	}
-            });
-        });
-        _this.$refs.vennChart.$on('afterGetData', function(data) {
-            var _t = this;
-            _t.data = data.data.dataList || {};
-        });
-        _this.$refs.vennChart.$on('beforeRedraw', function(chartEntity) {
-            var _t = this;
-            chartEntity.update({
-                series: [{
-                    type: 'venn',
-                    data: _t.data
-                }]
-            });
-        });
+        // _this.$refs.vennChart.$on('beforeRender', function(chartOptions) {
+        //     Object.assign(chartOptions,{
+        //         tooltip: {
+        //             formatter: function (){
+        //                 var _t = this;
+        //                     var _arr = [
+        //                         '<span style="font-size: 10px;">' + _t.point.name + '</span><br>',
+        //                         '<span style="color:' + _t.point.color + '">\u25CF</span>',
+        //                         // '<tspan> '+  +' </tspan>',
+        //                         '<tspan style="font-weight:bold">' + _t.percentage +'</tspan><br/>'
+        //
+        //                     ];
+        //                 return _arr.join('');
+        //             }
+        //     	},
+        //         yAxis: {
+        //             title: null
+        //         },
+        //         legend: false,
+        //     	title: {
+        //     		text: '关键词匹配'
+        //     	}
+        //     });
+        // });
+        // _this.$refs.vennChart.$on('afterGetData', function(data) {
+        //     var _t = this;
+        //     _t.data = data.data.dataList || {};
+        // });
+        // _this.$refs.vennChart.$on('beforeRedraw', function(chartEntity) {
+        //     var _t = this;
+        //     chartEntity.update({
+        //         series: [{
+        //             type: 'venn',
+        //             data: _t.data
+        //         }]
+        //     });
+        // });
 
 
         /*-------------------------------------------------------------------------*/
