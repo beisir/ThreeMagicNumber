@@ -72,7 +72,7 @@
                             </div>
 
                             <div class="p4pCountLeft">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart2" :timermillisec="0" :service="service.p4pline" :resetYAxisBeforeRedraw="false" chartTitle="第七个折线图"></chart-tendency>
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pLineChart2" :timermillisec="0" :service="service.p4pline" chartTitle="第七个折线图"></chart-tendency>
                             </div>
 
                             <div class="p4pCountRig">
@@ -613,9 +613,6 @@ export default {
          */
         _this.$refs.p4pLineChart2.$on('beforeRender', function(chartOptions) {
             Object.assign(chartOptions, _this.p4pLineConifg, {
-                chart: {
-                    type: 'spline'
-                },
                 title: {
             		text: '开启关键词数趋势'
             	},
@@ -635,8 +632,9 @@ export default {
         });
         _this.$refs.p4pLineChart2.$on('beforeRedraw', function(chartEntity) {
             chartEntity.series.forEach((series, index) => {
+                var yIndex = (series.name == '无效关键词数' || series.name == '户均关键词数') ?0 : 1;
                 series.update({
-                    yAxis: 0,
+                    yAxis: yIndex,
                     // 将折线设置为有菱角的折线
                     marker: {
                         enabled: true
