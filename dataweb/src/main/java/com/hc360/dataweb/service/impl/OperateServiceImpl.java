@@ -238,6 +238,46 @@ public class OperateServiceImpl implements OperateService {
         resultMap.put("data", twoCircleBeans);
         return resultMap;
     }
+    public Map<String, Object> twoCircleMmt () throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dataType", DataType.MMTALLUSER.getType());
+        List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
+        List<RealTimeStatic3Data> resultList2 = null ;
+        List<TwoCircleBean> twoCircleBeans = new ArrayList<>();
+        TwoCircleBean twoCircleBean = null;
+        DrillDownBean drillDownBean = null;
+        if(resultList!=null && resultList.size()>0){
+            Double total = 0d;
+            for(RealTimeStatic3Data realTimeStatic3Data : resultList){
+                total = total + realTimeStatic3Data.getDataCount();
+            }
+            int color = 1;
+            String[] categories = new String[]{"无商机","有商机"};
+            for(RealTimeStatic3Data realTimeStatic3Data : resultList){
+                paramMap = new HashMap<>();
+                List<Integer> dataTypeList = new ArrayList<>();
+                dataTypeList.add(DataType.MMTNOPCALLUSER.getType());
+                dataTypeList.add(DataType.MMTHASPCALLUSER.getType());
+                paramMap.put("list", dataTypeList);
+                paramMap.put("name" , realTimeStatic3Data.getElement());
+                resultList2 =  realTimeStatic3DataMapper.findByTypeElement(paramMap);
+                if(resultList2!=null && resultList2.size()>=2){
+//应该有两个记录。
+                    drillDownBean = new DrillDownBean(realTimeStatic3Data.getElement(),categories,new Object[]{
+                            formartData(resultList2.get(0).getDataCount(),total),
+                            formartData(resultList2.get(1).getDataCount(),total)
+                    });
+                }
+
+                twoCircleBean = new TwoCircleBean(formartData(realTimeStatic3Data.getDataCount(),total),color,drillDownBean);
+                color ++;
+                twoCircleBeans.add(twoCircleBean);
+            }
+        }
+        resultMap.put("data", twoCircleBeans);
+        return resultMap;
+    }
 
     private Double formartData(Double d, double all) {
         if (d == null) {

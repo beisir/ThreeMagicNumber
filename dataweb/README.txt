@@ -59,3 +59,15 @@ http://data.360jz.com/dataweb/keyMatch?flag=ba
 
 韦恩图
 http://data.360jz.com/dataweb/venn
+
+MMT
+头部公式
+http://data.360jz.com/dataweb/mmtFormula
+
+销售额
+http://data.360jz.com/dataweb/mmtLine?flag=sale
+会员类型占比
+http://data.360jz.com/dataweb/dist?type=399
+
+同心圆
+http://data.360jz.com/dataweb/mmt_twocircle
