@@ -499,9 +499,9 @@ public enum DataType {
     //不同类型的会员有商机的会员数
     MMTHASPCALLUSER("用户数", 401, "个"),
     //各个地区的会员数
-    MMTPROVINCEUSER("地区会员数", 402, "个"),
+    MMTPROVINCEUSER("地区会员", 402, "个"),
     //不同主营行业的会员数
-    MMTPAREAUSER("行业会员数", 403, "个"),
+    MMTPAREAUSER("行业会员", 403, "个"),
 
     /*MIP站流量的信息，这些数据是从百度统计抓取过来的**/
     MIP_IP("MIP站IP", 338, ""),

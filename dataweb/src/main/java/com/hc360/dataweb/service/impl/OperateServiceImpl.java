@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,6 +172,25 @@ public class OperateServiceImpl implements OperateService {
         }
         resultMap.put("data", list);
 
+        return resultMap;
+    }
+
+    public Map<String, Object> bubble(int type) throws Exception {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dataType", type);
+        Map<String, Object> resultMap = new HashMap<>();
+        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
+        List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
+        List<PackedBubble> list = new ArrayList<>();
+        if (resultList != null && resultList.size() > 0) {
+            PackedBubble packedBubble = null;
+            for (RealTimeStatic3Data _realTimeStatic3Data : resultList) {
+                packedBubble = new PackedBubble(_realTimeStatic3Data.getElement(),threeNumDf.format(_realTimeStatic3Data.getDataCount()), DataType.getUnit(type));
+                list.add(packedBubble);
+            }
+        }
+        resultMap.put("dataList", list);
+        resultMap.put("name",DataType.getName(type));
         return resultMap;
     }
 

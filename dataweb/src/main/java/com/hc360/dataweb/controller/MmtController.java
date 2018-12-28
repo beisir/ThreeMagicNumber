@@ -121,4 +121,37 @@ public class MmtController {
             logger.error("twoCircle=", e);
         }
     }
+
+    /**
+     * 气泡填充图和地图
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(value = "/complex", method = RequestMethod.GET, produces = {"application/xml", "application/json"})
+    public void bubble(HttpServletRequest request, HttpServletResponse response,@RequestParam String flag) throws Exception{
+        response.setContentType("application/json; charset=UTF-8");
+        Map<String,Object> _dataMap  = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            int type = 0;
+            if("bubble".equals(flag)){
+                type = DataType.MMTPAREAUSER.getType();
+            }else if ("map".equals(flag)){
+                type = DataType.MMTPROVINCEUSER.getType();
+            }
+            Map<String,Object> dataMap = this.operateService.bubble(type);
+            _dataMap.put("data",dataMap);
+            _dataMap.put("errno",0);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (Exception e) {
+            _dataMap.put("errno",1);
+            response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
+            response.getWriter().flush();
+            response.getWriter().close();
+            logger.error("twoCircle=", e);
+        }
+    }
 }
