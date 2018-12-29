@@ -114,6 +114,11 @@ export default {
                     name: '友客产品',
                     id: 82,
                     path: '/datapanel/friendProducts'
+                },
+                {
+                    name: '买卖通产品',
+                    id: 83,
+                    path: '/datapanel/business'
                 }
             ],
             /**
