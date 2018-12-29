@@ -248,6 +248,14 @@ export default {
             	title: {  // 主标题
             		text: '会员商机'
             	},
+                legend: {
+            		align: 'left',
+            		verticalAlign: 'top',
+            		y: 50,
+            		layout: 'vertical',
+                    itemMarginTop: 20
+
+            	},
             	plotOptions: {
             		pie: {
             			shadow: false,
@@ -256,11 +264,12 @@ export default {
             			cursor: 'pointer',
             			dataLabels: {
             				enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            format: '{point.percentage:.1f} %',
             				style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
             				}
-            			}
+            			},
+                        showInLegend: true
             		}
             	},
             	tooltip: {
@@ -441,7 +450,7 @@ export default {
 
 
         /**
-         * [监听图表组件 beforeRender 事件]
+         * [地图监听图表组件 beforeRender 事件]
          */
         _this.$refs.mapElements.$on('beforeRender', function(chartOptions) {
             Object.assign(chartOptions, {
