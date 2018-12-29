@@ -21,7 +21,7 @@
 
   <select id="findByTypeElement" parameterType="java.util.Map"  resultMap="BaseResultMap">
 
-    select ELEMENT,DATA_COUNT
+    select ELEMENT,DATA_COUNT,DATA_TYPE
     from sjpt_realtime_static_3data
     where ELEMENT=#{name}
     <if test="list != null and list.size > 0">

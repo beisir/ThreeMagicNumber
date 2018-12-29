@@ -67,7 +67,7 @@ http://data.360jz.com/dataweb/mmtFormula
 销售额
 http://data.360jz.com/dataweb/mmtLine?flag=sale
 会员类型占比
-http://data.360jz.com/dataweb/dist?type=399
+http://data.360jz.com/dataweb/dist?type=395
 
 会员商机同心圆
 http://data.360jz.com/dataweb/mmt_twocircle

@@ -495,9 +495,9 @@ public enum DataType {
     //所有会员类型的会员数
     MMTALLUSER("用户数", 399, "个"),
     //不同类型的会员无商机的会员数
-    MMTNOPCALLUSER("用户数", 400, "个"),
+    MMTNOPCALLUSER("无商机", 400, "个"),
     //不同类型的会员有商机的会员数
-    MMTHASPCALLUSER("用户数", 401, "个"),
+    MMTHASPCALLUSER("有商机", 401, "个"),
     //各个地区的会员数
     MMTPROVINCEUSER("地区会员", 402, "个"),
     //不同主营行业的会员数

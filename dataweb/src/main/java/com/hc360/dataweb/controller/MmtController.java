@@ -104,9 +104,9 @@ public class MmtController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             List<Integer> dataTypeList = new ArrayList<>();
-            dataTypeList.add(DataType.MMTALLUSER.getType());//累计消耗
-            dataTypeList.add(DataType.MMTNOPCALLUSER.getType()); //现金消耗
-            dataTypeList.add(DataType.MMTHASPCALLUSER.getType()); //返点金
+            dataTypeList.add(DataType.MMTALLUSER.getType());//所有会员类型的会员数
+            dataTypeList.add(DataType.MMTNOPCALLUSER.getType()); //不同类型的会员无商机的会员数
+            dataTypeList.add(DataType.MMTHASPCALLUSER.getType()); //不同类型的会员有商机的会员数
 
             _dataMap  = operateService.twoCircleMmt();
             _dataMap.put("errno",0);
@@ -135,13 +135,16 @@ public class MmtController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             int type = 0;
+            Map<String,Object> dataMap = null;
             if("bubble".equals(flag)){
                 type = DataType.MMTPAREAUSER.getType();
+                dataMap = this.operateService.bubble(type);
+                _dataMap.put("data",dataMap);
             }else if ("map".equals(flag)){
                 type = DataType.MMTPROVINCEUSER.getType();
+                _dataMap = this.operateService.map(type);
             }
-            Map<String,Object> dataMap = this.operateService.bubble(type);
-            _dataMap.put("data",dataMap);
+
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
             response.getWriter().flush();
