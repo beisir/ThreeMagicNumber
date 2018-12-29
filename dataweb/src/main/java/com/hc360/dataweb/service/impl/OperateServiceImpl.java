@@ -179,13 +179,13 @@ public class OperateServiceImpl implements OperateService {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("dataType", type);
         Map<String, Object> resultMap = new HashMap<>();
-        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
+//        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
         List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
         List<PackedBubble> list = new ArrayList<>();
         if (resultList != null && resultList.size() > 0) {
             PackedBubble packedBubble = null;
             for (RealTimeStatic3Data _realTimeStatic3Data : resultList) {
-                packedBubble = new PackedBubble(_realTimeStatic3Data.getElement(),threeNumDf.format(_realTimeStatic3Data.getDataCount()), DataType.getUnit(type));
+                packedBubble = new PackedBubble(_realTimeStatic3Data.getElement(),_realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
                 list.add(packedBubble);
             }
         }
