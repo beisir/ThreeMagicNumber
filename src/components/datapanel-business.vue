@@ -28,10 +28,15 @@
                         </div>
                         <div class="panel-body tab-content mTop20">
                             <div class="p4pCountLeft">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pOperatedChart" :timermillisec="0" :service="service.twocircle" chartTitle="第二个双圆图"></chart-tendency>
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="mapElement" :timermillisec="timerMillisec" :service='service.map' chartTitle="地区分布"  :resetYAxisBeforeRedraw="false"></chart-tendency>
                             </div>
                             <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pBubble"  :timermillisec="0" :service="service.complex" chartTitle="第一个气泡"></chart-tendency>
+                            </div>
+                        </div>
+                        <div class="panel-body tab-content mTop20">
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pOperatedChart" :timermillisec="0" :service="service.twocircle" chartTitle="第二个双圆图"></chart-tendency>
                             </div>
                         </div>
                     </div>
@@ -48,6 +53,11 @@ require('highcharts/modules/variable-pie')(Highcharts);
 require('highcharts/modules/wordcloud')(Highcharts);
 require('highcharts/modules/oldie')(Highcharts);
 require('highcharts/modules/highcharts-more')(Highcharts);
+/**
+ * 导入 treemap、map 类型图表
+ */
+require('highcharts/modules/treemap')(Highcharts);
+require('highcharts/modules/map')(Highcharts);
 /**
  * [mapMetaData 导入地图地理位置数据]
  * @type {Object}
@@ -111,7 +121,7 @@ export default {
                 },
                 colors: ['#19c6Ed', '#FF7C4D', '#2BCC6B', '#C275DF','#aa4643', '#B5CA92', '#A47D7C'],
                 title: {
-                    text: '会员类型占比'
+                    text: '会员类型'
                 },
                 legend: {
             		align: 'left',
@@ -252,7 +262,7 @@ export default {
             				enabled: true,
                             format: '<b>{point.name}</b>: {point.percentage:.1f} %',
             				style: {
-            					color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
             				}
             			}
             		}
@@ -373,7 +383,6 @@ export default {
             Object.assign(chartOptions, {
                 chart: {
                     type: 'packedbubble',
-                    height: '100%'
                 },
                 title: {
                     text: '主营行业'
@@ -431,6 +440,104 @@ export default {
         });
         /*-------------------------------------------------------------------------*/
 
+
+
+
+
+        /**
+         * [监听图表组件 beforeRender 事件]
+         */
+        _this.$refs.mapElement.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions, {
+                chart: {
+                    type: 'map'
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    formatter: function() {
+                        var _t = this;
+                        return [
+                            '<span style="font-size: 10px;">' + _t.key + '</span><br>',
+                            '<span style="color:' + _t.point.color + '">\u25CF</span>',
+                            '<tspan> 地区会员: </tspan>',
+                            '<tspan style="font-weight:bold">' + (_t.point.value) +(_t.point.unit)+ '</tspan><br/>',
+                        ].join('');
+                    }
+                },
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+                colorAxis: {
+                    enabled:false,
+                    min: 0,
+                    minColor: '#fff',
+                    maxColor: '#006cee',
+                    labels: {
+                        style: {
+                            "color": "red",
+                            "fontWeight": "bold"
+                        },
+                        enabled:false
+                    }
+                }
+            });
+        });
+
+        /**
+         * [监听图表组件 dataReady 事件]
+         */
+        _this.$refs.mapElement.$on('dataReady', function(data) {
+            var _t = this,
+                _city = ['北京', '上海', '天津', '重庆'];
+
+            /**
+             * [缓存数据，并处理直辖市名称]
+             */
+            _t.data = (data || []).map((item, index) => {
+                if (_city.indexOf(item.fullname) != -1) {
+                    item.fullname += '市';
+                }
+                return item;
+            });
+        });
+
+        /**
+         * [监听图表组件 beforeRedraw 事件]
+         */
+        _this.$refs.mapElement.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            /**
+             * [添加图表序列数据]
+             */
+            chartEntity.addSeries({
+                data: _t.data,
+                mapData: mapMetaData,
+                joinBy: 'fullname',
+                name: '中国地图',
+                states: {
+                    hover: {
+                        color: '#a4edba'
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    color: '#000',
+                    format: '{point.fullname}'
+                }
+            }, false);
+
+            /**
+             * [每次渲染都重置缩放比例]
+             */
+            chartEntity.zoomOut();
+            window.aa=chartEntity
+
+        });
 
     },
 
