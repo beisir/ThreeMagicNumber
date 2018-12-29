@@ -28,7 +28,7 @@
                         </div>
                         <div class="panel-body tab-content mTop20">
                             <div class="p4pCountLeft">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="mapElement" :timermillisec="timerMillisec" :service='service.map' chartTitle="地区分布"  :resetYAxisBeforeRedraw="false"></chart-tendency>
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="mapElements" :timermillisec="timerMillisec" :service='service.map' chartTitle="地区分布" :chartEntityConstructor="chartEntityConstructor()"  :resetYAxisBeforeRedraw="false"></chart-tendency>
                             </div>
                             <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pBubble"  :timermillisec="0" :service="service.complex" chartTitle="第一个气泡"></chart-tendency>
@@ -54,11 +54,7 @@ require('highcharts/modules/wordcloud')(Highcharts);
 require('highcharts/modules/oldie')(Highcharts);
 require('highcharts/modules/highcharts-more')(Highcharts);
 /**
- * 导入 treemap、map 类型图表
- */
-require('highcharts/modules/treemap')(Highcharts);
-require('highcharts/modules/map')(Highcharts);
-/**
+ * 
  * [mapMetaData 导入地图地理位置数据]
  * @type {Object}
  */
@@ -447,7 +443,7 @@ export default {
         /**
          * [监听图表组件 beforeRender 事件]
          */
-        _this.$refs.mapElement.$on('beforeRender', function(chartOptions) {
+        _this.$refs.mapElements.$on('beforeRender', function(chartOptions) {
             Object.assign(chartOptions, {
                 chart: {
                     type: 'map'
@@ -491,7 +487,7 @@ export default {
         /**
          * [监听图表组件 dataReady 事件]
          */
-        _this.$refs.mapElement.$on('dataReady', function(data) {
+        _this.$refs.mapElements.$on('dataReady', function(data) {
             var _t = this,
                 _city = ['北京', '上海', '天津', '重庆'];
 
@@ -509,7 +505,7 @@ export default {
         /**
          * [监听图表组件 beforeRedraw 事件]
          */
-        _this.$refs.mapElement.$on('beforeRedraw', function(chartEntity) {
+        _this.$refs.mapElements.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
             /**
              * [添加图表序列数据]
@@ -535,14 +531,23 @@ export default {
              * [每次渲染都重置缩放比例]
              */
             chartEntity.zoomOut();
-            window.aa=chartEntity
 
+            window.aa=chartEntity
+            
         });
 
     },
 
     methods: {
 
+
+        /**
+         * [chartEntityConstructor 重新制定图表构造函数]
+         * @return {[type]} [description]
+         */
+        chartEntityConstructor: function() {
+            return Highcharts.Map;
+        },
         /**
          * [filterDoubleData 过滤双饼图数据组装]
          * @return {[type]} [description]

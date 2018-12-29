@@ -21,7 +21,6 @@ import chartTendency from './chart-tendency.vue'
  * 导入 treemap、map 类型图表
  */
 require('highcharts/modules/treemap')(Highcharts);
-require('highcharts/modules/map')(Highcharts);
 
 /**
  * [mapMetaData 导入地图地理位置数据]
