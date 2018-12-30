@@ -68,7 +68,7 @@
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pColumn3Dchart2" :timermillisec="0" :service="service.chart3d" :resetYAxisBeforeRedraw="false" chartTitle="第五个3D柱图"></chart-tendency>
                             </div>
                             <div class="p4pCountRig">
-                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pcombineChart" :timermillisec="0" :service="service.p4pcombine" :resetYAxisBeforeRedraw="false" chartTitle="第六个混合图"></chart-tendency>
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pcombineChart" :timermillisec="0" :service="service.p4pcombine" chartTitle="第六个混合图"></chart-tendency>
                             </div>
 
                             <div class="p4pCountLeft">
