@@ -18,4 +18,24 @@
     and IRSL_DATE=(select max(IRSL_DATE) from sjpt_realtime_static_3data where data_type=#{dataType})
     order by  ID asc
   </select>
+
+  <select id="findByTypeElement" parameterType="java.util.Map"  resultMap="BaseResultMap">
+
+    select ELEMENT,DATA_COUNT,DATA_TYPE
+    from sjpt_realtime_static_3data
+    where ELEMENT=#{name}
+    <if test="list != null and list.size > 0">
+    and DATA_TYPE in
+    <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+      #{item}
+    </foreach>
+  </if>
+    and IRSL_DATE=(select max(IRSL_DATE) from sjpt_realtime_static_3data where 1=1  <if test="list != null and list.size > 0">
+    and DATA_TYPE in
+    <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+      #{item}
+    </foreach>
+  </if>)
+    order by  DATA_TYPE asc
+  </select>
 </mapper>

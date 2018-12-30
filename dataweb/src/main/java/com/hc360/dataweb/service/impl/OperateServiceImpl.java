@@ -35,7 +35,9 @@ public class OperateServiceImpl implements OperateService {
     private RealTimeStatic4DataMapper realTimeStatic4DataMapper;
 
     public Map<String, Object> venn(List<Integer> typeList) throws Exception {
-        if(typeList==null || typeList.size()==0){return null;}
+        if (typeList == null || typeList.size() == 0) {
+            return null;
+        }
         Map<String, Object> resultMap = new HashMap<>();
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("list", typeList);
@@ -43,29 +45,39 @@ public class OperateServiceImpl implements OperateService {
 //        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
         List<RealTimeStaticDoubleDay> resultList = realTimeStaticDayMapper.findByTypeList(paramMap);
         List<Object> vennBeanList = new ArrayList<>();
-        VennBean vennBean=null;
+        VennBean vennBean = null;
         Venn2Bean venn2Bean = null;
-        int scale =1000; //数据缩放比例
-        if(resultList!=null && resultList.size()>0){
-            for(RealTimeStaticDoubleDay realTimeStaticDoubleDay : resultList){
+
+        double scale = 1; //数据缩放比例
+
+        if (resultList != null && resultList.size() > 0) {
+            for (RealTimeStaticDoubleDay realTimeStaticDoubleDay : resultList) {
+                if (scale == 1) {
+                    scale = realTimeStaticDoubleDay.getDataCount();
+                } else if (realTimeStaticDoubleDay.getDataCount() < scale) {
+                    scale = realTimeStaticDoubleDay.getDataCount();
+                }
+            }
+            for (RealTimeStaticDoubleDay realTimeStaticDoubleDay : resultList) {
                 double count = realTimeStaticDoubleDay.getDataCount();
-                if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOUSERKEYNUM.getType().intValue()){
+                if (realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOUSERKEYNUM.getType().intValue()) {
                     //'线索关键词', '订阅关键词'
-                    vennBean = new VennBean(new Object[]{"线索关键词","订阅关键词"},count/scale,count);
+                    vennBean = new VennBean(new Object[]{"线索关键词", "订阅关键词"}, Math.round(count / scale), count);
                     vennBean.setName("匹配数");
                     vennBeanList.add(vennBean);
-                }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEUSERKEYNSUM.getType().intValue()){
-                    venn2Bean = new Venn2Bean(new Object[]{"订阅关键词"},count/scale,count);
+                } else if (realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEUSERKEYNSUM.getType().intValue()) {
+                    venn2Bean = new Venn2Bean(new Object[]{"订阅关键词"}, Math.round(count / scale), count);
                     vennBeanList.add(venn2Bean);
-                }else if(realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOSKEYNUM.getType().intValue()){
-                    venn2Bean = new Venn2Bean(new Object[]{"线索关键词"},count/scale,count);
+                } else if (realTimeStaticDoubleDay.getDataType().intValue() == DataType.YOUKEXIANSUOSKEYNUM.getType().intValue()) {
+                    venn2Bean = new Venn2Bean(new Object[]{"线索关键词"}, Math.round(count / scale), count);
                     vennBeanList.add(venn2Bean);
                 }
             }
-            resultMap.put("dataList",vennBeanList);
+            resultMap.put("dataList", vennBeanList);
         }
         return resultMap;
     }
+
     public Map<String, Object> match(Integer type) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         Map<String, Object> paramMap = new HashMap<>();
@@ -86,19 +98,19 @@ public class OperateServiceImpl implements OperateService {
                 data2[i] = realTimeStatic4Data.getDataCount2();
                 i++;
             }
-            if(type == DataType.YOUKEKEYAMATCHB.getType().intValue()){
-                BarBean barBean=  new BarBean("订阅词",data);
+            if (type == DataType.YOUKEKEYAMATCHB.getType().intValue()) {
+                BarBean barBean = new BarBean("订阅量", data);
                 barBeanList.add(barBean);
-                barBean=  new BarBean("线索词",data2);
+                barBean = new BarBean("线索量", data2);
                 barBeanList.add(barBean);
-            }else if(type == DataType.YOUKEKEYBMATCHA.getType().intValue()){
-                BarBean barBean=  new BarBean("线索词",data);
+            } else if (type == DataType.YOUKEKEYBMATCHA.getType().intValue()) {
+                BarBean barBean = new BarBean("线索量", data);
                 barBeanList.add(barBean);
-                barBean=  new BarBean("订阅词",data2);
+                barBean = new BarBean("订阅量", data2);
                 barBeanList.add(barBean);
             }
-            resultMap.put("time",categories);
-            resultMap.put("dataList",barBeanList);
+            resultMap.put("time", categories);
+            resultMap.put("dataList", barBeanList);
         }
 
         return resultMap;
@@ -165,6 +177,43 @@ public class OperateServiceImpl implements OperateService {
         return resultMap;
     }
 
+    public Map<String, Object> bubble(int type) throws Exception {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dataType", type);
+        Map<String, Object> resultMap = new HashMap<>();
+//        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
+        List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
+        List<PackedBubble> list = new ArrayList<>();
+        if (resultList != null && resultList.size() > 0) {
+            PackedBubble packedBubble = null;
+            for (RealTimeStatic3Data _realTimeStatic3Data : resultList) {
+                packedBubble = new PackedBubble(_realTimeStatic3Data.getElement(), _realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
+                list.add(packedBubble);
+            }
+        }
+        resultMap.put("dataList", list);
+        resultMap.put("name", DataType.getName(type));
+        return resultMap;
+    }
+
+    public Map<String, Object> map(int type) throws Exception {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dataType", type);
+        Map<String, Object> resultMap = new HashMap<>();
+//        DecimalFormat threeNumDf = new DecimalFormat(",###");//每三位分隔一下
+        List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
+        List<MapBean> list = new ArrayList<>();
+        if (resultList != null && resultList.size() > 0) {
+            MapBean packedBubble = null;
+            for (RealTimeStatic3Data _realTimeStatic3Data : resultList) {
+                packedBubble = new MapBean(_realTimeStatic3Data.getElement(), _realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
+                list.add(packedBubble);
+            }
+        }
+        resultMap.put("data", list);
+        resultMap.put("name", DataType.getName(type));
+        return resultMap;
+    }
     public void twoCircleUsers(List<Integer> typeList, String day, Map<String, Object> resultMap) throws Exception {
         Map<String, Object> paramMap = new HashMap<>();
 
@@ -223,6 +272,55 @@ public class OperateServiceImpl implements OperateService {
                                 formartData(selectResult.get(DataType.P4PFANDIANJINBALANCE.getType()), all),
                                 formartData(selectResult.get(DataType.P4PXUNIBALANCE.getType()), all)});
                 twoCircleBean = new TwoCircleBean(formartData(selectResult.get(DataType.P4PALLBALANCE.getType()), all), 2, drillDownBean);
+                twoCircleBeans.add(twoCircleBean);
+            }
+        }
+        resultMap.put("data", twoCircleBeans);
+        return resultMap;
+    }
+
+    public Map<String, Object> twoCircleMmt() throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dataType", DataType.MMTALLUSER.getType());
+        List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
+        List<RealTimeStatic3Data> resultList2 = null;
+        List<TwoCircleBean> twoCircleBeans = new ArrayList<>();
+        TwoCircleBean twoCircleBean = null;
+        DrillDownBean drillDownBean = null;
+        if (resultList != null && resultList.size() > 0) {
+            Double total = 0d;
+            for (RealTimeStatic3Data realTimeStatic3Data : resultList) {
+                total = total + realTimeStatic3Data.getDataCount();
+            }
+            int color = 1;
+
+            for (RealTimeStatic3Data realTimeStatic3Data : resultList) {
+                if (realTimeStatic3Data.getDataCount() == 0) {
+                    continue;
+                }
+                paramMap = new HashMap<>();
+                List<Integer> dataTypeList = new ArrayList<>();
+                dataTypeList.add(DataType.MMTNOPCALLUSER.getType());
+                dataTypeList.add(DataType.MMTHASPCALLUSER.getType());
+                paramMap.put("list", dataTypeList);
+                paramMap.put("name", realTimeStatic3Data.getElement());
+                resultList2 = realTimeStatic3DataMapper.findByTypeElement(paramMap);
+                if (resultList2 != null && resultList2.size() >= 2) {
+//应该有两个记录。
+                    String[] categories = new String[resultList2.size()];
+                    Object[] objects = new Object[resultList2.size()];
+                    int i = 0;
+                    for (RealTimeStatic3Data _re : resultList2) {
+                        categories[i] = realTimeStatic3Data.getElement() + DataType.getName(_re.getDataType());
+                        objects[i] = formartData(_re.getDataCount(), total);
+                        i++;
+                    }
+                    drillDownBean = new DrillDownBean(realTimeStatic3Data.getElement(), categories, objects);
+                }
+
+                twoCircleBean = new TwoCircleBean(formartData(realTimeStatic3Data.getDataCount(), total), color, drillDownBean);
+                color++;
                 twoCircleBeans.add(twoCircleBean);
             }
         }

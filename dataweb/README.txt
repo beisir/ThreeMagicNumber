@@ -59,3 +59,20 @@ http://data.360jz.com/dataweb/keyMatch?flag=ba
 
 韦恩图
 http://data.360jz.com/dataweb/venn
+
+MMT
+头部公式
+http://data.360jz.com/dataweb/mmtFormula
+
+销售额
+http://data.360jz.com/dataweb/mmtLine?flag=sale
+会员类型占比
+http://data.360jz.com/dataweb/dist?type=395
+
+会员商机同心圆
+http://data.360jz.com/dataweb/mmt_twocircle
+
+气泡填充==主营行业
+http://data.360jz.com/dataweb/complex?flag=bubble
+地图
+http://data.360jz.com/dataweb/complex?flag=map

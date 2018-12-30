@@ -38,6 +38,15 @@ const routeConfig = [{
         },
         hidden: true
     }, {
+        name: '买卖通产品',
+        path: '/datapanel/business',
+        component: resolve => {
+            require.ensure(['components/datapanel-business.vue'], () => {
+                resolve(require('components/datapanel-business.vue'));
+            });
+        },
+        hidden: true
+    },  {
         name: '运营数据',
         path: '/datapanel/operation',
         component: resolve => {

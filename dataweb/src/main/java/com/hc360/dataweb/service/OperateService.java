@@ -16,4 +16,7 @@ public interface OperateService {
     public Map<String, Object> lineFromDayTable(List<Integer> typeList, int dayBeyond) throws Exception;
     public Map<String, Object> match(Integer type) throws Exception;
     Map<String, Object> venn(List<Integer> typeList) throws Exception;
+    public Map<String, Object> twoCircleMmt () throws Exception;
+    Map<String, Object> bubble(int type) throws Exception;
+    public Map<String, Object> map(int type) throws Exception;
 }

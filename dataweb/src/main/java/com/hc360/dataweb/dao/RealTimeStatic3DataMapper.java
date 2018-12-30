@@ -8,4 +8,5 @@ import java.util.Map;
 @Repository
 public interface RealTimeStatic3DataMapper {
     List<RealTimeStatic3Data> findByType(Map<String,Object> map);
+    List<RealTimeStatic3Data> findByTypeElement(Map<String,Object> map);
 }
