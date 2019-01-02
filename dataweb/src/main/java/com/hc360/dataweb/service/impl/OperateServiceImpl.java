@@ -206,8 +206,14 @@ public class OperateServiceImpl implements OperateService {
         if (resultList != null && resultList.size() > 0) {
             MapBean packedBubble = null;
             for (RealTimeStatic3Data _realTimeStatic3Data : resultList) {
-                packedBubble = new MapBean(_realTimeStatic3Data.getElement(), _realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
-                list.add(packedBubble);
+                if(!"空".equals(_realTimeStatic3Data.getElement())){
+                    packedBubble = new MapBean(_realTimeStatic3Data.getElement(), _realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
+                    list.add(packedBubble);
+                }
+                if("广西省".equals(_realTimeStatic3Data.getElement())){
+                    packedBubble = new MapBean("广西壮族自治区", _realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
+                    list.add(packedBubble);
+                }
             }
         }
         resultMap.put("data", list);
