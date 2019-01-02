@@ -148,6 +148,10 @@ Vue.prototype.$message = Message
  * 引入公共样式
  */
 require('../src/assets/css/dataStyle.css');
+/**
+ * 导入 map 类型图表
+ */
+require('highcharts/modules/map')(Highcharts);
 
 /* eslint-disable no-new */
 const vueEntity = new Vue({
