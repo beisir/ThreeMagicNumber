@@ -320,8 +320,10 @@ public class OperateServiceImpl implements OperateService {
                 }
 
                 twoCircleBean = new TwoCircleBean(formartData(realTimeStatic3Data.getDataCount(), total), color, drillDownBean);
+                if(formartData(realTimeStatic3Data.getDataCount(), total) >0){
+                    twoCircleBeans.add(twoCircleBean);
+                }
                 color++;
-                twoCircleBeans.add(twoCircleBean);
             }
         }
         resultMap.put("data", twoCircleBeans);
