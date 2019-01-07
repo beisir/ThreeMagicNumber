@@ -25,18 +25,30 @@
                             <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pWidenedChart" :timermillisec="0" :service="service.doubles" chartTitle="第一个扇形图"></chart-tendency>
                             </div>
-                        </div>
-                        <div class="panel-body tab-content mTop20">
                             <div class="p4pCountLeft">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="mapElements" :timermillisec="timerMillisec" :service='service.map' chartTitle="地区分布" :chartEntityConstructor="chartEntityConstructor()"  :resetYAxisBeforeRedraw="false"></chart-tendency>
                             </div>
                             <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pBubble"  :timermillisec="0" :service="service.complex" chartTitle="第一个气泡"></chart-tendency>
                             </div>
-                        </div>
-                        <div class="panel-body tab-content mTop20">
                             <div class="p4pCountLeft">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pOperatedChart" :timermillisec="0" :service="service.twocircle" chartTitle="第二个双圆图"></chart-tendency>
+                            </div>
+                        </div>
+                        
+                        <div class="panel-body tab-content mTop20">
+                            <nav class="navbar navbar-default" role="navigation" style="background:#f5f5f5;">
+                                <div class="container-fluid">
+                                    <div class="navbar-header">
+                                        <span class="navbar-brand" style="font-size:16px;">服务效果</span>
+                                    </div>
+                                </div>
+                            </nav>
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pService" :timermillisec="0" :service="service.mmt_column" :resetSeriesBeforeRedraw="false"  :resetYAxisBeforeRedraw="false" chartTitle="第一个柱状图"></chart-tendency>
+                            </div>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pServices" :timermillisec="0" :service="service.column3d"  :resetYAxisBeforeRedraw="false" chartTitle="第二个柱状图"></chart-tendency>
                             </div>
                         </div>
                     </div>
@@ -48,11 +60,10 @@
 
 <script>
 import chartTendency from './chart-tendency.vue'
-require('highcharts/highcharts-3d')(Highcharts);
 require('highcharts/modules/variable-pie')(Highcharts);
 require('highcharts/modules/wordcloud')(Highcharts);
 require('highcharts/modules/oldie')(Highcharts);
-require('highcharts/modules/highcharts-more')(Highcharts);
+require('highcharts/highcharts-more')(Highcharts);
 /**
  * 
  * [mapMetaData 导入地图地理位置数据]
@@ -103,6 +114,12 @@ export default {
                 },
                 complex: {
                     url: '/dataweb/complex'
+                },
+                column3d: {
+                    url: '/dataweb/column3d'
+                },
+                mmt_column: {
+                    url: '/dataweb/mmt_column'
                 }
             },
             // 顶层p4p运营数据
@@ -545,6 +562,122 @@ export default {
             
         });
 
+        /*-------------------------------------------------------------------------*/
+
+
+        /** 
+         * 第一个柱状图开始
+        */
+        _this.$refs.p4pService.$on('beforeRender',function(chartOptions){
+            Object.assign(chartOptions, {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: '未使用报价服务会员'
+                },
+                tooltip: {
+                    // head + 每个 point + footer 拼接成完整的 table
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} 个</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '企业数'
+                    }
+                }
+            });
+        })
+        _this.$refs.p4pService.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        /** 
+         * 第一个柱状图结束
+        */
+        _this.$refs.p4pService.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.yAxis[1].remove(false);//删除多余的
+            chartEntity.series[0].remove(false);//删除多余的
+            chartEntity.xAxis[0].update({
+                categories: _t.data.data.time
+            }, false);
+            _t.data.data.dataList.forEach((columnItem, columnIndex) => {
+                chartEntity.addSeries({
+                    name: columnItem.name,
+                    data: columnItem.data,
+                    stack: 'female'
+                });
+            })
+        });
+        /*-------------------------------------------------------------------------*/
+
+
+        /** 
+         * 第二个柱状图开始
+        */
+        _this.$refs.p4pServices.$on('beforeRender',function(chartOptions){
+            Object.assign(chartOptions, {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: '使用报价服务的会员'
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '会员量 (个)'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        borderWidth: 0
+                    }
+                }
+            });
+        })
+        _this.$refs.p4pServices.$on('beforeGetData',function(params){
+            Object.assign(params, {
+                params: {
+                    flag: 'mmt_price'
+                }
+            });
+        })
+        _this.$refs.p4pServices.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        /** 
+         * 第二个柱状图结束
+        */
+        _this.$refs.p4pServices.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            /**
+             * [_data 获取缓存数据]
+             */
+            chartEntity.xAxis[0].update({
+                categories: _t.data.time
+            }, false);
+            _t.data.data.forEach((columnItem, columnIndex) => {
+                chartEntity.addSeries({
+                    name: columnItem.name,
+                    data: columnItem.data,
+                    stack: 'female'
+                });
+            })
+        });
     },
 
     methods: {
