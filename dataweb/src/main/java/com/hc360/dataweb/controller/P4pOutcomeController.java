@@ -160,6 +160,11 @@ public class P4pOutcomeController {
                 dataTypeList.add(DataType.P4PFANDIANJINBALANCE.getType());// 返点金余额
                 dataTypeList.add(DataType.P4PXIANJINBALANCE.getType());// 现金余额
             }
+
+            if("mmt_price".equals(flag)){
+                dataTypeList.add(DataType.MMTSPORDER.getType());// 名企报价
+                dataTypeList.add(DataType.MMTBUSNOTE.getType());// 采购报价
+            }
             _dataMap  = operateService.columd3D(dataTypeList,6);
             _dataMap.put("errno",0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));

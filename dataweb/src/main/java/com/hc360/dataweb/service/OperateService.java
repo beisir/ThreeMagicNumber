@@ -19,4 +19,5 @@ public interface OperateService {
     public Map<String, Object> twoCircleMmt () throws Exception;
     Map<String, Object> bubble(int type) throws Exception;
     public Map<String, Object> map(int type) throws Exception;
+    Map<String, Object> columnMMT() throws Exception;
 }

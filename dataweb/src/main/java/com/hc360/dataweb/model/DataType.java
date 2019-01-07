@@ -503,6 +503,10 @@ public enum DataType {
     //不同主营行业的会员数
     MMTPAREAUSER("行业会员", 403, "个"),
 
+    MMTBUSNOTE("采购报价", 404, "个"),
+    MMTSPORDER("名企报价", 405, "个"),
+    MMTNOBUSNOTE("未使用采购报价", 407, "个"),
+    MMTNOSPORDER("未使用名企报价", 406, "个"),
     /*MIP站流量的信息，这些数据是从百度统计抓取过来的**/
     MIP_IP("MIP站IP", 338, ""),
     MIP_PV("MIP站PV", 339, ""),

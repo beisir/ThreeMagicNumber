@@ -76,3 +76,7 @@ http://data.360jz.com/dataweb/mmt_twocircle
 http://data.360jz.com/dataweb/complex?flag=bubble
 地图
 http://data.360jz.com/dataweb/complex?flag=map
+#使用报价服务的会员
+http://data.360jz.com/dataweb/column3d?flag=mmt_price
+未使用报价的服务
+http://data.360jz.com/dataweb/mmt_column

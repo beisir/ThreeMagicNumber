@@ -413,6 +413,41 @@ public class OperateServiceImpl implements OperateService {
         return resultMap;
     }
 
+    public Map<String, Object> columnMMT() throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dataType", DataType.MMTNOBUSNOTE.getType());
+        List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
+        List<String> time = new ArrayList<>();
+        List<LineBean> list  = new ArrayList<>();
+        LineBean lineBean = null;
+        List<Double> doubles = null;
+        if(resultList!=null && resultList.size()>0){
+            doubles = new ArrayList<>();
+            for(RealTimeStatic3Data _reRealTimeStatic3Data : resultList){
+                time.add(_reRealTimeStatic3Data.getElement());
+                doubles.add(_reRealTimeStatic3Data.getDataCount());
+            }
+            lineBean = new LineBean("采购报价",doubles, DataType.getUnit(DataType.MMTNOBUSNOTE.getType()));
+            list.add(lineBean);
+        }
+        paramMap = new HashMap<>();
+        paramMap.put("dataType", DataType.MMTNOSPORDER.getType());
+        resultList = realTimeStatic3DataMapper.findByType(paramMap);
+        if(resultList!=null && resultList.size()>0){
+            doubles = new ArrayList<>();
+            for(RealTimeStatic3Data _reRealTimeStatic3Data : resultList){
+                doubles.add(_reRealTimeStatic3Data.getDataCount());
+            }
+            lineBean = new LineBean("名企报价",doubles, DataType.getUnit(DataType.MMTNOSPORDER.getType()));
+            list.add(lineBean);
+        }
+        resultMap.put("dataList", list);
+        resultMap.put("time", time);
+        return resultMap;
+    }
+
     private List<Double> checkData(List<String> timeList, List<RealTimeStaticDoubleHour> dataList) {
         Map<String, Double> dataMap = new HashMap<>();
         if (timeList != null && timeList.size() > 0) {
