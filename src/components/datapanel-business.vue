@@ -59,6 +59,9 @@
                             <div class="p4pCountLeft">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pBrokenLine2" :timermillisec="0" :service="service.mmtLine"  :resetSeriesBeforeRedraw="false"  :resetYAxisBeforeRedraw="false" chartTitle="第四个折线图"></chart-tendency>
                             </div>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pMemberUV" :timermillisec="0" :service="service.mmtLine"  :resetSeriesBeforeRedraw="false"  :resetYAxisBeforeRedraw="false" chartTitle="第四个折线图"></chart-tendency>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -252,8 +255,9 @@ export default {
         });
         _this.$refs.p4pLineChart1.$on('beforeRedraw', function(chartEntity) {
             chartEntity.series.forEach((series, index) => {
+                var yIndex = series.name == '客单价' ? 0 : 1;
                 series.update({
-                    yAxis: 0,
+                    yAxis: yIndex,
                     // 将折线设置为有菱角的折线
                     marker: {
                         enabled: true
@@ -853,6 +857,57 @@ export default {
         });
 
 
+        /*-------------------------------------------------------------------------*/
+
+        /**
+         * [会员UV开始]
+         */
+        _this.$refs.p4pMemberUV.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions,{
+                title: {
+            		text: '会员UV'
+            	},
+            	yAxis: {
+            		title: {
+            			text: null
+            		}
+            	}
+            });
+        });
+        _this.$refs.p4pMemberUV.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    flag: 'uv'
+                }
+            });
+        });
+        _this.$refs.p4pMemberUV.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        /**
+         * [会员UV结束]
+         */
+        _this.$refs.p4pMemberUV.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.series.forEach((series, index) => {
+                var yIndex = (series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 1 : 4;
+                series.update({
+                    yAxis: yIndex,
+                    // 将折线设置为有菱角的折线
+                    marker: {
+                        enabled: true
+                    },
+                    name: {
+                        
+                    }
+                    // zIndex: index
+                }, false);
+            });
+        });
     },
 
     methods: {

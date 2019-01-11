@@ -361,8 +361,9 @@ export default {
         });
         _this.$refs.p4pLineChart1.$on('beforeRedraw', function(chartEntity) {
             chartEntity.series.forEach((series, index) => {
+                var yAxis = series.name == "客单价"? 0 : 1;
                 series.update({
-                    yAxis: 0,
+                    yAxis: yAxis,
                     // 将折线设置为有菱角的折线
                     marker: {
                         enabled: true
