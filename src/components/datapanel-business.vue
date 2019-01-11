@@ -716,17 +716,9 @@ export default {
             	},
             	yAxis: {
             		title: {
-            			text: "万"
+            			text: null
             		}
-            	},
-                plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: false
-                        },
-                        pointStart: 2010
-                    }
-                },
+            	}
             });
         });
         _this.$refs.p4pBrokenLine.$on('beforeGetData', function(params) {
@@ -749,7 +741,7 @@ export default {
         _this.$refs.p4pBrokenLine.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
             chartEntity.series.forEach((series, index) => {
-                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 0 : 8;
+                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 1 : 4;
                 series.update({
                     yAxis: yIndex,
                     // 将折线设置为有菱角的折线
@@ -772,17 +764,9 @@ export default {
             	},
             	yAxis: {
             		title: {
-            			text: "户均PV"
+            			text: null
             		}
-            	},
-                plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: false
-                        },
-                        pointStart: 2010
-                    }
-                },
+            	}
             });
         });
         _this.$refs.p4pBrokenLine1.$on('beforeGetData', function(params) {
@@ -807,7 +791,7 @@ export default {
             chartEntity.series.forEach((series, index) => {
                 
                 series.update({
-                    yAxis: 0,
+                    yAxis: 1,
                     // 将折线设置为有菱角的折线
                     marker: {
                         enabled: true
@@ -828,17 +812,9 @@ export default {
             	},
             	yAxis: {
             		title: {
-            			text: "户均询盘"
+            			text: null
             		}
-            	},
-                plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: false
-                        },
-                        pointStart: 2010
-                    }
-                },
+            	}
             });
         });
         _this.$refs.p4pBrokenLine2.$on('beforeGetData', function(params) {
@@ -861,7 +837,7 @@ export default {
         _this.$refs.p4pBrokenLine2.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
             chartEntity.series.forEach((series, index) => {
-                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 0 : 8;
+                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 1 : 4;
                 series.update({
                     yAxis: yIndex,
                     // 将折线设置为有菱角的折线
