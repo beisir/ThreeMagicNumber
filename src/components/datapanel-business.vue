@@ -50,6 +50,15 @@
                             <div class="p4pCountRig">
                                 <chart-tendency :isShow="true" :chartFlag="false" ref="p4pServices" :timermillisec="0" :service="service.column3d"  :resetYAxisBeforeRedraw="false" chartTitle="第二个柱状图"></chart-tendency>
                             </div>
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pBrokenLine1" :timermillisec="0" :service="service.mmtLine"  :resetSeriesBeforeRedraw="false"  :resetYAxisBeforeRedraw="false" chartTitle="第四个折线图"></chart-tendency>
+                            </div>
+                            <div class="p4pCountRig">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pBrokenLine" :timermillisec="0" :service="service.mmtLine"  :resetSeriesBeforeRedraw="false"  :resetYAxisBeforeRedraw="false" chartTitle="第四个折线图"></chart-tendency>
+                            </div>
+                            <div class="p4pCountLeft">
+                                <chart-tendency :isShow="true" :chartFlag="false" ref="p4pBrokenLine2" :timermillisec="0" :service="service.mmtLine"  :resetSeriesBeforeRedraw="false"  :resetYAxisBeforeRedraw="false" chartTitle="第四个折线图"></chart-tendency>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,6 +73,7 @@ require('highcharts/modules/variable-pie')(Highcharts);
 require('highcharts/modules/wordcloud')(Highcharts);
 require('highcharts/modules/oldie')(Highcharts);
 require('highcharts/highcharts-more')(Highcharts);
+// require('highcharts/modules/series-label')(Highcharts);
 /**
  * 
  * [mapMetaData 导入地图地理位置数据]
@@ -117,6 +127,9 @@ export default {
                 },
                 column3d: {
                     url: '/dataweb/column3d'
+                },
+                mmt_column: {
+                    url: '/dataweb/mmt_column'
                 },
                 mmt_column: {
                     url: '/dataweb/mmt_column'
@@ -568,6 +581,10 @@ export default {
         /** 
          * 第一个柱状图开始
         */
+
+        /** 
+         * 未使用报价服务会员开始
+        */
         _this.$refs.p4pService.$on('beforeRender',function(chartOptions){
             Object.assign(chartOptions, {
                 chart: {
@@ -603,6 +620,9 @@ export default {
         /** 
          * 第一个柱状图结束
         */
+        /** 
+         * 未使用报价服务会员结束
+        */
         _this.$refs.p4pService.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
             chartEntity.yAxis[1].remove(false);//删除多余的
@@ -623,6 +643,9 @@ export default {
 
         /** 
          * 第二个柱状图开始
+        */
+        /** 
+         * 使用报价服务的会员开始
         */
         _this.$refs.p4pServices.$on('beforeRender',function(chartOptions){
             Object.assign(chartOptions, {
@@ -662,6 +685,9 @@ export default {
         /** 
          * 第二个柱状图结束
         */
+        /** 
+         * 使用报价服务的会员结束
+        */
         _this.$refs.p4pServices.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
             /**
@@ -678,6 +704,179 @@ export default {
                 });
             })
         });
+        /*-------------------------------------------------------------------------*/
+
+        /**
+         * [会员服务效果开始]
+         */
+        _this.$refs.p4pBrokenLine.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions,{
+                title: {
+            		text: '会员PV'
+            	},
+            	yAxis: {
+            		title: {
+            			text: "万"
+            		}
+            	},
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2010
+                    }
+                },
+            });
+        });
+        _this.$refs.p4pBrokenLine.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    flag: 'pv'
+                }
+            });
+        });
+        _this.$refs.p4pBrokenLine.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        /**
+         * [会员服务效果结束]
+         */
+        _this.$refs.p4pBrokenLine.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.series.forEach((series, index) => {
+                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 0 : 8;
+                series.update({
+                    yAxis: yIndex,
+                    // 将折线设置为有菱角的折线
+                    marker: {
+                        enabled: true
+                    },
+                    // zIndex: index
+                }, false);
+            });
+        });
+        /*-------------------------------------------------------------------------*/
+
+        /**
+         * [流量PV开始]
+         */
+        _this.$refs.p4pBrokenLine1.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions,{
+                title: {
+            		text: '流量效果'
+            	},
+            	yAxis: {
+            		title: {
+            			text: "户均PV"
+            		}
+            	},
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2010
+                    }
+                },
+            });
+        });
+        _this.$refs.p4pBrokenLine1.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    flag: 'flow'
+                }
+            });
+        });
+        _this.$refs.p4pBrokenLine1.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        /**
+         * [流量PV结束]
+         */
+        _this.$refs.p4pBrokenLine1.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.series.forEach((series, index) => {
+                
+                series.update({
+                    yAxis: 0,
+                    // 将折线设置为有菱角的折线
+                    marker: {
+                        enabled: true
+                    },
+                    // zIndex: index
+                }, false);
+            });
+        });
+        /*-------------------------------------------------------------------------*/
+
+        /**
+         * [询盘开始]
+         */
+        _this.$refs.p4pBrokenLine2.$on('beforeRender', function(chartOptions) {
+            Object.assign(chartOptions,{
+                title: {
+            		text: '会员询盘'
+            	},
+            	yAxis: {
+            		title: {
+            			text: "户均询盘"
+            		}
+            	},
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2010
+                    }
+                },
+            });
+        });
+        _this.$refs.p4pBrokenLine2.$on('beforeGetData', function(params) {
+            Object.assign(params, {
+                params: {
+                    flag: 'xp'
+                }
+            });
+        });
+        _this.$refs.p4pBrokenLine2.$on('afterGetData', function(data) {
+            var _t = this;
+            /**
+             * [缓存数据]
+             */
+            _t.data = data || {};
+        });
+        /**
+         * [询盘结束]
+         */
+        _this.$refs.p4pBrokenLine2.$on('beforeRedraw', function(chartEntity) {
+            var _t = this;
+            chartEntity.series.forEach((series, index) => {
+                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 0 : 8;
+                series.update({
+                    yAxis: yIndex,
+                    // 将折线设置为有菱角的折线
+                    marker: {
+                        enabled: true
+                    },
+                    name: {
+                        
+                    }
+                    // zIndex: index
+                }, false);
+            });
+        });
+
+
     },
 
     methods: {
