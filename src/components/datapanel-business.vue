@@ -718,6 +718,7 @@ export default {
                 title: {
             		text: '会员PV'
             	},
+                colors:["#19c6ed","#ff7c4d","#2bcc6b","#795548","#009688","#3e56d0","#ce5657","#c275df","#E91E63","#FFC107"],
             	yAxis: {
             		title: {
             			text: null
@@ -744,8 +745,12 @@ export default {
          */
         _this.$refs.p4pBrokenLine.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
+            var len = _t.data.data.dataList.length;
+            if(len%2 == 1){
+                len = len-1
+            }
             chartEntity.series.forEach((series, index) => {
-                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 1 : 4;
+                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 1 : len;
                 series.update({
                     yAxis: yIndex,
                     // 将折线设置为有菱角的折线
@@ -814,6 +819,7 @@ export default {
                 title: {
             		text: '会员询盘'
             	},
+                colors:["#19c6ed","#ff7c4d","#2bcc6b","#795548","#009688","#3e56d0","#ce5657","#c275df","#E91E63","#FFC107"],
             	yAxis: {
             		title: {
             			text: null
@@ -840,8 +846,12 @@ export default {
          */
         _this.$refs.p4pBrokenLine2.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
+            var len = _t.data.data.dataList.length;
+            if(len%2 == 1){
+                len = len-1
+            }
             chartEntity.series.forEach((series, index) => {
-                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 1 : 4;
+                var yIndex = (series.name == 'VIP' || series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 1 : len;
                 series.update({
                     yAxis: yIndex,
                     // 将折线设置为有菱角的折线
@@ -867,6 +877,7 @@ export default {
                 title: {
             		text: '会员UV'
             	},
+                colors:["#19c6ed","#ff7c4d","#2bcc6b","#795548","#009688","#3e56d0","#ce5657","#c275df","#E91E63","#FFC107"],
             	yAxis: {
             		title: {
             			text: null
@@ -893,8 +904,12 @@ export default {
          */
         _this.$refs.p4pMemberUV.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
+            var len = _t.data.data.dataList.length;
+            if(len%2 == 1){
+                len = len-1
+            }
             chartEntity.series.forEach((series, index) => {
-                var yIndex = (series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 1 : 4;
+                var yIndex = (series.name == '进阶' || series.name == '金牌会员' || series.name == '买卖通体验版' || series.name == 'VIP会员' || series.name == '银牌会员' || series.name == '经典') ? 1 : len;
                 series.update({
                     yAxis: yIndex,
                     // 将折线设置为有菱角的折线

@@ -538,7 +538,8 @@ export default {
             		title: {
             			text: '会员数'
             		}
-            	},
+                },
+                colors:["#19c6ed","#ff7c4d","#2bcc6b","#c275df","#009688","#3e56d0","#0e0a06"],
                 plotOptions: {
             		pie: {
             			allowPointSelect: true,
@@ -573,8 +574,16 @@ export default {
         _this.$refs.p4pcombineChart.$on('beforeRedraw', function(chartEntity) {
             var _t = this;
             chartEntity.series.forEach((series, index) => {
+
+                var yIndex = 0;
+
+                if(series.name == "P4P有余额会员" || series.name == "有现金余额会员"){
+                    yIndex = 1;
+                }else if(series.name == "仅返点金余额会员" || series.name == "仅虚拟余额会员"){
+                    yIndex = 3;
+                }
                 series.update({
-                    yAxis: 0,
+                    yAxis: yIndex,
                     marker: {
                         enabled: true
                     }
