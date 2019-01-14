@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hc360.dataweb.dao.RealTimeStatic3DataMapper" >
-  <resultMap id="BaseResultMap" type="com.hc360.dataweb.model.RealTimeStatic3Data" >
-    <id column="ID" property="id" jdbcType="DECIMAL" />
-    <result column="DATA_TYPE" property="dataType" jdbcType="DECIMAL" />
-    <result column="ELEMENT" property="element" jdbcType="VARCHAR" />
-    <result column="DATA_COUNT" property="dataCount" jdbcType="DECIMAL" />
-    <result column="IRSL_DATE" property="irslDate" jdbcType="VARCHAR" />
-    <result column="OP_DATE" property="opDate" jdbcType="DATE" />
-  </resultMap>
+<mapper namespace="com.hc360.dataweb.dao.RealTimeStatic3DataMapper">
+    <resultMap id="BaseResultMap" type="com.hc360.dataweb.model.RealTimeStatic3Data">
+        <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="DATA_TYPE" property="dataType" jdbcType="DECIMAL"/>
+        <result column="ELEMENT" property="element" jdbcType="VARCHAR"/>
+        <result column="DATA_COUNT" property="dataCount" jdbcType="DECIMAL"/>
+        <result column="IRSL_DATE" property="irslDate" jdbcType="VARCHAR"/>
+        <result column="OP_DATE" property="opDate" jdbcType="DATE"/>
+    </resultMap>
 
-  <select id="findByType" parameterType="java.util.Map"  resultMap="BaseResultMap">
+    <select id="findByType" parameterType="java.util.Map" resultMap="BaseResultMap">
 
     select ELEMENT,DATA_COUNT
     from sjpt_realtime_static_3data
@@ -19,23 +19,34 @@
     order by  ID asc
   </select>
 
-  <select id="findByTypeElement" parameterType="java.util.Map"  resultMap="BaseResultMap">
 
-    select ELEMENT,DATA_COUNT,DATA_TYPE
+    <select id="findByTypeDate" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select *
     from sjpt_realtime_static_3data
-    where ELEMENT=#{name}
-    <if test="list != null and list.size > 0">
-    and DATA_TYPE in
-    <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
-      #{item}
-    </foreach>
-  </if>
-    and IRSL_DATE=(select max(IRSL_DATE) from sjpt_realtime_static_3data where 1=1  <if test="list != null and list.size > 0">
-    and DATA_TYPE in
-    <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
-      #{item}
-    </foreach>
-  </if>)
-    order by  DATA_TYPE asc
+    where data_type =#{type}
+    and IRSL_DATE between #{preday} and  #{day}
+    order by IRSL_DATE asc
   </select>
+
+    <select id="findByTypeElement" parameterType="java.util.Map" resultMap="BaseResultMap">
+
+        select ELEMENT,DATA_COUNT,DATA_TYPE
+        from sjpt_realtime_static_3data
+        where ELEMENT=#{name}
+        <if test="list != null and list.size > 0">
+            and DATA_TYPE in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        and IRSL_DATE=(select max(IRSL_DATE) from sjpt_realtime_static_3data where 1=1
+        <if test="list != null and list.size > 0">
+            and DATA_TYPE in
+            <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        )
+        order by DATA_TYPE asc
+    </select>
 </mapper>

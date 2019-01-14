@@ -79,6 +79,21 @@ public class MmtController {
                 dataTypeList.add(DataType.MMT2018USER.getType());// 会员数
                 Map<String, Object> dataMap = operateService.line(dataTypeList, 6);
                 _dataMap.put("data", dataMap);
+            }else if ("flow".equals(flag)) {//流量
+                dataTypeList.add(DataType.MMTTOTALPV.getType()); //pv
+                dataTypeList.add(DataType.MMTTOTALUV.getType());// uv
+                dataTypeList.add(DataType.MMTTOTALXP.getType());// xp
+                Map<String, Object> dataMap = operateService.line2(dataTypeList, 7);
+                _dataMap.put("data", dataMap);
+            }else if("pv".equals(flag)){
+                Map<String, Object> dataMap = operateService.findDataFrom3Data(DataType.MMTBYTYPEPV.getType(),7);
+                _dataMap.put("data", dataMap);
+            }else if("xp".equals(flag)){
+                Map<String, Object> dataMap = operateService.findDataFrom3Data(DataType.MMTBYTYPEXP.getType(),7);
+                _dataMap.put("data", dataMap);
+            }else if("uv".equals(flag)){
+                Map<String, Object> dataMap = operateService.findDataFrom3Data(DataType.MMTBYTYPEUV.getType(),7);
+                _dataMap.put("data", dataMap);
             }
             _dataMap.put("errno", 0);
             response.getWriter().print(objectMapper.writeValueAsString(_dataMap));
@@ -188,6 +203,7 @@ public class MmtController {
             logger.error("twoCircle=", e);
         }
     }
+
 
 
 }

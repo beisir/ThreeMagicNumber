@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by home on 2018/11/21.
@@ -206,20 +203,22 @@ public class OperateServiceImpl implements OperateService {
         if (resultList != null && resultList.size() > 0) {
             MapBean packedBubble = null;
             for (RealTimeStatic3Data _realTimeStatic3Data : resultList) {
-                if(!"空".equals(_realTimeStatic3Data.getElement())){
-                    packedBubble = new MapBean(_realTimeStatic3Data.getElement(), _realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
+                if (!"空".equals(_realTimeStatic3Data.getElement())) {
+                    if ("广西省".equals(_realTimeStatic3Data.getElement())) {
+                        packedBubble = new MapBean("广西壮族自治区", _realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
+                    }else{
+                        packedBubble = new MapBean(_realTimeStatic3Data.getElement(), _realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
+                    }
                     list.add(packedBubble);
                 }
-                if("广西省".equals(_realTimeStatic3Data.getElement())){
-                    packedBubble = new MapBean("广西壮族自治区", _realTimeStatic3Data.getDataCount(), DataType.getUnit(type));
-                    list.add(packedBubble);
-                }
+
             }
         }
         resultMap.put("data", list);
         resultMap.put("name", DataType.getName(type));
         return resultMap;
     }
+
     public void twoCircleUsers(List<Integer> typeList, String day, Map<String, Object> resultMap) throws Exception {
         Map<String, Object> paramMap = new HashMap<>();
 
@@ -326,7 +325,7 @@ public class OperateServiceImpl implements OperateService {
                 }
 
                 twoCircleBean = new TwoCircleBean(formartData(realTimeStatic3Data.getDataCount(), total), color, drillDownBean);
-                if(formartData(realTimeStatic3Data.getDataCount(), total) >0){
+                if (formartData(realTimeStatic3Data.getDataCount(), total) > 0) {
                     twoCircleBeans.add(twoCircleBean);
                 }
                 color++;
@@ -390,6 +389,29 @@ public class OperateServiceImpl implements OperateService {
         return resultMap;
     }
 
+    public Map<String, Object> line2(List<Integer> typeList, int dayBeyond) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        List<String> timeList = this.getTimeList2(dayBeyond);//时间轴
+        resultMap.put("time", timeList);
+        List<LineBean> dataList = new ArrayList<>();
+        for (Integer type : typeList) {
+            List<Integer> types = new ArrayList<>();
+            types.add(type);
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("list", types);
+            paramMap.put("day", ControllerDateUtil.getYesterday());
+            paramMap.put("preday", ControllerDateUtil.getPreNDay(-dayBeyond));
+            List<RealTimeStaticDoubleHour> resultList = realTimeStaticHourMapper.findDoubleByDay(paramMap);
+
+
+            List<Double> resultDatas = this.checkData(timeList, resultList);//结果数据
+            LineBean columnBean = new LineBean(DataType.getName(type), resultDatas, DataType.getUnit(type));
+            dataList.add(columnBean);
+        }
+        resultMap.put("dataList", dataList);
+        return resultMap;
+    }
+
     public Map<String, Object> lineFromDayTable(List<Integer> typeList, int dayBeyond) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         List<String> timeList = this.getTimeListEndYesterday(dayBeyond + 1);//时间轴
@@ -420,27 +442,27 @@ public class OperateServiceImpl implements OperateService {
         paramMap.put("dataType", DataType.MMTNOBUSNOTE.getType());
         List<RealTimeStatic3Data> resultList = realTimeStatic3DataMapper.findByType(paramMap);
         List<String> time = new ArrayList<>();
-        List<LineBean> list  = new ArrayList<>();
+        List<LineBean> list = new ArrayList<>();
         LineBean lineBean = null;
         List<Double> doubles = null;
-        if(resultList!=null && resultList.size()>0){
+        if (resultList != null && resultList.size() > 0) {
             doubles = new ArrayList<>();
-            for(RealTimeStatic3Data _reRealTimeStatic3Data : resultList){
+            for (RealTimeStatic3Data _reRealTimeStatic3Data : resultList) {
                 time.add(_reRealTimeStatic3Data.getElement());
                 doubles.add(_reRealTimeStatic3Data.getDataCount());
             }
-            lineBean = new LineBean("采购报价",doubles, DataType.getUnit(DataType.MMTNOBUSNOTE.getType()));
+            lineBean = new LineBean("采购报价", doubles, DataType.getUnit(DataType.MMTNOBUSNOTE.getType()));
             list.add(lineBean);
         }
         paramMap = new HashMap<>();
         paramMap.put("dataType", DataType.MMTNOSPORDER.getType());
         resultList = realTimeStatic3DataMapper.findByType(paramMap);
-        if(resultList!=null && resultList.size()>0){
+        if (resultList != null && resultList.size() > 0) {
             doubles = new ArrayList<>();
-            for(RealTimeStatic3Data _reRealTimeStatic3Data : resultList){
+            for (RealTimeStatic3Data _reRealTimeStatic3Data : resultList) {
                 doubles.add(_reRealTimeStatic3Data.getDataCount());
             }
-            lineBean = new LineBean("名企报价",doubles, DataType.getUnit(DataType.MMTNOSPORDER.getType()));
+            lineBean = new LineBean("名企报价", doubles, DataType.getUnit(DataType.MMTNOSPORDER.getType()));
             list.add(lineBean);
         }
         resultMap.put("dataList", list);
@@ -511,6 +533,17 @@ public class OperateServiceImpl implements OperateService {
         return timeList;
     }
 
+    private List<String> getTimeList2(int dayBeyond) {
+        List<String> timeList = new ArrayList<String>();//横坐标，时间轴
+        for (int i = -dayBeyond; i <= 0; i++) {
+            if (timeList.size() == dayBeyond ) {
+                break;
+            }
+            timeList.add(DateUtil.plusDays("yyyyMMdd", i)); //时间横坐标
+        }
+        return timeList;
+    }
+
     private List<String> getTimeListEndYesterday(int dayBeyond) {
         List<String> timeList = new ArrayList<String>();//横坐标，时间轴
         for (int i = -dayBeyond; i <= 1; i++) {
@@ -520,5 +553,49 @@ public class OperateServiceImpl implements OperateService {
             timeList.add(DateUtil.plusDays("yyyyMMdd", i)); //时间横坐标
         }
         return timeList;
+    }
+
+    public Map<String, Object> findDataFrom3Data(int dataType,int dayBeyond)throws  Exception{
+        Map<String,Object> resultMap = new HashMap<>();
+        List<String> times = getTimeList2(dayBeyond);
+        resultMap.put("time",times);
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("type", dataType);
+        paramMap.put("day", ControllerDateUtil.getYesterday());
+        paramMap.put("preday", ControllerDateUtil.getPreNDay(-dayBeyond));
+
+        Map<String,Map<String,Double>> dataMap = new HashMap<>();
+        Map<String,Double> timeMap = null;
+        List<RealTimeStatic3Data> realTimeStatic3Datas = this.realTimeStatic3DataMapper.findByTypeDate(paramMap);
+        if(realTimeStatic3Datas!=null && realTimeStatic3Datas.size()>0){
+            for(RealTimeStatic3Data _3data:realTimeStatic3Datas){
+                timeMap = dataMap.get(_3data.getElement());
+                if(timeMap == null ){
+                    timeMap = new HashMap<>();
+                    for(String time : times){
+                        timeMap.put(time,0D);
+                    }
+                }
+                timeMap.put(_3data.getIrslDate(),_3data.getDataCount());
+                dataMap.put(_3data.getElement(),timeMap) ;
+            }
+            List<LineBean> dataList = new ArrayList<>();
+            Set<String> keySet = dataMap.keySet();
+            List<Double> datas = null;
+            LineBean lineBean = null;
+            for(String key:keySet){
+                timeMap = dataMap.get(key);
+                datas = new ArrayList<>();
+                for(String time:times){
+                    datas.add(timeMap.get(time));
+                }
+                lineBean = new LineBean(key , datas,DataType.getUnit(dataType));
+                dataList.add(lineBean);
+            }
+            resultMap.put("dataList" , dataList);
+        }
+
+
+        return resultMap;
     }
 }

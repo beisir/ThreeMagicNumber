@@ -9,4 +9,5 @@ import java.util.Map;
 public interface RealTimeStatic3DataMapper {
     List<RealTimeStatic3Data> findByType(Map<String,Object> map);
     List<RealTimeStatic3Data> findByTypeElement(Map<String,Object> map);
+    List<RealTimeStatic3Data> findByTypeDate(Map<String,Object> map);
 }

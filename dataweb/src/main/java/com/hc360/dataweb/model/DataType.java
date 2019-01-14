@@ -507,6 +507,13 @@ public enum DataType {
     MMTSPORDER("名企报价", 405, "个"),
     MMTNOBUSNOTE("未使用采购报价", 407, "个"),
     MMTNOSPORDER("未使用名企报价", 406, "个"),
+
+    MMTTOTALPV("收费会员PV",408,"个"),
+    MMTTOTALUV("收费会员UV",409,"个"),
+    MMTTOTALXP("收费会员询盘",410,"个"),
+    MMTBYTYPEPV("收费会员PV",411,"个"),
+    MMTBYTYPEUV("收费会员UV",412,"个"),
+    MMTBYTYPEXP("收费会员询盘",413,"个"),
     /*MIP站流量的信息，这些数据是从百度统计抓取过来的**/
     MIP_IP("MIP站IP", 338, ""),
     MIP_PV("MIP站PV", 339, ""),

@@ -20,4 +20,6 @@ public interface OperateService {
     Map<String, Object> bubble(int type) throws Exception;
     public Map<String, Object> map(int type) throws Exception;
     Map<String, Object> columnMMT() throws Exception;
+    public Map<String, Object> findDataFrom3Data(int dataType,int dayBeyond)throws  Exception;
+    public Map<String, Object> line2(List<Integer> typeList, int dayBeyond) throws Exception;
 }

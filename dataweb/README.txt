@@ -80,3 +80,13 @@ http://data.360jz.com/dataweb/complex?flag=map
 http://data.360jz.com/dataweb/column3d?flag=mmt_price
 未使用报价的服务
 http://data.360jz.com/dataweb/mmt_column
+
+流量
+http://data.360jz.com/dataweb/mmtLine?flag=flow
+pv
+http://data.360jz.com/dataweb/mmtLine?flag=pv
+询盘
+http://data.360jz.com/dataweb/mmtLine?flag=xp
+
+uv
+http://data.360jz.com/dataweb/mmtLine?flag=uv
